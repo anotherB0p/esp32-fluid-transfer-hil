@@ -1,0 +1,48 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  host-tests:
+    name: Host unit tests (gcc, -Werror)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and run
+        run: bash tests/run_tests.sh
+
+  static-analysis:
+    name: cppcheck (core + tests)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install cppcheck
+        run: sudo apt-get update && sudo apt-get install -y cppcheck
+      - name: cppcheck
+        run: >
+          cppcheck --std=c99 --enable=warning,style,performance,portability
+          --inline-suppr --error-exitcode=1 --quiet
+          -I common/transfer_core/include common/transfer_core/src tests/test_core.c
+
+  firmware:
+    name: Firmware build (${{ matrix.app }})
+    runs-on: ubuntu-24.04
+    container: espressif/idf:v6.0
+    strategy:
+      fail-fast: false
+      matrix:
+        app: [controller, plant]
+    steps:
+      - uses: actions/checkout@v4
+      - name: idf.py build
+        shell: bash
+        run: |
+          . "$IDF_PATH/export.sh"
+          idf.py -C firmware/${{ matrix.app }} -B build_ci build
+      - name: Size report
+        shell: bash
+        run: |
+          . "$IDF_PATH/export.sh"
+          idf.py -C firmware/${{ matrix.app }} -B build_ci size

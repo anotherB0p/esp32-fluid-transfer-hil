@@ -2,7 +2,22 @@
 
 #include <string.h>
 
-enum { ST_SOF = 0, ST_LEN, ST_BODY };
+enum { ST_SOF = 0, ST_LEN, ST_TYPE, ST_BODY };
+
+/* Expected LEN (TYPE + SEQ + payload) for each known type; 0 = unknown type. */
+static uint8_t expected_len(uint8_t type)
+{
+    switch (type) {
+    case MSG_CMD: return (uint8_t)(2u + PROTO_CMD_LEN);
+    case MSG_TELEM: return (uint8_t)(2u + PROTO_TELEM_LEN);
+    default: return 0u;
+    }
+}
+
+static bool len_is_known(uint8_t len)
+{
+    return len == expected_len(MSG_CMD) || len == expected_len(MSG_TELEM);
+}
 
 uint16_t proto_crc16(const uint8_t *data, size_t len)
 {
@@ -134,7 +149,9 @@ bool proto_decoder_feed(proto_decoder_t *d, uint8_t byte, proto_msg_t *msg)
         return false;
 
     case ST_LEN:
-        if (byte < 2u || byte > 2u + PROTO_MAX_PAYLOAD) {
+        /* Only lengths of known message types are accepted. A corrupted LEN must not make
+         * the decoder swallow the following (good) frame while waiting for a long body. */
+        if (!len_is_known(byte)) {
             d->stats.len_errors++;
             /* This byte may itself be the SOF of the next frame. */
             d->state = (byte == PROTO_SOF) ? ST_LEN : ST_SOF;
@@ -143,6 +160,21 @@ bool proto_decoder_feed(proto_decoder_t *d, uint8_t byte, proto_msg_t *msg)
         d->len = byte;
         d->buf[0] = byte;
         d->pos = 1;
+        d->state = ST_TYPE;
+        return false;
+
+    case ST_TYPE:
+        /* LEN and TYPE must agree; one flipped bit cannot make both consistent. */
+        if (expected_len(byte) != d->len) {
+            if (expected_len(byte) == 0u) {
+                d->stats.unknown_type++;
+            } else {
+                d->stats.len_errors++;
+            }
+            d->state = (byte == PROTO_SOF) ? ST_LEN : ST_SOF;
+            return false;
+        }
+        d->buf[d->pos++] = byte;
         d->state = ST_BODY;
         return false;
 

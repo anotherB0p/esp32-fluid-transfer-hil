@@ -47,14 +47,16 @@ static void print_status(uint32_t now)
     const plant_t *p = &s_plant;
     printf("STAT t=%lu src=%.1f dst=%.1f flow=%.1f | pump cmd=%u act=%u valve cmd=%u act=%u | "
            "failsafe=%u armed=%u cmd_age=%ld | faults: valve_stuck=%u pump_dead=%u leak=%.0f | "
-           "rx_ok=%lu crc_err=%lu len_err=%lu range_err=%lu junk=%lu seq_gaps=%lu%s\n",
+           "rx_ok=%lu crc_err=%lu len_err=%lu range_err=%lu junk=%lu seq_gaps=%lu "
+           "tx_noise_ppm=%lu tx_corrupted=%lu%s\n",
            (unsigned long)now, (double)p->src_ml, (double)p->dst_ml, (double)p->flow_ml_s,
            p->pump_cmd, p->pump_running, p->valve_cmd, p->valve_open, p->failsafe, p->armed,
            p->have_cmd ? (long)(now - p->last_cmd_ms) : -1L, p->fault_valve_stuck,
            p->fault_pump_dead, (double)p->leak_ml_s, (unsigned long)s_dec.stats.frames_ok,
            (unsigned long)s_dec.stats.crc_errors, (unsigned long)s_dec.stats.len_errors,
            (unsigned long)s_dec.stats.range_errors, (unsigned long)s_dec.stats.junk_bytes,
-           (unsigned long)s_cmd_seq_gaps, s_muted ? " LINK_MUTED" : "");
+           (unsigned long)s_cmd_seq_gaps, (unsigned long)link_noise_ppm(),
+           (unsigned long)link_corrupted_bytes(), s_muted ? " LINK_MUTED" : "");
 }
 
 static bool parse_flag(const char *s, bool *out)
@@ -114,6 +116,18 @@ static void handle_line(char *line, uint32_t now)
                (unsigned long)now, ms);
     } else if (strcmp(cmd, "status") == 0) {
         print_status(now);
+    } else if (strcmp(cmd, "noise") == 0) {
+        long ppm = a1 ? strtol(a1, NULL, 10) : 0;
+        link_set_noise_ppm((uint32_t)(ppm > 0 ? ppm : 0));
+        printf("EVT t=%lu TEST: TELEM TX bit-flip noise %lu ppm per byte\n", (unsigned long)now,
+               (unsigned long)link_noise_ppm());
+    } else if (strcmp(cmd, "hang") == 0) {
+        printf("EVT t=%lu TEST: plant task hangs now (watchdog must reset the board)\n",
+               (unsigned long)now);
+        fflush(stdout);
+        for (;;) {
+            /* deliberately stuck: no WDT feed, no yield */
+        }
     } else if (strcmp(cmd, "reboot") == 0) {
         printf("EVT t=%lu rebooting on operator request\n", (unsigned long)now);
         fflush(stdout);
@@ -121,7 +135,7 @@ static void handle_line(char *line, uint32_t now)
         esp_restart();
     } else if (strcmp(cmd, "help") == 0) {
         printf("commands: set src|dst <mL> | fault valve_stuck|pump_dead <0|1> | fault leak <mL/s> | "
-               "fault clear | mute <ms> | status | reboot\n");
+               "fault clear | mute <ms> | noise <ppm> | hang | status | reboot\n");
     } else {
         printf("ERR unknown command '%s' (try 'help')\n", cmd);
     }
@@ -135,8 +149,10 @@ static void plant_task(void *arg)
     proto_msg_t msg;
     uint32_t last_step = bench_now_ms(), last_stat = 0;
     TickType_t wake = xTaskGetTickCount();
+    bench_wdt_subscribe();
 
     for (;;) {
+        bench_wdt_feed();
         const uint32_t now = bench_now_ms();
 
         int n;
@@ -220,9 +236,9 @@ void app_main(void)
     proto_decoder_init(&s_dec);
     plant_init(&s_plant, INIT_SRC_ML, INIT_DST_ML, bench_now_ms());
     const bool oled = oled_init();
-    printf("EVT t=%lu BOOT plant simulator (ESP32-C3) reset_reason=%d: src=%.0f dst=%.0f mL, "
+    printf("EVT t=%lu BOOT plant simulator (ESP32-C3) reset_reason=%s: src=%.0f dst=%.0f mL, "
            "pump OFF, valve CLOSED, NOT_ARMED until a safe CMD. OLED %s.\n",
-           (unsigned long)bench_now_ms(), (int)esp_reset_reason(), (double)INIT_SRC_ML,
+           (unsigned long)bench_now_ms(), bench_reset_reason_str(), (double)INIT_SRC_ML,
            (double)INIT_DST_ML, oled ? "ok" : "NOT FOUND (running without display)");
     xTaskCreate(plant_task, "plant", 4096, NULL, 5, NULL);
 }

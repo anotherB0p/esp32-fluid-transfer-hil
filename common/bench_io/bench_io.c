@@ -9,6 +9,9 @@
 #include "driver/usb_serial_jtag.h"
 #include "driver/usb_serial_jtag_vfs.h"
 #include "esp_err.h"
+#include "esp_random.h"
+#include "esp_system.h"
+#include "esp_task_wdt.h"
 #include "esp_timer.h"
 
 #define LINK_UART UART_NUM_1
@@ -41,10 +44,68 @@ int link_read(uint8_t *buf, size_t max)
     return n < 0 ? 0 : n;
 }
 
+static uint32_t s_noise_ppm;
+static uint32_t s_corrupted;
+
+void link_set_noise_ppm(uint32_t ppm)
+{
+    s_noise_ppm = ppm > 1000000u ? 1000000u : ppm;
+}
+
+uint32_t link_noise_ppm(void)
+{
+    return s_noise_ppm;
+}
+
+uint32_t link_corrupted_bytes(void)
+{
+    return s_corrupted;
+}
+
 void link_write(const uint8_t *buf, size_t len)
 {
     /* TX ring buffer is 512 bytes; a frame is <= 30 bytes every 100 ms, so this never blocks. */
-    uart_write_bytes(LINK_UART, buf, len);
+    if (s_noise_ppm == 0u || len > 64u) {
+        uart_write_bytes(LINK_UART, buf, len);
+        return;
+    }
+    uint8_t tmp[64];
+    memcpy(tmp, buf, len);
+    for (size_t i = 0; i < len; i++) {
+        if (esp_random() % 1000000u < s_noise_ppm) {
+            tmp[i] ^= (uint8_t)(1u << (esp_random() % 8u));
+            s_corrupted++;
+        }
+    }
+    uart_write_bytes(LINK_UART, tmp, len);
+}
+
+const char *bench_reset_reason_str(void)
+{
+    switch (esp_reset_reason()) {
+    case ESP_RST_POWERON: return "POWERON";
+    case ESP_RST_EXT: return "EXTERNAL";
+    case ESP_RST_SW: return "SOFTWARE";
+    case ESP_RST_PANIC: return "PANIC";
+    case ESP_RST_INT_WDT: return "INT_WDT";
+    case ESP_RST_TASK_WDT: return "TASK_WDT";
+    case ESP_RST_WDT: return "OTHER_WDT";
+    case ESP_RST_BROWNOUT: return "BROWNOUT";
+    case ESP_RST_USB: return "USB";
+    case ESP_RST_JTAG: return "JTAG";
+    case ESP_RST_DEEPSLEEP: return "DEEPSLEEP";
+    default: return "UNKNOWN";
+    }
+}
+
+void bench_wdt_subscribe(void)
+{
+    ESP_ERROR_CHECK(esp_task_wdt_add(NULL));
+}
+
+void bench_wdt_feed(void)
+{
+    esp_task_wdt_reset();
 }
 
 void console_init(void)

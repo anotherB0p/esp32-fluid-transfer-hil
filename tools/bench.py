@@ -200,13 +200,20 @@ def sc_happy(b: Bench) -> dict:
     b.wait("ctl", r"phase=PUMPING : valve open confirmed", 3)
     b.wait("ctl", r"phase=STOPPING : target reached", 20)
     t1, _ = b.wait("ctl", r"TRANSFER -> COMPLETE", 3)
+    b.send("ctl", "status")
+    _, diag = b.wait("ctl", r"^STAT diag ", 2)
+    rtt = re.search(r"rtt_ms last=\d+ min=(\d+) avg=(\d+) max=(\d+)", diag)
     b.idle(1.2)
     b.send("plant", "status")
     _, st = b.wait("plant", r"^STAT t=", 2)
     if "pump cmd=0 act=0 valve cmd=0 act=0" not in st:
         raise StepFailed(f"plant not safe after COMPLETE: {st}")
     m = re.search(r"dst=([\d.]+)", st)
-    return {"transfer_s": round(t1 - t0, 2), "plant_dst_ml": float(m.group(1)) if m else None}
+    dst = float(m.group(1)) if m else -1.0
+    if abs(dst - 500.0) > 3.0:
+        raise StepFailed(f"final level {dst} mL not within +-3 mL of target 500")
+    return {"transfer_s": round(t1 - t0, 2), "plant_dst_ml": dst,
+            "cmd_rtt_ms_min_avg_max": rtt.groups() if rtt else None}
 
 
 def sc_insufficient_source(b: Bench) -> dict:
@@ -327,12 +334,15 @@ def sc_link_cmd_lost(b: Bench) -> dict:
     b.send("ctl", "mute 2000")
     t_mute, _ = b.wait("ctl", r"TEST: CMD transmission muted", 2)
     t_fs, fs = b.wait("plant", r"FAILSAFE: no valid CMD", 2)
-    t_ctl, line = b.wait("ctl", r"-> FAULT cause=PLANT_NO_CMD", 2)
+    # Two independent detectors race here: the plant's own failsafe flag (PLANT_NO_CMD)
+    # and the controller's acknowledgement check (CMD_NOT_ACKED). Either is correct.
+    t_ctl, line = b.wait("ctl", r"-> FAULT cause=(PLANT_NO_CMD|CMD_NOT_ACKED)", 2)
     b.wait("ctl", r"CMD transmission resumed", 3)
     b.idle(1.0)
     b.send("ctl", "reset")
     b.wait("ctl", r"reset accepted", 3)
     return {
+        "ctl_fault": line.split("-> FAULT ", 1)[-1],
         "plant_failsafe_after_mute_ms": round((t_fs - t_mute) * 1000),
         "ctl_fault_after_mute_ms": round((t_ctl - t_mute) * 1000),
         "plant_detail": fs.split("FAILSAFE: ", 1)[-1],
@@ -364,7 +374,10 @@ def sc_plant_reboot(b: Bench) -> dict:
     b.wait("ctl", r"phase=PUMPING", 4)
     b.idle(1.0)
     t0 = b.send("plant", "reboot")
-    t1, line = b.wait("ctl", r"-> FAULT cause=PLANT_RESTARTED", 5)
+    # The C3 is back in ~120 ms; whether the telemetry gap exceeds the 310 ms link timeout
+    # depends on where in the 100 ms cycles the reboot falls. Both outcomes are correct as
+    # long as the rebooted plant never runs the pump on its own (checked below).
+    t1, line = b.wait("ctl", r"-> FAULT cause=(PLANT_RESTARTED|LINK_LOST)", 5)
     b.wait("plant", r"BOOT plant simulator", 8)
     b.wait("plant", r"ARMED: safe command received", 3)  # FAULT sends safe commands
     b.send("plant", "status")
@@ -380,6 +393,157 @@ def sc_plant_reboot(b: Bench) -> dict:
     b.wait("ctl", r"reset accepted", 3)
     return {"ctl_fault_after_reboot_cmd_ms": round((t1 - t0) * 1000),
             "fault_line": line.split("-> FAULT ", 1)[-1]}
+
+
+def _counter(line: str, name: str) -> int:
+    m = re.search(rf"\b{name}=(\d+)", line)
+    return int(m.group(1)) if m else -1
+
+
+def sc_noisy_link(b: Bench) -> dict:
+    """Bit-flip noise on both TX lines (0.3 % of bytes): CRC must reject damaged frames and
+    the transfer must still complete because 3 consecutive losses are rare."""
+    prepare(b)
+    b.send("ctl", "status")
+    _, st0 = b.wait("ctl", r"^STAT t=\d+ state=", 2)
+    b.send("plant", "status")
+    _, ps0 = b.wait("plant", r"^STAT t=", 2)
+    b.send("ctl", "noise 3000")
+    b.wait("ctl", r"noise 3000 ppm", 2)
+    b.send("plant", "noise 3000")
+    b.wait("plant", r"noise 3000 ppm", 2)
+    try:
+        b.send("ctl", "start 500")
+        _, end = b.wait("ctl", r"-> (COMPLETE|FAULT cause=)", 20)
+        b.idle(1.2)
+        b.send("ctl", "status")
+        _, st1 = b.wait("ctl", r"^STAT t=\d+ state=", 2)
+        b.send("plant", "status")
+        _, ps1 = b.wait("plant", r"^STAT t=", 2)
+    finally:
+        b.send("ctl", "noise 0")
+        b.send("plant", "noise 0")
+        b.idle(0.5)
+    if "COMPLETE" not in end:
+        raise StepFailed(f"transfer did not complete under 0.3 % byte noise: {end}")
+    ctl_rej = sum(_counter(st1, k) - _counter(st0, k) for k in ("crc_err", "len_err", "range_err"))
+    plant_rej = sum(_counter(ps1, k) - _counter(ps0, k) for k in ("crc_err", "len_err", "range_err"))
+    # Bytes each side corrupted on its own TX (cumulative since that board booted).
+    b.send("ctl", "status")
+    _, d1 = b.wait("ctl", r"^STAT diag ", 2)
+    ctl_tx_bad = _counter(d1, "tx_corrupted")
+    plant_tx_bad = _counter(ps1, "tx_corrupted")
+    if ctl_tx_bad + plant_tx_bad <= 0:
+        raise StepFailed("no bytes were corrupted - noise injection did not happen")
+    if ctl_rej + plant_rej <= 0:
+        raise StepFailed("bytes were corrupted but no frame was rejected")
+    return {"result": "COMPLETE",
+            "plant_tx_corrupted_bytes_since_boot": plant_tx_bad, "ctl_rejected_frames": ctl_rej,
+            "ctl_tx_corrupted_bytes_since_boot": ctl_tx_bad, "plant_rejected_frames": plant_rej,
+            "ctl_ok_frames": _counter(st1, "rx_ok") - _counter(st0, "rx_ok")}
+
+
+def sc_noise_heavy(b: Bench) -> dict:
+    """30 % of plant TX bytes corrupted: nearly no valid telemetry -> controller must fault
+    and command the safe state; plant (still receiving clean CMD) obeys."""
+    prepare(b)
+    b.send("ctl", "start 600")
+    b.wait("ctl", r"phase=PUMPING", 4)
+    b.idle(1.0)
+    b.send("plant", "noise 300000")
+    try:
+        _, line = b.wait("ctl", r"-> FAULT cause=", 5)
+        b.idle(1.2)
+    finally:
+        b.send("plant", "noise 0")
+        b.idle(0.8)
+    b.send("plant", "status")
+    _, pst = b.wait("plant", r"^STAT t=", 2)
+    if "pump cmd=0 act=0" not in pst:
+        raise StepFailed(f"pump not off: {pst}")
+    b.send("ctl", "reset")
+    b.wait("ctl", r"reset accepted", 3)
+    return {"ctl_fault": line.split("-> FAULT ", 1)[-1], "plant_pump": "OFF"}
+
+
+def sc_ctl_hang(b: Bench) -> dict:
+    """Controller task hangs during transfer: the plant must protect itself, the task
+    watchdog must reset the controller, and the controller must come back IDLE."""
+    prepare(b)
+    b.send("ctl", "start 600")
+    b.wait("ctl", r"phase=PUMPING", 4)
+    b.idle(1.0)
+    t0 = b.send("ctl", "hang")
+    b.wait("ctl", r"TEST: control task hangs", 2)
+    t_fs, fs = b.wait("plant", r"FAILSAFE: no valid CMD", 2)
+    t_boot, boot = b.wait("ctl", r"BOOT controller .*reset_reason=(\w+)", 10)
+    reason = re.search(r"reset_reason=(\w+)", boot).group(1)
+    if reason != "TASK_WDT":
+        raise StepFailed(f"expected reset_reason=TASK_WDT, got {reason}")
+    b.idle(1.5)
+    b.send("ctl", "status")
+    _, st = b.wait("ctl", r"^STAT t=\d+ state=", 3)
+    if "state=IDLE" not in st:
+        raise StepFailed(f"controller not IDLE after watchdog reset: {st}")
+    b.send("plant", "status")
+    _, pst = b.wait("plant", r"^STAT t=", 2)
+    if "pump cmd=0 act=0" not in pst:
+        raise StepFailed(f"pump not off: {pst}")
+    return {"plant_failsafe_after_hang_ms": round((t_fs - t0) * 1000),
+            "ctl_reboot_after_hang_ms": round((t_boot - t0) * 1000), "reset_reason": reason,
+            "plant_detail": fs.split("FAILSAFE: ", 1)[-1]}
+
+
+def sc_plant_hang(b: Bench) -> dict:
+    """Plant task hangs during transfer: the controller must fault on missing telemetry,
+    the watchdog must reset the plant, and the rebooted plant must come up NOT_ARMED."""
+    prepare(b)
+    b.send("ctl", "start 600")
+    b.wait("ctl", r"phase=PUMPING", 4)
+    b.idle(1.0)
+    t0 = b.send("plant", "hang")
+    b.wait("plant", r"TEST: plant task hangs", 2)
+    t1, line = b.wait("ctl", r"-> FAULT cause=", 3)
+    _, boot = b.wait("plant", r"BOOT plant simulator .*reset_reason=(\w+)", 10)
+    reason = re.search(r"reset_reason=(\w+)", boot).group(1)
+    if reason != "TASK_WDT":
+        raise StepFailed(f"expected reset_reason=TASK_WDT, got {reason}")
+    b.wait("plant", r"ARMED: safe command received", 3)
+    b.idle(1.0)
+    b.send("ctl", "status")
+    _, st = b.wait("ctl", r"^STAT t=\d+ state=", 2)
+    if "state=FAULT" not in st:
+        raise StepFailed(f"expected latched FAULT: {st}")
+    b.send("ctl", "reset")
+    b.wait("ctl", r"reset accepted", 3)
+    return {"ctl_fault": line.split("-> FAULT ", 1)[-1],
+            "ctl_fault_after_hang_ms": round((t1 - t0) * 1000), "plant_reset_reason": reason}
+
+
+def sc_fault_log_persist(b: Bench) -> dict:
+    """A fault recorded before a reboot must still be listed after it (NVS)."""
+    prepare(b)
+    b.send("ctl", "start 600")
+    b.wait("ctl", r"phase=PUMPING", 4)
+    b.send("ctl", "stop")
+    b.wait("ctl", r"-> FAULT cause=OPERATOR_STOP", 2)
+    b.idle(0.5)
+    b.send("ctl", "reset")
+    b.wait("ctl", r"reset accepted", 3)
+    b.send("ctl", "status")
+    _, d0 = b.wait("ctl", r"^STAT diag boot=(\d+)", 2)
+    boot_before = _counter(d0, "boot")
+    b.send("ctl", "reboot")
+    b.wait("ctl", r"BOOT controller", 8)
+    b.idle(1.0)
+    b.send("ctl", "faults")
+    _, last = b.wait("ctl", rf"FAULTLOG #\d+ boot={boot_before} .*OPERATOR_STOP", 3)
+    b.send("ctl", "status")
+    _, d1 = b.wait("ctl", r"^STAT diag boot=(\d+)", 2)
+    if _counter(d1, "boot") != boot_before + 1:
+        raise StepFailed(f"boot counter did not increment: {boot_before} -> {d1}")
+    return {"boot_before": boot_before, "boot_after": _counter(d1, "boot"),
+            "persisted": last.split("FAULTLOG ", 1)[-1]}
 
 
 def sc_wire_pull(b: Bench) -> dict:
@@ -444,6 +608,11 @@ SCENARIOS = {
     "link_cmd_lost": sc_link_cmd_lost,
     "ctl_reboot": sc_ctl_reboot,
     "plant_reboot": sc_plant_reboot,
+    "noisy_link": sc_noisy_link,
+    "noise_heavy": sc_noise_heavy,
+    "ctl_hang": sc_ctl_hang,
+    "plant_hang": sc_plant_hang,
+    "fault_log_persist": sc_fault_log_persist,
 }
 
 

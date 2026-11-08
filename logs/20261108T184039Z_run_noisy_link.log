@@ -1,0 +1,96 @@
+[    0.009] bench ports: {'ctl': 'COM7', 'plant': 'COM8'}
+[    0.366] plant STAT t=44005 src=400.7 dst=499.3 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=20 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=435 crc_err=1 len_err=1 range_err=0 junk=11 seq_gaps=4 tx_noise_ppm=0 tx_corrupted=13
+[    0.495] ctl   STAT t=41004 state=COMPLETE phase=- fault=NONE target=500 | src=401 dst=499 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=50 rx_ok=397 crc_err=11 len_err=1 range_err=0 junk=30 seq_gaps=12
+[    0.557] ctl   STAT diag boot=8 cmd_ack=OK rtt_ms last=50 min=45 avg=50 max=90 n=394 tx_noise_ppm=0 tx_corrupted=3
+[    0.562] bench ===== scenario noisy_link =====
+[    0.562] bench --> plant: fault clear
+[    0.578] plant > fault clear
+[    0.578] plant EVT t=44255 SIM: all injected faults cleared
+[    0.578] bench --> plant: set src 800
+[    0.632] plant > set src 800
+[    0.633] plant EVT t=44265 SIM: source level set to 800 mL
+[    0.633] bench --> plant: set dst 100
+[    0.685] plant > set dst 100
+[    0.685] plant EVT t=44325 SIM: destination level set to 100 mL
+[    1.305] bench --> ctl: status
+[    1.315] ctl   > status
+[    1.315] ctl   STAT t=41824 state=COMPLETE phase=- fault=NONE target=500 | src=800 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=70 rx_ok=405 crc_err=11 len_err=1 range_err=0 junk=30 seq_gaps=12
+[    1.315] bench --> ctl: reset
+[    1.366] plant STAT t=45005 src=800.0 dst=100.0 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=20 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=445 crc_err=1 len_err=1 range_err=0 junk=11 seq_gaps=4 tx_noise_ppm=0 tx_corrupted=13
+[    1.366] ctl   STAT diag boot=8 cmd_ack=OK rtt_ms last=50 min=45 avg=50 max=90 n=402 tx_noise_ppm=0 tx_corrupted=3
+[    1.366] ctl   > reset
+[    1.366] ctl   EVT t=41829 COMPLETE -> IDLE : reset accepted
+[    1.367] bench --> ctl: status
+[    1.375] ctl   > status
+[    1.375] ctl   STAT t=41884 state=IDLE phase=- fault=NONE target=500 | src=800 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=30 rx_ok=406 crc_err=11 len_err=1 range_err=0 junk=30 seq_gaps=12
+[    1.375] bench --> ctl: status
+[    1.378] ctl   STAT diag boot=8 cmd_ack=OK rtt_ms last=50 min=45 avg=50 max=90 n=403 tx_noise_ppm=0 tx_corrupted=3
+[    1.378] ctl   > status
+[    1.432] ctl   STAT t=41884 state=IDLE phase=- fault=NONE target=500 | src=800 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=30 rx_ok=406 crc_err=11 len_err=1 range_err=0 junk=30 seq_gaps=12
+[    1.432] ctl   STAT diag boot=8 cmd_ack=OK rtt_ms last=50 min=45 avg=50 max=90 n=403 tx_noise_ppm=0 tx_corrupted=3
+[    1.433] bench --> plant: status
+[    1.444] plant > status
+[    1.495] ctl   STAT t=42004 state=IDLE phase=- fault=NONE target=500 | src=800 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=50 rx_ok=407 crc_err=11 len_err=1 range_err=0 junk=30 seq_gaps=12
+[    1.502] plant STAT t=45125 src=800.0 dst=100.0 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=40 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=446 crc_err=1 len_err=1 range_err=0 junk=11 seq_gaps=4 tx_noise_ppm=0 tx_corrupted=13
+[    1.503] bench --> ctl: noise 3000
+[    1.554] ctl   STAT diag boot=8 cmd_ack=OK rtt_ms last=50 min=45 avg=50 max=90 n=404 tx_noise_ppm=0 tx_corrupted=3
+[    1.554] ctl   > noise 3000
+[    1.554] ctl   EVT t=42024 TEST: CMD TX bit-flip noise 3000 ppm per byte
+[    1.554] bench --> plant: noise 3000
+[    1.608] plant > noise 3000
+[    1.608] plant EVT t=45245 TEST: TELEM TX bit-flip noise 3000 ppm per byte
+[    1.609] bench --> ctl: start 500
+[    1.671] ctl   > start 500
+[    1.671] ctl   EVT t=42125 IDLE -> CHECK : start requested
+[    1.671] ctl   EVT t=42125 CHECK -> TRANSFER phase=OPEN_VALVE : CHECK ok: src 800 dst 100 target 500 mL
+[    1.959] ctl   EVT t=42454 TRANSFER phase=PUMPING : valve open confirmed after 330 ms
+[    2.357] plant STAT t=46005 src=792.7 dst=107.3 flow=32.8 | pump cmd=1 act=1 valve cmd=1 act=1 | failsafe=0 armed=1 cmd_age=20 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=455 crc_err=1 len_err=1 range_err=0 junk=11 seq_gaps=4 tx_noise_ppm=3000 tx_corrupted=14
+[    2.495] ctl   STAT t=43004 state=TRANSFER phase=PUMPING fault=NONE target=500 | src=785 dst=115 flow=42 valve cmd=1 act=1 pump cmd=1 act=1 plant_failsafe=0 | link=OK age=50 rx_ok=416 crc_err=12 len_err=1 range_err=0 junk=30 seq_gaps=13
+[    2.554] ctl   STAT diag boot=8 cmd_ack=OK rtt_ms last=50 min=45 avg=50 max=90 n=413 tx_noise_ppm=3000 tx_corrupted=3
+[    3.333] plant STAT t=47005 src=746.6 dst=153.4 flow=49.5 | pump cmd=1 act=1 valve cmd=1 act=1 | failsafe=0 armed=1 cmd_age=20 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=464 crc_err=2 len_err=1 range_err=0 junk=11 seq_gaps=5 tx_noise_ppm=3000 tx_corrupted=15
+[    3.495] ctl   STAT t=44004 state=TRANSFER phase=PUMPING fault=NONE target=500 | src=737 dst=163 flow=50 valve cmd=1 act=1 pump cmd=1 act=1 plant_failsafe=0 | link=OK age=50 rx_ok=425 crc_err=13 len_err=1 range_err=0 junk=30 seq_gaps=14
+[    3.553] ctl   STAT diag boot=8 cmd_ack=OK rtt_ms last=50 min=45 avg=50 max=90 n=421 tx_noise_ppm=3000 tx_corrupted=4
+[    4.339] plant STAT t=48005 src=696.7 dst=203.3 flow=50.0 | pump cmd=1 act=1 valve cmd=1 act=1 | failsafe=0 armed=1 cmd_age=20 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=474 crc_err=2 len_err=1 range_err=0 junk=11 seq_gaps=5 tx_noise_ppm=3000 tx_corrupted=15
+[    4.495] ctl   STAT t=45004 state=TRANSFER phase=PUMPING fault=NONE target=500 | src=687 dst=213 flow=50 valve cmd=1 act=1 pump cmd=1 act=1 plant_failsafe=0 | link=OK age=50 rx_ok=435 crc_err=13 len_err=1 range_err=0 junk=30 seq_gaps=14
+[    4.546] ctl   STAT diag boot=8 cmd_ack=OK rtt_ms last=50 min=45 avg=50 max=90 n=431 tx_noise_ppm=3000 tx_corrupted=4
+[    5.357] plant STAT t=49005 src=646.7 dst=253.3 flow=50.0 | pump cmd=1 act=1 valve cmd=1 act=1 | failsafe=0 armed=1 cmd_age=20 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=483 crc_err=2 len_err=2 range_err=0 junk=17 seq_gaps=6 tx_noise_ppm=3000 tx_corrupted=15
+[    5.495] ctl   STAT t=46004 state=TRANSFER phase=PUMPING fault=NONE target=500 | src=637 dst=263 flow=50 valve cmd=1 act=1 pump cmd=1 act=1 plant_failsafe=0 | link=OK age=50 rx_ok=445 crc_err=13 len_err=1 range_err=0 junk=30 seq_gaps=14
+[    5.554] ctl   STAT diag boot=8 cmd_ack=OK rtt_ms last=50 min=45 avg=50 max=90 n=440 tx_noise_ppm=3000 tx_corrupted=5
+[    6.329] plant STAT t=50005 src=596.7 dst=303.3 flow=50.0 | pump cmd=1 act=1 valve cmd=1 act=1 | failsafe=0 armed=1 cmd_age=20 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=493 crc_err=2 len_err=2 range_err=0 junk=17 seq_gaps=6 tx_noise_ppm=3000 tx_corrupted=15
+[    6.495] ctl   STAT t=47004 state=TRANSFER phase=PUMPING fault=NONE target=500 | src=587 dst=313 flow=50 valve cmd=1 act=1 pump cmd=1 act=1 plant_failsafe=0 | link=OK age=50 rx_ok=455 crc_err=13 len_err=1 range_err=0 junk=30 seq_gaps=14
+[    6.547] ctl   STAT diag boot=8 cmd_ack=OK rtt_ms last=50 min=45 avg=50 max=90 n=450 tx_noise_ppm=3000 tx_corrupted=5
+[    7.372] plant STAT t=51005 src=546.7 dst=353.3 flow=50.0 | pump cmd=1 act=1 valve cmd=1 act=1 | failsafe=0 armed=1 cmd_age=20 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=503 crc_err=2 len_err=2 range_err=0 junk=17 seq_gaps=6 tx_noise_ppm=3000 tx_corrupted=15
+[    7.495] ctl   STAT t=48004 state=TRANSFER phase=PUMPING fault=NONE target=500 | src=537 dst=363 flow=50 valve cmd=1 act=1 pump cmd=1 act=1 plant_failsafe=0 | link=OK age=50 rx_ok=465 crc_err=13 len_err=1 range_err=0 junk=30 seq_gaps=14
+[    7.551] ctl   STAT diag boot=8 cmd_ack=OK rtt_ms last=50 min=45 avg=50 max=90 n=460 tx_noise_ppm=3000 tx_corrupted=5
+[    8.362] plant STAT t=52005 src=496.7 dst=403.3 flow=50.0 | pump cmd=1 act=1 valve cmd=1 act=1 | failsafe=0 armed=1 cmd_age=20 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=513 crc_err=2 len_err=2 range_err=0 junk=17 seq_gaps=6 tx_noise_ppm=3000 tx_corrupted=15
+[    8.495] ctl   STAT t=49004 state=TRANSFER phase=PUMPING fault=NONE target=500 | src=487 dst=413 flow=50 valve cmd=1 act=1 pump cmd=1 act=1 plant_failsafe=0 | link=OK age=50 rx_ok=475 crc_err=13 len_err=1 range_err=0 junk=30 seq_gaps=14
+[    8.550] ctl   STAT diag boot=8 cmd_ack=OK rtt_ms last=50 min=45 avg=50 max=90 n=470 tx_noise_ppm=3000 tx_corrupted=5
+[    9.372] plant STAT t=53005 src=446.7 dst=453.3 flow=50.0 | pump cmd=1 act=1 valve cmd=1 act=1 | failsafe=0 armed=1 cmd_age=20 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=523 crc_err=2 len_err=2 range_err=0 junk=17 seq_gaps=6 tx_noise_ppm=3000 tx_corrupted=15
+[    9.495] ctl   STAT t=50004 state=TRANSFER phase=PUMPING fault=NONE target=500 | src=437 dst=463 flow=50 valve cmd=1 act=1 pump cmd=1 act=1 plant_failsafe=0 | link=OK age=50 rx_ok=485 crc_err=13 len_err=1 range_err=0 junk=30 seq_gaps=14
+[    9.548] ctl   STAT diag boot=8 cmd_ack=OK rtt_ms last=50 min=45 avg=50 max=90 n=480 tx_noise_ppm=3000 tx_corrupted=5
+[   10.044] ctl   EVT t=50555 TRANSFER phase=STOPPING : target reached: dst 493 + flow 50 x 180 ms >= 500 mL
+[   10.359] plant STAT t=54005 src=400.7 dst=499.3 flow=24.5 | pump cmd=0 act=0 valve cmd=0 act=1 | failsafe=0 armed=1 cmd_age=20 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=533 crc_err=2 len_err=2 range_err=0 junk=17 seq_gaps=6 tx_noise_ppm=3000 tx_corrupted=15
+[   10.359] ctl   EVT t=50854 TRANSFER -> COMPLETE : stopped: dst 499 mL, src 401 mL
+[   10.495] ctl   STAT t=51004 state=COMPLETE phase=- fault=NONE target=500 | src=401 dst=499 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=50 rx_ok=495 crc_err=13 len_err=1 range_err=0 junk=30 seq_gaps=14
+[   10.553] ctl   STAT diag boot=8 cmd_ack=OK rtt_ms last=50 min=45 avg=50 max=90 n=490 tx_noise_ppm=3000 tx_corrupted=5
+[   11.358] plant STAT t=55005 src=400.7 dst=499.3 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=20 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=543 crc_err=2 len_err=2 range_err=0 junk=17 seq_gaps=6 tx_noise_ppm=3000 tx_corrupted=15
+[   11.556] ctl   STAT t=52004 state=COMPLETE phase=- fault=NONE target=500 | src=401 dst=499 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=50 rx_ok=505 crc_err=13 len_err=1 range_err=0 junk=30 seq_gaps=14
+[   11.556] ctl   STAT diag boot=8 cmd_ack=OK rtt_ms last=50 min=45 avg=50 max=90 n=500 tx_noise_ppm=3000 tx_corrupted=5
+[   11.608] bench --> ctl: status
+[   11.615] ctl   > status
+[   11.615] ctl   STAT t=52124 state=COMPLETE phase=- fault=NONE target=500 | src=401 dst=499 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=70 rx_ok=506 crc_err=13 len_err=1 range_err=0 junk=30 seq_gaps=14
+[   11.615] bench --> plant: status
+[   11.623] plant > status
+[   11.665] ctl   STAT diag boot=8 cmd_ack=OK rtt_ms last=50 min=45 avg=50 max=90 n=501 tx_noise_ppm=3000 tx_corrupted=5
+[   11.674] plant STAT t=55305 src=400.7 dst=499.3 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=20 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=546 crc_err=2 len_err=2 range_err=0 junk=17 seq_gaps=6 tx_noise_ppm=3000 tx_corrupted=15
+[   11.675] bench --> ctl: noise 0
+[   11.675] bench --> plant: noise 0
+[   11.723] ctl   > noise 0
+[   11.723] ctl   EVT t=52194 TEST: CMD TX bit-flip noise 0 ppm per byte
+[   11.739] plant > noise 0
+[   11.739] plant EVT t=55365 TEST: TELEM TX bit-flip noise 0 ppm per byte
+[   12.194] bench --> ctl: status
+[   12.205] ctl   > status
+[   12.205] ctl   STAT t=52714 state=COMPLETE phase=- fault=NONE target=500 | src=401 dst=499 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=60 rx_ok=512 crc_err=13 len_err=1 range_err=0 junk=30 seq_gaps=14
+[   12.257] ctl   STAT diag boot=8 cmd_ack=OK rtt_ms last=50 min=45 avg=50 max=90 n=507 tx_noise_ppm=0 tx_corrupted=5
+[   12.257] bench ===== noisy_link: PASS {'result': 'COMPLETE', 'plant_tx_corrupted_bytes': 15, 'ctl_rejected_frames': 2, 'ctl_tx_corrupted_bytes': 5, 'plant_rejected_frames': 2, 'ctl_ok_frames': 100}

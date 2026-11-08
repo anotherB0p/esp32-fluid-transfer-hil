@@ -54,6 +54,7 @@ typedef enum {
     F_OPERATOR_STOP,        /* operator 'stop' during CHECK/TRANSFER */
     F_PLANT_NOT_ARMED,      /* plant recovered from failsafe during transfer (needs re-arming) */
     F_PLANT_RESTARTED,      /* plant reports it rebooted during transfer */
+    F_CMD_NOT_ACKED,        /* telemetry flows but does not acknowledge recent commands */
 } ctl_fault_t;
 
 typedef struct {
@@ -64,7 +65,15 @@ typedef struct {
     uint32_t valve_timeout_ms;  /* valve feedback deadline */
     uint32_t flow_grace_ms;     /* time allowed for flow to build up */
     uint16_t flow_min_ml_s;     /* minimum acceptable flow while pumping */
+    uint32_t stop_lead_ms;      /* stop early: dst + flow * lead >= target (latency + valve travel) */
+    uint32_t cmd_ack_timeout_ms;/* newest acknowledged CMD must have been sent within this */
 } ctl_config_t;
+
+#define CTL_SENT_RING 16u
+
+typedef struct {
+    uint32_t last_ms, min_ms, max_ms, sum_ms, count;
+} ctl_rtt_t;
 
 void ctl_default_config(ctl_config_t *cfg);
 
@@ -90,6 +99,17 @@ typedef struct {
     bool out_pump;
     bool out_valve;
 
+    /* command acknowledgement supervision */
+    struct {
+        uint8_t seq;
+        bool valid;
+        uint32_t sent_ms;
+    } sent[CTL_SENT_RING];
+    uint8_t sent_next;
+    bool have_ack;
+    uint32_t last_acked_sent_ms; /* send time of the newest CMD the plant acknowledged */
+    ctl_rtt_t rtt;
+
     ctl_event_cb_t on_event;
     void *cb_ctx;
 } ctl_t;
@@ -98,6 +118,12 @@ void ctl_init(ctl_t *c, const ctl_config_t *cfg, uint32_t now_ms, ctl_event_cb_t
 
 /* Feed a validated telemetry frame. */
 void ctl_on_telem(ctl_t *c, const proto_telem_t *t, uint32_t now_ms);
+
+/* Record that a CMD with this SEQ was handed to the link at now_ms. */
+void ctl_on_cmd_sent(ctl_t *c, uint8_t seq, uint32_t now_ms);
+
+/* True if a recently sent command has been acknowledged (see cmd_ack_timeout_ms). */
+bool ctl_ack_ok(const ctl_t *c, uint32_t now_ms);
 
 /* Operator commands. Return false and set *why when refused. */
 bool ctl_start(ctl_t *c, uint16_t target_dst_ml, uint32_t now_ms, const char **why);

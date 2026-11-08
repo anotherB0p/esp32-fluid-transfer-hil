@@ -17,6 +17,19 @@ void link_init(int tx_gpio, int rx_gpio, int baud);
 int link_read(uint8_t *buf, size_t max);            /* non-blocking, returns bytes read */
 void link_write(const uint8_t *buf, size_t len);
 
+/* Test hook: flip one random bit in each transmitted byte with probability ppm/1e6.
+ * Used to demonstrate CRC rejection and link supervision on the real wire. */
+void link_set_noise_ppm(uint32_t ppm);
+uint32_t link_noise_ppm(void);
+uint32_t link_corrupted_bytes(void);
+
+/* Human-readable esp_reset_reason(). */
+const char *bench_reset_reason_str(void);
+
+/* Task watchdog: subscribe the calling task (timeout set in sdkconfig, panics -> reset). */
+void bench_wdt_subscribe(void);
+void bench_wdt_feed(void);
+
 void console_init(void);
 /* Non-blocking. Returns true and fills `line` (NUL-terminated, trimmed) when a full line
  * has been typed. Lines longer than `max - 1` are discarded. */

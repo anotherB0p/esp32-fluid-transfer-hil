@@ -181,6 +181,110 @@ static void test_wrong_length_for_type(void)
     CHECK_EQ(d.stats.len_errors, 1);
 }
 
+/* Every 1-bit and every 2-bit error in a TELEM frame must be rejected.
+ * CRC-16/CCITT detects all such errors for frames this short; the test proves the
+ * decoder does not accept them through some other path (e.g. a corrupted LEN). */
+static void test_all_1_and_2_bit_errors_rejected(void)
+{
+    uint8_t good[PROTO_MAX_FRAME];
+    proto_telem_t t = {.src_ml = 512, .dst_ml = 300, .flow_ml_s = 49, .valve_open = 1,
+                       .pump_running = 1, .cmd_seq_ack = 77, .flags = 0};
+    const size_t n = proto_encode_telem(5, &t, good);
+    const size_t bits = n * 8u;
+    long accepted = 0, tried = 0;
+    for (size_t a = 0; a < bits; a++) {
+        for (size_t b = a; b < bits; b++) {
+            uint8_t f[PROTO_MAX_FRAME + 1];
+            memcpy(f, good, n);
+            f[a / 8] ^= (uint8_t)(1u << (a % 8));
+            if (b != a) f[b / 8] ^= (uint8_t)(1u << (b % 8));
+            proto_decoder_t d;
+            proto_decoder_init(&d);
+            accepted += feed_all(&d, f, n, NULL);
+            tried++;
+        }
+    }
+    printf("    %ld corrupted frames (all 1- and 2-bit errors), %ld accepted\n", tried, accepted);
+    CHECK_EQ(accepted, 0);
+}
+
+/* Regression for the bench finding (noisy_link): one flipped bit anywhere in a frame
+ * must cost exactly that frame. Before the fix a corrupted LEN (e.g. 12 -> 28) made the
+ * decoder wait for a long body and swallow the next, intact frame too: three frames lost
+ * from a single bit = LINK_LOST on the real wire at 0.5 % byte noise. */
+static void test_single_bit_error_loses_only_that_frame(void)
+{
+    proto_telem_t t = {.src_ml = 700, .dst_ml = 200, .flow_ml_s = 50, .valve_open = 1,
+                       .pump_running = 1, .cmd_seq_ack = 3};
+    uint8_t one[PROTO_MAX_FRAME];
+    const size_t n = proto_encode_telem(0, &t, one);
+    int worst_lost = 0;
+    for (size_t bit = 0; bit < n * 8u; bit++) {
+        uint8_t stream[4 * PROTO_MAX_FRAME];
+        size_t len = 0;
+        for (uint8_t s = 0; s < 4; s++) {
+            len += proto_encode_telem(s, &t, &stream[len]);
+        }
+        stream[n + bit / 8] ^= (uint8_t)(1u << (bit % 8)); /* corrupt frame #1 only */
+        proto_decoder_t d;
+        proto_decoder_init(&d);
+        int got = feed_all(&d, stream, len, NULL);
+        int lost = 4 - got;
+        if (lost > worst_lost) worst_lost = lost;
+    }
+    printf("    worst case: %d frame(s) lost per single-bit error\n", worst_lost);
+    CHECK_EQ(worst_lost, 1);
+}
+
+/* Simple xorshift PRNG so the fuzz run is reproducible. */
+static uint32_t s_rng = 0x12345678u;
+static uint32_t rnd(void)
+{
+    s_rng ^= s_rng << 13;
+    s_rng ^= s_rng >> 17;
+    s_rng ^= s_rng << 5;
+    return s_rng;
+}
+
+/* 2 MB of random bytes with valid frames mixed in: the decoder must never crash, must
+ * recover every valid frame that is preceded by a clean SOF boundary, and false accepts
+ * from pure noise must be rare (CRC-16 + length + range checks). */
+static void test_decoder_fuzz(void)
+{
+    proto_decoder_t d;
+    proto_decoder_init(&d);
+    long good_sent = 0, good_got = 0, false_accepts = 0;
+    proto_msg_t m;
+    uint8_t f[PROTO_MAX_FRAME];
+    for (int block = 0; block < 20000; block++) {
+        /* ~100 noise bytes */
+        int noise = (int)(rnd() % 200u);
+        for (int i = 0; i < noise; i++) {
+            if (proto_decoder_feed(&d, (uint8_t)rnd(), &m)) false_accepts++;
+        }
+        /* flush any partial frame the noise may have started: a long run of non-SOF bytes
+         * is not enough (a started frame swallows them), so use the known max frame size */
+        for (int i = 0; i < (int)PROTO_MAX_FRAME; i++) {
+            if (proto_decoder_feed(&d, 0x00, &m)) false_accepts++;
+        }
+        proto_cmd_t c = {.pump_on = (uint8_t)(rnd() & 1u), .valve_open = (uint8_t)(rnd() & 1u)};
+        size_t n = proto_encode_cmd((uint8_t)block, &c, f);
+        good_sent++;
+        for (size_t k = 0; k < n; k++) {
+            if (proto_decoder_feed(&d, f[k], &m)) {
+                if (m.type == MSG_CMD && m.seq == (uint8_t)block) good_got++;
+                else false_accepts++;
+            }
+        }
+    }
+    printf("    fuzz: %ld valid frames sent, %ld recovered, %ld false accepts from noise "
+           "(crc_err=%lu len_err=%lu range_err=%lu)\n",
+           good_sent, good_got, false_accepts, (unsigned long)d.stats.crc_errors,
+           (unsigned long)d.stats.len_errors, (unsigned long)d.stats.range_errors);
+    CHECK_EQ(good_got, good_sent);
+    CHECK(false_accepts <= 2);
+}
+
 /* ------------------------------------------------------------------ plant model */
 
 static void step_ms(plant_t *p, uint32_t *now, uint32_t ms, const proto_cmd_t *cmd)
@@ -332,6 +436,8 @@ typedef struct {
     uint8_t cmd_seq, tel_seq;
     bool drop_cmd;   /* controller -> plant wire cut */
     bool drop_telem; /* plant -> controller wire cut */
+    bool ack_frozen; /* plant bug: telemetry keeps reporting an old cmd_seq_ack */
+    uint8_t frozen_ack;
     int events;
     ctl_fault_t last_cause;
 } loop_t;
@@ -367,6 +473,7 @@ static void loop_run(loop_t *l, uint32_t ms)
         l->now++;
         if (l->now % 100 == 0) {
             proto_cmd_t c = {.pump_on = l->ctl.out_pump, .valve_open = l->ctl.out_valve};
+            ctl_on_cmd_sent(&l->ctl, l->cmd_seq, l->now);
             size_t n = proto_encode_cmd(l->cmd_seq++, &c, f);
             for (size_t k = 0; k < n && !l->drop_cmd; k++) {
                 if (proto_decoder_feed(&l->to_plant, f[k], &m) && m.type == MSG_CMD) {
@@ -378,6 +485,9 @@ static void loop_run(loop_t *l, uint32_t ms)
             plant_step(&l->plant, l->now);
             proto_telem_t t;
             plant_fill_telem(&l->plant, &t);
+            if (l->ack_frozen) {
+                t.cmd_seq_ack = l->frozen_ack;
+            }
             size_t n = proto_encode_telem(l->tel_seq++, &t, f);
             for (size_t k = 0; k < n && !l->drop_telem; k++) {
                 if (proto_decoder_feed(&l->to_ctl, f[k], &m) && m.type == MSG_TELEM) {
@@ -414,7 +524,13 @@ static void test_loop_happy_path(void)
     CHECK_EQ(l.ctl.state, CTL_COMPLETE);
     /* 400 mL at 50 mL/s ~ 8 s plus valve travel and ramp */
     CHECK(t > 8000 && t < 11000);
-    CHECK(l.plant.dst_ml >= 500.0f && l.plant.dst_ml < 515.0f);
+    /* with stop anticipation the final level lands within +-3 mL of the target */
+    printf("    happy path: final dst %.1f mL for target 500\n", (double)l.plant.dst_ml);
+    CHECK(l.plant.dst_ml >= 497.0f && l.plant.dst_ml <= 503.0f);
+    /* command round trip: CMD at t%100==0, TELEM at t%100==50 -> 50 ms in this simulation */
+    CHECK(l.ctl.rtt.count > 50);
+    CHECK_EQ(l.ctl.rtt.min_ms, 50);
+    CHECK_EQ(l.ctl.rtt.max_ms, 50);
     CHECK(!l.plant.pump_running);
     CHECK(!l.plant.valve_open);
     CHECK(fabsf(l.plant.src_ml + l.plant.dst_ml - 900.0f) < 0.01f);
@@ -602,6 +718,29 @@ static void test_controller_reboot_does_not_resume(void)
     CHECK(!l.plant.valve_open);
 }
 
+/* Independent detector: telemetry is fresh and the plant claims to be fine, but it no
+ * longer acknowledges our commands (e.g. its command handling is stuck). */
+static void test_loop_ack_frozen(void)
+{
+    loop_t l;
+    loop_init(&l, 800, 100);
+    loop_run(&l, 1000);
+    const char *why;
+    ctl_start(&l.ctl, 600, l.now, &why);
+    loop_run(&l, 2000);
+    CHECK_EQ(l.ctl.phase, PH_PUMPING);
+    l.ack_frozen = true;
+    l.frozen_ack = l.plant.cmd_seq_ack;
+    uint32_t t = loop_until(&l, CTL_FAULT, 2000);
+    CHECK_EQ(l.ctl.fault, F_CMD_NOT_ACKED);
+    CHECK(t >= 300 && t <= 520);
+    loop_run(&l, 500);
+    CHECK(!ctl_reset(&l.ctl, l.now, &why)); /* still not acknowledged */
+    l.ack_frozen = false;
+    loop_run(&l, 500);
+    CHECK(ctl_reset(&l.ctl, l.now, &why));
+}
+
 /* Regression for the bench finding: the C3 reboots in ~120 ms, faster than the 300 ms
  * link timeout, so the controller never saw a link gap and the fresh plant obeyed the
  * still-running RUN command. */
@@ -639,6 +778,9 @@ int main(void)
     RUN(test_bad_length_rejected);
     RUN(test_range_check_after_valid_crc);
     RUN(test_wrong_length_for_type);
+    RUN(test_all_1_and_2_bit_errors_rejected);
+    RUN(test_single_bit_error_loses_only_that_frame);
+    RUN(test_decoder_fuzz);
     RUN(test_plant_ignores_run_cmd_until_armed);
     RUN(test_plant_disarms_after_failsafe);
     RUN(test_plant_boots_in_failsafe);
@@ -658,6 +800,7 @@ int main(void)
     RUN(test_loop_start_without_link);
     RUN(test_controller_reboot_does_not_resume);
     RUN(test_loop_fast_plant_reboot_mid_transfer);
+    RUN(test_loop_ack_frozen);
     printf("\n%d checks, %d failed\n", g_checks, g_failed);
     return g_failed ? 1 : 0;
 }

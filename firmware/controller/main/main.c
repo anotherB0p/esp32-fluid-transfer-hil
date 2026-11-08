@@ -20,6 +20,7 @@
 
 #include "bench_io.h"
 #include "controller_fsm.h"
+#include "fault_log.h"
 #include "proto.h"
 #include "status_led.h"
 
@@ -50,6 +51,7 @@ static void on_event(void *ctx, ctl_state_t from, ctl_state_t to, ctl_fault_t ca
     } else if (to == CTL_FAULT) {
         printf("EVT t=%lu %s -> FAULT cause=%s : %s\n", (unsigned long)now, ctl_state_name(from),
                ctl_fault_name(cause), detail);
+        fault_log_record((uint8_t)cause, ctl_fault_name(cause), detail, now);
     } else {
         printf("EVT t=%lu %s -> %s%s%s : %s\n", (unsigned long)now, ctl_state_name(from),
                ctl_state_name(to), s_ctl.phase != PH_NONE ? " phase=" : "",
@@ -72,6 +74,14 @@ static void print_status(uint32_t now)
            (unsigned long)s_dec.stats.crc_errors, (unsigned long)s_dec.stats.len_errors,
            (unsigned long)s_dec.stats.range_errors, (unsigned long)s_dec.stats.junk_bytes,
            (unsigned long)s_telem_seq_gaps, s_muted ? " CMD_TX_MUTED" : "");
+    const ctl_rtt_t *r = &s_ctl.rtt;
+    printf("STAT diag boot=%lu cmd_ack=%s rtt_ms last=%lu min=%lu avg=%lu max=%lu n=%lu "
+           "tx_noise_ppm=%lu tx_corrupted=%lu\n",
+           (unsigned long)fault_log_boot_count(), ctl_ack_ok(&s_ctl, now) ? "OK" : "STALE",
+           (unsigned long)r->last_ms, (unsigned long)r->min_ms,
+           (unsigned long)(r->count ? r->sum_ms / r->count : 0), (unsigned long)r->max_ms,
+           (unsigned long)r->count, (unsigned long)link_noise_ppm(),
+           (unsigned long)link_corrupted_bytes());
     if (s_ctl.state == CTL_FAULT) {
         printf("STAT fault_detail: %s\n", s_ctl.fault_detail);
     }
@@ -104,13 +114,32 @@ static void handle_line(char *line, uint32_t now)
         s_mute_until_ms = now + (uint32_t)(ms > 0 ? ms : 0);
         s_muted = ms > 0;
         printf("EVT t=%lu TEST: CMD transmission muted for %ld ms\n", (unsigned long)now, ms);
+    } else if (strcmp(cmd, "faults") == 0) {
+        if (arg && strcmp(arg, "clear") == 0) {
+            fault_log_clear();
+        } else {
+            fault_log_print();
+        }
+    } else if (strcmp(cmd, "noise") == 0) {
+        long ppm = arg ? strtol(arg, NULL, 10) : 0;
+        link_set_noise_ppm((uint32_t)(ppm > 0 ? ppm : 0));
+        printf("EVT t=%lu TEST: CMD TX bit-flip noise %lu ppm per byte\n", (unsigned long)now,
+               (unsigned long)link_noise_ppm());
+    } else if (strcmp(cmd, "hang") == 0) {
+        printf("EVT t=%lu TEST: control task hangs now (watchdog must reset the board)\n",
+               (unsigned long)now);
+        fflush(stdout);
+        for (;;) {
+            /* deliberately stuck: no WDT feed, no yield */
+        }
     } else if (strcmp(cmd, "reboot") == 0) {
         printf("EVT t=%lu rebooting on operator request\n", (unsigned long)now);
         fflush(stdout);
         vTaskDelay(pdMS_TO_TICKS(50));
         esp_restart();
     } else if (strcmp(cmd, "help") == 0) {
-        printf("commands: start [target_mL] | stop | reset | status | mute <ms> | reboot\n");
+        printf("commands: start [target_mL] | stop | reset | status | faults [clear] | "
+               "mute <ms> | noise <ppm> | hang | reboot\n");
     } else {
         printf("ERR unknown command '%s' (try 'help')\n", cmd);
     }
@@ -124,8 +153,10 @@ static void control_task(void *arg)
     proto_msg_t msg;
     uint32_t last_cmd = 0, last_stat = 0;
     TickType_t wake = xTaskGetTickCount();
+    bench_wdt_subscribe();
 
     for (;;) {
+        bench_wdt_feed();
         const uint32_t now = bench_now_ms();
 
         int n;
@@ -158,6 +189,7 @@ static void control_task(void *arg)
             if (!s_muted) {
                 uint8_t f[PROTO_MAX_FRAME];
                 const proto_cmd_t c = {.pump_on = s_ctl.out_pump, .valve_open = s_ctl.out_valve};
+                ctl_on_cmd_sent(&s_ctl, s_cmd_seq, now);
                 link_write(f, proto_encode_cmd(s_cmd_seq++, &c, f));
             }
         }
@@ -177,18 +209,22 @@ void app_main(void)
     status_led_init();
     link_init(LINK_TX_GPIO, LINK_RX_GPIO, LINK_BAUD);
     proto_decoder_init(&s_dec);
+    const uint32_t boot = fault_log_init();
 
     ctl_config_t cfg;
     ctl_default_config(&cfg);
     ctl_init(&s_ctl, &cfg, bench_now_ms(), on_event, NULL);
 
-    printf("EVT t=%lu BOOT controller (ESP32-S3) reset_reason=%d state=IDLE. "
+    printf("EVT t=%lu BOOT controller (ESP32-S3) boot#%lu reset_reason=%s state=IDLE. "
            "Nothing resumes after reboot: send 'start' to begin.\n",
-           (unsigned long)bench_now_ms(), (int)esp_reset_reason());
+           (unsigned long)bench_now_ms(), (unsigned long)boot, bench_reset_reason_str());
     printf("config: min_src=%u dst_high=%u link_timeout=%lu valve_timeout=%lu flow_grace=%lu "
-           "flow_min=%u\n",
+           "flow_min=%u stop_lead=%lu cmd_ack_timeout=%lu task_wdt=%ds\n",
            cfg.min_src_ml, cfg.dst_high_ml, (unsigned long)cfg.link_timeout_ms,
-           (unsigned long)cfg.valve_timeout_ms, (unsigned long)cfg.flow_grace_ms, cfg.flow_min_ml_s);
+           (unsigned long)cfg.valve_timeout_ms, (unsigned long)cfg.flow_grace_ms, cfg.flow_min_ml_s,
+           (unsigned long)cfg.stop_lead_ms, (unsigned long)cfg.cmd_ack_timeout_ms,
+           CONFIG_ESP_TASK_WDT_TIMEOUT_S);
+    fault_log_print();
 
     xTaskCreate(control_task, "control", 4096, NULL, 5, NULL);
 }

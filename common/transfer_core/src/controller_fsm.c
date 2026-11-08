@@ -12,6 +12,12 @@ void ctl_default_config(ctl_config_t *cfg)
     cfg->valve_timeout_ms = 1000; /* model travel time is 300 ms */
     cfg->flow_grace_ms = 1500;
     cfg->flow_min_ml_s = 20;      /* nominal is 50 mL/s */
+    /* Measured on the bench without anticipation: 9 mL overshoot at 50 mL/s, i.e. ~180 ms
+     * of telemetry age + CMD period + model step + valve travel with decaying flow. */
+    cfg->stop_lead_ms = 180;
+    /* Backup detector for one-way loss; the plant's own failsafe (300 ms) normally fires
+     * first. 400 ms = 4 CMD periods. */
+    cfg->cmd_ack_timeout_ms = 400;
 }
 
 const char *ctl_state_name(ctl_state_t s)
@@ -54,6 +60,7 @@ const char *ctl_fault_name(ctl_fault_t f)
     case F_OPERATOR_STOP: return "OPERATOR_STOP";
     case F_PLANT_NOT_ARMED: return "PLANT_NOT_ARMED";
     case F_PLANT_RESTARTED: return "PLANT_RESTARTED";
+    case F_CMD_NOT_ACKED: return "CMD_NOT_ACKED";
     }
     return "?";
 }
@@ -119,6 +126,38 @@ void ctl_on_telem(ctl_t *c, const proto_telem_t *t, uint32_t now_ms)
     c->telem = *t;
     c->have_telem = true;
     c->last_telem_ms = now_ms;
+
+    /* Match the acknowledged SEQ against the most recent sends (8-bit SEQ wraps). */
+    for (uint32_t i = 1; i <= CTL_SENT_RING; i++) {
+        const uint32_t idx = (c->sent_next + CTL_SENT_RING - i) % CTL_SENT_RING;
+        if (c->sent[idx].valid && c->sent[idx].seq == t->cmd_seq_ack) {
+            const uint32_t sent = c->sent[idx].sent_ms;
+            if (!c->have_ack || (int32_t)(sent - c->last_acked_sent_ms) > 0) {
+                const uint32_t rtt = now_ms - sent;
+                c->rtt.last_ms = rtt;
+                if (c->rtt.count == 0 || rtt < c->rtt.min_ms) c->rtt.min_ms = rtt;
+                if (rtt > c->rtt.max_ms) c->rtt.max_ms = rtt;
+                c->rtt.sum_ms += rtt;
+                c->rtt.count++;
+                c->last_acked_sent_ms = sent;
+                c->have_ack = true;
+            }
+            break;
+        }
+    }
+}
+
+void ctl_on_cmd_sent(ctl_t *c, uint8_t seq, uint32_t now_ms)
+{
+    c->sent[c->sent_next].seq = seq;
+    c->sent[c->sent_next].sent_ms = now_ms;
+    c->sent[c->sent_next].valid = true;
+    c->sent_next = (uint8_t)((c->sent_next + 1u) % CTL_SENT_RING);
+}
+
+bool ctl_ack_ok(const ctl_t *c, uint32_t now_ms)
+{
+    return c->have_ack && (uint32_t)(now_ms - c->last_acked_sent_ms) <= c->cfg.cmd_ack_timeout_ms;
 }
 
 uint32_t ctl_link_age_ms(const ctl_t *c, uint32_t now_ms)
@@ -169,6 +208,10 @@ bool ctl_reset(ctl_t *c, uint32_t now_ms, const char **why)
         *why = "plant still in failsafe / not armed (not receiving our commands)";
         return false;
     }
+    if (!ctl_ack_ok(c, now_ms)) {
+        *why = "our commands are not acknowledged by the plant";
+        return false;
+    }
     if (c->telem.pump_running) {
         *why = "pump still running";
         return false;
@@ -189,10 +232,13 @@ static void tick_check(ctl_t *c, uint32_t now)
     const proto_telem_t *t = &c->telem;
     const uint32_t in_state = now - c->state_since_ms;
 
-    if (!ctl_link_ok(c, now) || (t->flags & (PLANT_FLAG_FAILSAFE | PLANT_FLAG_NOT_ARMED))) {
+    if (!ctl_link_ok(c, now) || !ctl_ack_ok(c, now) ||
+        (t->flags & (PLANT_FLAG_FAILSAFE | PLANT_FLAG_NOT_ARMED))) {
         if (in_state > c->cfg.check_timeout_ms) {
             if (!ctl_link_ok(c, now)) {
                 fault(c, F_LINK_LOST, now, "CHECK: no fresh telemetry");
+            } else if (!ctl_ack_ok(c, now)) {
+                fault(c, F_CMD_NOT_ACKED, now, "CHECK: commands not acknowledged");
             } else {
                 fault(c, F_PLANT_NO_CMD, now, "CHECK: plant in failsafe / not armed");
             }
@@ -239,6 +285,12 @@ static void tick_transfer(ctl_t *c, uint32_t now)
         fault(c, F_PLANT_NOT_ARMED, now, "plant reports NOT_ARMED (recovered from failsafe)");
         return;
     }
+    if (!ctl_ack_ok(c, now)) {
+        snprintf(d, sizeof(d), "newest acknowledged CMD was sent %lu ms ago",
+                 c->have_ack ? (unsigned long)(now - c->last_acked_sent_ms) : 0ul);
+        fault(c, F_CMD_NOT_ACKED, now, d);
+        return;
+    }
     if (t->dst_ml > c->cfg.dst_high_ml) {
         snprintf(d, sizeof(d), "dst %u > high limit %u mL", t->dst_ml, c->cfg.dst_high_ml);
         fault(c, F_OVERFILL, now, d);
@@ -260,8 +312,10 @@ static void tick_transfer(ctl_t *c, uint32_t now)
     case PH_PUMPING:
         if (!t->valve_open) {
             fault(c, F_VALVE_NOT_OPEN, now, "valve reported CLOSED while pumping");
-        } else if (t->dst_ml >= c->target_dst_ml) {
-            snprintf(d, sizeof(d), "target reached: dst %u >= %u mL", t->dst_ml, c->target_dst_ml);
+        } else if (t->dst_ml + (uint32_t)t->flow_ml_s * c->cfg.stop_lead_ms / 1000u >=
+                   c->target_dst_ml) {
+            snprintf(d, sizeof(d), "target reached: dst %u + flow %u x %lu ms >= %u mL", t->dst_ml,
+                     t->flow_ml_s, (unsigned long)c->cfg.stop_lead_ms, c->target_dst_ml);
             set_phase(c, PH_STOPPING, now, d);
         } else if (t->src_ml <= c->cfg.min_src_ml) {
             snprintf(d, sizeof(d), "src %u <= reserve %u mL", t->src_ml, c->cfg.min_src_ml);

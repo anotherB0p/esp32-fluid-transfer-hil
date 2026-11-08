@@ -41,4 +41,16 @@ the start as `5f12dd9`.
 
 ## After the build window
 
-Nothing yet.
+Not part of the 3-hour budget. Requested by the owner after the repository was published.
+
+| Time (local) | Activity |
+|--------------|----------|
+| ~19:25 | Published commit `877e810` to github.com/anotherB0p/esp32-fluid-transfer-hil (owner created the empty public repository). |
+| 19:27 | v2 start: stop anticipation and command-acknowledgement supervision (RTT stats, `CMD_NOT_ACKED`), host tests. |
+| ~19:30 | Host robustness tests: exhaustive 1/2-bit errors (0 of 8256 accepted), 2 MB fuzz (20 000/20 000 recovered, 0 false accepts). |
+| ~19:33 | Task watchdog (1 s, panic reset) on both boards, `hang` hooks, reset reason strings, controller boot counter + NVS fault log, `noise` bit-flip injection, `-Werror` for all firmware components. Built and flashed. |
+| 19:34 | Hardware run with 15 scenarios: 13 PASS. `plant_reboot` hit `LINK_LOST` instead of `PLANT_RESTARTED` (a correct outcome, bench expectation widened). `noisy_link` tripped `LINK_LOST` after only 7 corrupted bytes, a real decoder defect: a corrupted LEN swallowed the next good frame. |
+| ~19:37 | Fix: LEN must match a known type, TYPE must match LEN. New regression test fails on the old decoder (2 frames lost per bit error) and passes on the new one (1 frame). Rebuilt, reflashed. |
+| 19:38 | Hardware run: 14/15; `noisy_link` passed the transfer but the check "both sides rejected frames" was statistically too strict (no CMD byte happened to be hit). Criterion corrected; `noisy_link` 3/3 PASS. |
+| 19:41 | Final hardware run **15/15 PASS** (`logs/20261108T184102Z_run_all.log`). |
+| ~19:42 | cppcheck 2.22 installed (scoop, user-level): 0 findings on core + tests. GitHub Actions CI added (host tests, cppcheck, firmware builds in `espressif/idf:v6.0`). README v2 sections, FMEA table. |

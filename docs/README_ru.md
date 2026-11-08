@@ -18,9 +18,17 @@ cd C:\Projects\spaceium-transfer-bench
 Откройте два терминала с монитором порта: `idf.py -p COM7 monitor` и `idf.py -p COM8 monitor`.
 `tools\bench.py` и монитор не должны одновременно держать один и тот же порт.
 
-- **Контроллер:** `start 500`, `stop`, `reset`, `status`, `mute 2000`, `reboot`.
+- **Контроллер:** `start 500`, `stop`, `reset`, `status`, `faults`, `faults clear`, `mute 2000`,
+  `noise 3000`, `hang`, `reboot`.
 - **Модель:** `set src 800`, `set dst 100`, `fault valve_stuck 1`, `fault pump_dead 1`,
-  `fault leak 150`, `fault clear`, `mute 2000`, `status`, `reboot`.
+  `fault leak 150`, `fault clear`, `mute 2000`, `noise 3000`, `hang`, `status`, `reboot`.
+
+Что добавлено в v2, после трёхчасового окна:
+- **`noise <ppm>`** портит случайные биты в отправляемых байтах. При 3000 ppm перекачка проходит, счётчики `crc_err` растут.
+- **`hang`** вешает цикл платы. Через 1 с сторожевой таймер её перезагружает, в логе видно `reset_reason=TASK_WDT`.
+- **`faults`** показывает журнал последних 8 неисправностей. Журнал хранится во flash и переживает перезагрузку.
+
+Для видео хорошо смотрятся `noise 3000` на обеих платах и `hang` на модели.
 
 **Светодиод S3:**
 - белый — IDLE;
