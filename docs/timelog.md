@@ -54,3 +54,12 @@ Not part of the 3-hour budget. Requested by the owner after the repository was p
 | 19:38 | Hardware run: 14/15; `noisy_link` passed the transfer but the check "both sides rejected frames" was statistically too strict (no CMD byte happened to be hit). Criterion corrected; `noisy_link` 3/3 PASS. |
 | 19:41 | Final hardware run **15/15 PASS** (`logs/20261108T184102Z_run_all.log`). |
 | ~19:42 | cppcheck 2.22 installed (scoop, user-level): 0 findings on core + tests. GitHub Actions CI added (host tests, cppcheck, firmware builds in `espressif/idf:v6.0`). README v2 sections, FMEA table. |
+| ~19:52 | Pushed v2 (`d719168`); GitHub Actions run 42512090179: all 4 jobs success. |
+| 19:58 | v2.1 start (owner chose: identity/handshake, black box, OVERFILL + sensor plausibility, requirements traceability, dashboard; OTA queued after). |
+| ~20:05 | HELLO handshake, firmware identity, black box, overfill in any state, sensor plausibility; 8 new host tests. A host test caught a real interaction: a rebooted plant restarts its simulation from initial levels, which the new jump check misread as a sensor fault. Fixed by ignoring plausibility for telemetry flagged RESTARTED/NOT_ARMED/FAILSAFE. 39 tests, 279 checks pass. `-Werror` caught a possible string truncation in the build-info buffer (fixed). |
+| 20:08 | Hardware run with 20 scenarios: **20/20 PASS** (`logs/20261108T190829Z_run_all.log`). |
+| ~20:15 | docs/requirements.md (25 requirements) + `tools/trace.py` (25/25 verified) + CI step. Live dashboard `tools/dashboard.py` with controller `stream on` mode; checked in the browser against the real boards (one transfer started from the page: COMPLETE at 499 mL); fixed overlapping pump/valve labels. |
+| 20:13 | Hardware run on the firmware with `stream`: **20/20 PASS** (`logs/20261108T191315Z_run_all.log`). |
+| ~20:18 | OTA (owner's request): A/B partition table with bootloader rollback, console OTA module (SHA-256 via PSA, sequential erase), self-test that marks the image valid, `tools/ota_update.py`. Controller flashed with the new layout; the NVS fault log survived the layout change. |
+| 20:25 | OTA good image: 273 KB in 43 s, self-test passed after 402 ms, kept. 20:26 OTA deliberately bad image: self-test failed, bootloader rolled back to the previous version. |
+| 20:28 | OTA bench scenarios (refused during transfer, bad SHA-256, good, rollback): **4/4 PASS** (`logs/20261108T192753Z_run_all.log`). 4 OTA requirements added. |

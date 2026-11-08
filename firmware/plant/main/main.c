@@ -41,10 +41,18 @@ static uint32_t s_cmd_count, s_cmd_seq_gaps;
 static bool s_have_seq;
 static uint8_t s_last_seq;
 static bool s_reject_logged;
+static proto_hello_t s_my_hello;
+#define HELLO_PERIOD_MS 500u
 
 static void print_status(uint32_t now)
 {
     const plant_t *p = &s_plant;
+    printf("STAT peer ctl_hello=%s ctl_proto=v%u | self fw=%s boot_id=%04x proto=v%u%s | "
+           "sim: dst_frozen=%u dst_inflow=%.0f\n",
+           p->have_ctl_hello ? (p->ctl_compatible ? "OK" : "INCOMPATIBLE") : "NONE",
+           p->ctl_proto_ver, bench_fw_version(), s_my_hello.boot_id, s_my_hello.proto_ver,
+           s_my_hello.proto_ver != PROTO_VERSION ? " (FAKED by 'proto' test hook)" : "",
+           p->fault_dst_frozen, (double)p->dst_inflow_ml_s);
     printf("STAT t=%lu src=%.1f dst=%.1f flow=%.1f | pump cmd=%u act=%u valve cmd=%u act=%u | "
            "failsafe=%u armed=%u cmd_age=%ld | faults: valve_stuck=%u pump_dead=%u leak=%.0f | "
            "rx_ok=%lu crc_err=%lu len_err=%lu range_err=%lu junk=%lu seq_gaps=%lu "
@@ -93,7 +101,19 @@ static void handle_line(char *line, uint32_t now)
             s_plant.fault_valve_stuck = false;
             s_plant.fault_pump_dead = false;
             s_plant.leak_ml_s = 0.0f;
+            s_plant.dst_inflow_ml_s = 0.0f;
+            s_plant.fault_dst_frozen = false;
             printf("EVT t=%lu SIM: all injected faults cleared\n", (unsigned long)now);
+        } else if (strcmp(a1, "dst_frozen") == 0 && parse_flag(a2, &on)) {
+            s_plant.fault_dst_frozen = on;
+            s_plant.dst_frozen_value = s_plant.dst_ml;
+            printf("EVT t=%lu SIM: dst_frozen=%u (destination sensor stuck at %.0f mL)\n",
+                   (unsigned long)now, on, (double)s_plant.dst_frozen_value);
+        } else if (strcmp(a1, "dst_inflow") == 0 && a2) {
+            long v = strtol(a2, NULL, 10);
+            s_plant.dst_inflow_ml_s = (float)(v < 0 ? 0 : (v > 500 ? 500 : v));
+            printf("EVT t=%lu SIM: external inflow into destination %.0f mL/s\n", (unsigned long)now,
+                   (double)s_plant.dst_inflow_ml_s);
         } else if (strcmp(a1, "valve_stuck") == 0 && parse_flag(a2, &on)) {
             s_plant.fault_valve_stuck = on;
             printf("EVT t=%lu SIM: valve_stuck=%u (valve frozen %s)\n", (unsigned long)now, on,
@@ -106,8 +126,17 @@ static void handle_line(char *line, uint32_t now)
             s_plant.leak_ml_s = (float)(v < 0 ? 0 : (v > 500 ? 500 : v));
             printf("EVT t=%lu SIM: source leak %.0f mL/s\n", (unsigned long)now, (double)s_plant.leak_ml_s);
         } else {
-            printf("ERR fault valve_stuck|pump_dead <0|1> | fault leak <mL/s> | fault clear\n");
+            printf("ERR fault valve_stuck|pump_dead|dst_frozen <0|1> | fault leak|dst_inflow <mL/s> "
+                   "| fault clear\n");
         }
+    } else if (strcmp(cmd, "proto") == 0 && a1) {
+        long v = strtol(a1, NULL, 10);
+        s_my_hello.proto_ver = (uint8_t)(v < 0 ? 0 : (v > 255 ? 255 : v));
+        printf("EVT t=%lu TEST: advertising protocol v%u in HELLO (real v%u)\n", (unsigned long)now,
+               s_my_hello.proto_ver, PROTO_VERSION);
+    } else if (strcmp(cmd, "version") == 0) {
+        printf("VERSION %s | protocol v%u | boot_id %04x\n", bench_build_info(), PROTO_VERSION,
+               s_my_hello.boot_id);
     } else if (strcmp(cmd, "mute") == 0) {
         long ms = a1 ? strtol(a1, NULL, 10) : 2000;
         s_mute_until_ms = now + (uint32_t)(ms > 0 ? ms : 0);
@@ -134,8 +163,9 @@ static void handle_line(char *line, uint32_t now)
         vTaskDelay(pdMS_TO_TICKS(50));
         esp_restart();
     } else if (strcmp(cmd, "help") == 0) {
-        printf("commands: set src|dst <mL> | fault valve_stuck|pump_dead <0|1> | fault leak <mL/s> | "
-               "fault clear | mute <ms> | noise <ppm> | hang | status | reboot\n");
+        printf("commands: set src|dst <mL> | fault valve_stuck|pump_dead|dst_frozen <0|1> | "
+               "fault leak|dst_inflow <mL/s> | fault clear | mute <ms> | noise <ppm> | "
+               "proto <n> | hang | status | version | reboot\n");
     } else {
         printf("ERR unknown command '%s' (try 'help')\n", cmd);
     }
@@ -148,6 +178,8 @@ static void plant_task(void *arg)
     char line[80];
     proto_msg_t msg;
     uint32_t last_step = bench_now_ms(), last_stat = 0;
+    uint32_t last_hello = bench_now_ms() - HELLO_PERIOD_MS; /* send one right away */
+    uint8_t hello_seq = 0;
     TickType_t wake = xTaskGetTickCount();
     bench_wdt_subscribe();
 
@@ -158,7 +190,20 @@ static void plant_task(void *arg)
         int n;
         while ((n = link_read(rx, sizeof(rx))) > 0) {
             for (int i = 0; i < n; i++) {
-                if (proto_decoder_feed(&s_dec, rx[i], &msg) && msg.type == MSG_CMD && !s_muted) {
+                if (!proto_decoder_feed(&s_dec, rx[i], &msg) || s_muted) {
+                    continue;
+                }
+                if (msg.type == MSG_HELLO) {
+                    const bool had = s_plant.have_ctl_hello, was_ok = s_plant.ctl_compatible;
+                    const bool ok = plant_on_hello(&s_plant, &msg.u.hello);
+                    if (msg.u.hello.role == PROTO_ROLE_CONTROLLER && (!had || ok != was_ok)) {
+                        printf("EVT t=%lu HELLO from controller: protocol v%u boot_id=%04x -> %s\n",
+                               (unsigned long)now, msg.u.hello.proto_ver, msg.u.hello.boot_id,
+                               ok ? "compatible" : "INCOMPATIBLE, will not arm");
+                    }
+                    continue;
+                }
+                if (msg.type == MSG_CMD) {
                     if (s_have_seq && msg.seq != (uint8_t)(s_last_seq + 1u)) {
                         s_cmd_seq_gaps++;
                     }
@@ -175,6 +220,11 @@ static void plant_task(void *arg)
                         printf("EVT t=%lu ARMED: safe command received, run commands accepted\n",
                                (unsigned long)now);
                         s_reject_logged = false;
+                    } else if (r == PLANT_CMD_NO_PEER && !s_reject_logged) {
+                        s_reject_logged = true;
+                        printf("EVT t=%lu NOT_ARMED: no compatible controller HELLO yet, staying "
+                               "safe\n",
+                               (unsigned long)now);
                     } else if (r == PLANT_CMD_REJECTED && !s_reject_logged) {
                         s_reject_logged = true;
                         printf("EVT t=%lu NOT_ARMED: run command (pump=%u valve=%u) IGNORED until a "
@@ -207,6 +257,10 @@ static void plant_task(void *arg)
                 plant_fill_telem(&s_plant, &t);
                 uint8_t f[PROTO_MAX_FRAME];
                 link_write(f, proto_encode_telem(s_tel_seq++, &t, f));
+                if ((uint32_t)(now - last_hello) >= HELLO_PERIOD_MS) {
+                    last_hello = now;
+                    link_write(f, proto_encode_hello(hello_seq++, &s_my_hello, f));
+                }
             }
             const oled_view_t v = {
                 .src_ml = (uint16_t)(s_plant.src_ml + 0.5f),
@@ -216,7 +270,8 @@ static void plant_task(void *arg)
                 .pump_running = s_plant.pump_running,
                 .failsafe = s_plant.failsafe,
                 .fault_injected = s_plant.fault_valve_stuck || s_plant.fault_pump_dead ||
-                                  s_plant.leak_ml_s > 0.0f,
+                                  s_plant.leak_ml_s > 0.0f || s_plant.dst_inflow_ml_s > 0.0f ||
+                                  s_plant.fault_dst_frozen,
             };
             oled_set_view(&v);
         }
@@ -235,6 +290,12 @@ void app_main(void)
     link_init(LINK_TX_GPIO, LINK_RX_GPIO, LINK_BAUD);
     proto_decoder_init(&s_dec);
     plant_init(&s_plant, INIT_SRC_ML, INIT_DST_ML, bench_now_ms());
+    s_my_hello = (proto_hello_t){.proto_ver = PROTO_VERSION,
+                                 .role = PROTO_ROLE_PLANT,
+                                 .boot_id = bench_boot_id(),
+                                 .fw_id = proto_fnv1a(bench_fw_version())};
+    printf("VERSION %s | protocol v%u | boot_id %04x fw_id %08lx\n", bench_build_info(),
+           PROTO_VERSION, s_my_hello.boot_id, (unsigned long)s_my_hello.fw_id);
     const bool oled = oled_init();
     printf("EVT t=%lu BOOT plant simulator (ESP32-C3) reset_reason=%s: src=%.0f dst=%.0f mL, "
            "pump OFF, valve CLOSED, NOT_ARMED until a safe CMD. OLED %s.\n",

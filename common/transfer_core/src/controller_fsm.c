@@ -18,6 +18,10 @@ void ctl_default_config(ctl_config_t *cfg)
     /* Backup detector for one-way loss; the plant's own failsafe (300 ms) normally fires
      * first. 400 ms = 4 CMD periods. */
     cfg->cmd_ack_timeout_ms = 400;
+    /* Max legitimate change per 100 ms frame is 5 mL at nominal flow; 20 mL leaves margin
+     * for jitter (two frames merged) without accepting a sensor step. */
+    cfg->dst_jump_ml = 20;
+    cfg->dst_frozen_ms = 1000;
 }
 
 const char *ctl_state_name(ctl_state_t s)
@@ -61,6 +65,8 @@ const char *ctl_fault_name(ctl_fault_t f)
     case F_PLANT_NOT_ARMED: return "PLANT_NOT_ARMED";
     case F_PLANT_RESTARTED: return "PLANT_RESTARTED";
     case F_CMD_NOT_ACKED: return "CMD_NOT_ACKED";
+    case F_PEER_INCOMPATIBLE: return "PEER_INCOMPATIBLE";
+    case F_SENSOR_IMPLAUSIBLE: return "SENSOR_IMPLAUSIBLE";
     }
     return "?";
 }
@@ -123,6 +129,30 @@ void ctl_init(ctl_t *c, const ctl_config_t *cfg, uint32_t now_ms, ctl_event_cb_t
 
 void ctl_on_telem(ctl_t *c, const proto_telem_t *t, uint32_t now_ms)
 {
+    /* Destination sensor plausibility: a step larger than physically possible between two
+     * frames is a sensor fault (only judged while transferring; levels are set by hand
+     * on this bench while idle). */
+    if (c->have_prev_dst && t->dst_ml != c->prev_dst_ml) {
+        const uint16_t jump = (t->dst_ml > c->prev_dst_ml) ? (uint16_t)(t->dst_ml - c->prev_dst_ml)
+                                                           : (uint16_t)(c->prev_dst_ml - t->dst_ml);
+        /* A rebooted / re-arming plant restarts its simulation from initial levels: that
+         * is reported by the flags and handled as PLANT_RESTARTED, not as a sensor fault. */
+        const bool plant_reset =
+            (t->flags & (PLANT_FLAG_RESTARTED | PLANT_FLAG_NOT_ARMED | PLANT_FLAG_FAILSAFE)) != 0u;
+        if (c->state == CTL_TRANSFER && !plant_reset && jump > c->cfg.dst_jump_ml) {
+            char d[72];
+            snprintf(d, sizeof(d), "dst jumped %u -> %u mL in one frame (max %u)", c->prev_dst_ml,
+                     t->dst_ml, c->cfg.dst_jump_ml);
+            fault(c, F_SENSOR_IMPLAUSIBLE, now_ms, d);
+        }
+        c->dst_changed_ms = now_ms;
+    }
+    if (!c->have_prev_dst) {
+        c->dst_changed_ms = now_ms;
+    }
+    c->have_prev_dst = true;
+    c->prev_dst_ml = t->dst_ml;
+
     c->telem = *t;
     c->have_telem = true;
     c->last_telem_ms = now_ms;
@@ -145,6 +175,38 @@ void ctl_on_telem(ctl_t *c, const proto_telem_t *t, uint32_t now_ms)
             break;
         }
     }
+}
+
+bool ctl_peer_ok(const ctl_t *c)
+{
+    return c->have_peer && c->peer.role == PROTO_ROLE_PLANT && c->peer.proto_ver == PROTO_VERSION;
+}
+
+ctl_hello_result_t ctl_on_hello(ctl_t *c, const proto_hello_t *h, uint32_t now_ms)
+{
+    const bool active = (c->state == CTL_CHECK || c->state == CTL_TRANSFER);
+    const bool first = !c->have_peer;
+    const bool rebooted = c->have_peer && h->boot_id != c->peer.boot_id;
+    c->peer = *h;
+    c->have_peer = true;
+
+    if (!ctl_peer_ok(c)) {
+        if (active) {
+            char d[72];
+            snprintf(d, sizeof(d), "HELLO: peer role %u protocol v%u, expected plant v%u", h->role,
+                     h->proto_ver, PROTO_VERSION);
+            fault(c, F_PEER_INCOMPATIBLE, now_ms, d);
+        }
+        return CTL_HELLO_INCOMPATIBLE;
+    }
+    if (rebooted) {
+        c->peer_reboots++;
+        if (active) {
+            fault(c, F_PLANT_RESTARTED, now_ms, "HELLO: plant boot_id changed (rebooted)");
+        }
+        return CTL_HELLO_PEER_REBOOT;
+    }
+    return first ? CTL_HELLO_FIRST : CTL_HELLO_SAME;
 }
 
 void ctl_on_cmd_sent(ctl_t *c, uint8_t seq, uint32_t now_ms)
@@ -180,6 +242,10 @@ bool ctl_start(ctl_t *c, uint16_t target_dst_ml, uint32_t now_ms, const char **w
         *why = "target out of range (1..dst_high)";
         return false;
     }
+    if (c->have_peer && !ctl_peer_ok(c)) {
+        *why = "plant is incompatible (protocol version / role from HELLO)";
+        return false;
+    }
     c->target_dst_ml = target_dst_ml;
     c->fault = F_NONE;
     c->fault_detail[0] = '\0';
@@ -212,6 +278,14 @@ bool ctl_reset(ctl_t *c, uint32_t now_ms, const char **why)
         *why = "our commands are not acknowledged by the plant";
         return false;
     }
+    if (!ctl_peer_ok(c) || (c->telem.flags & PLANT_FLAG_PEER_BAD)) {
+        *why = "no compatible HELLO exchange with the plant";
+        return false;
+    }
+    if (c->telem.dst_ml > c->cfg.dst_high_ml) {
+        *why = "destination still above the high limit";
+        return false;
+    }
     if (c->telem.pump_running) {
         *why = "pump still running";
         return false;
@@ -232,13 +306,21 @@ static void tick_check(ctl_t *c, uint32_t now)
     const proto_telem_t *t = &c->telem;
     const uint32_t in_state = now - c->state_since_ms;
 
-    if (!ctl_link_ok(c, now) || !ctl_ack_ok(c, now) ||
-        (t->flags & (PLANT_FLAG_FAILSAFE | PLANT_FLAG_NOT_ARMED))) {
+    if (!ctl_link_ok(c, now) || !ctl_ack_ok(c, now) || !ctl_peer_ok(c) ||
+        (t->flags & (PLANT_FLAG_FAILSAFE | PLANT_FLAG_NOT_ARMED | PLANT_FLAG_PEER_BAD))) {
         if (in_state > c->cfg.check_timeout_ms) {
             if (!ctl_link_ok(c, now)) {
                 fault(c, F_LINK_LOST, now, "CHECK: no fresh telemetry");
             } else if (!ctl_ack_ok(c, now)) {
                 fault(c, F_CMD_NOT_ACKED, now, "CHECK: commands not acknowledged");
+            } else if (!c->have_peer) {
+                fault(c, F_PEER_INCOMPATIBLE, now, "CHECK: no HELLO from the plant");
+            } else if (!ctl_peer_ok(c)) {
+                snprintf(d, sizeof(d), "CHECK: plant speaks protocol v%u, expected v%u",
+                         c->peer.proto_ver, PROTO_VERSION);
+                fault(c, F_PEER_INCOMPATIBLE, now, d);
+            } else if (t->flags & PLANT_FLAG_PEER_BAD) {
+                fault(c, F_PEER_INCOMPATIBLE, now, "CHECK: plant has no compatible HELLO from us");
             } else {
                 fault(c, F_PLANT_NO_CMD, now, "CHECK: plant in failsafe / not armed");
             }
@@ -279,6 +361,10 @@ static void tick_transfer(ctl_t *c, uint32_t now)
     }
     if (t->flags & PLANT_FLAG_FAILSAFE) {
         fault(c, F_PLANT_NO_CMD, now, "plant entered failsafe (commands not received)");
+        return;
+    }
+    if (t->flags & PLANT_FLAG_PEER_BAD) {
+        fault(c, F_PEER_INCOMPATIBLE, now, "plant reports no compatible controller HELLO");
         return;
     }
     if (t->flags & PLANT_FLAG_NOT_ARMED) {
@@ -324,6 +410,12 @@ static void tick_transfer(ctl_t *c, uint32_t now)
             snprintf(d, sizeof(d), "flow %u < %u mL/s, pump actual=%u", t->flow_ml_s,
                      c->cfg.flow_min_ml_s, t->pump_running);
             fault(c, F_NO_FLOW, now, d);
+        } else if (t->flow_ml_s >= c->cfg.flow_min_ml_s &&
+                   (uint32_t)(now - c->dst_changed_ms) > c->cfg.dst_frozen_ms &&
+                   in_phase > c->cfg.dst_frozen_ms) {
+            snprintf(d, sizeof(d), "dst frozen at %u mL for %lu ms while flow %u mL/s", t->dst_ml,
+                     (unsigned long)(now - c->dst_changed_ms), t->flow_ml_s);
+            fault(c, F_SENSOR_IMPLAUSIBLE, now, d);
         }
         break;
 
@@ -346,6 +438,14 @@ static void tick_transfer(ctl_t *c, uint32_t now)
 
 void ctl_tick(ctl_t *c, uint32_t now_ms)
 {
+    /* Overfill is an alarm in every state: liquid can also arrive from outside the
+     * transfer (e.g. another line), and it must be latched even when the pump is off. */
+    if (c->state != CTL_FAULT && ctl_link_ok(c, now_ms) && c->telem.dst_ml > c->cfg.dst_high_ml) {
+        char d[72];
+        snprintf(d, sizeof(d), "dst %u > high limit %u mL (state %s)", c->telem.dst_ml,
+                 c->cfg.dst_high_ml, ctl_state_name(c->state));
+        fault(c, F_OVERFILL, now_ms, d);
+    }
     if (c->state == CTL_CHECK) {
         tick_check(c, now_ms);
     } else if (c->state == CTL_TRANSFER) {

@@ -144,6 +144,18 @@ class Bench:
                 raise StepFailed(f"timeout {timeout}s waiting for {board}: /{pattern}/")
             self._pump(0.05)
 
+    def block(self, board: str, start: str, end: str, timeout: float) -> list[str]:
+        """Collect the lines of a multi-line report from `start` to `end` (inclusive)."""
+        _, first = self.wait(board, start, timeout)
+        out = [first]
+        end_rx = re.compile(end)
+        deadline = self.now() + timeout
+        while True:
+            _, line = self.wait(board, r".", max(0.1, deadline - self.now()))
+            out.append(line)
+            if end_rx.search(line):
+                return out
+
     def absent(self, board: str, pattern: str, duration: float) -> None:
         """Fail if board prints a line matching pattern within duration."""
         rx = re.compile(pattern)
@@ -546,6 +558,119 @@ def sc_fault_log_persist(b: Bench) -> dict:
             "persisted": last.split("FAULTLOG ", 1)[-1]}
 
 
+def sc_version_handshake(b: Bench) -> dict:
+    """REQ-ID-001: both boards report firmware version and a compatible HELLO peer."""
+    b.idle(1.0)
+    b.send("ctl", "version")
+    _, cv = b.wait("ctl", r"^VERSION ", 2)
+    b.send("plant", "version")
+    _, pv = b.wait("plant", r"^VERSION ", 2)
+    b.send("ctl", "status")
+    _, cp = b.wait("ctl", r"^STAT peer ", 2)
+    b.send("plant", "status")
+    _, pp = b.wait("plant", r"^STAT peer ", 2)
+    if not cp.startswith("STAT peer OK") or "ctl_hello=OK" not in pp:
+        raise StepFailed(f"handshake not OK: ctl='{cp}' plant='{pp}'")
+    return {"ctl": cv.split("VERSION ", 1)[1], "plant": pv.split("VERSION ", 1)[1]}
+
+
+def sc_proto_mismatch(b: Bench) -> dict:
+    """REQ-ID-002: a peer that speaks another protocol version is refused."""
+    prepare(b)
+    b.send("plant", "proto 9")
+    b.wait("plant", r"advertising protocol v9", 2)
+    try:
+        _, warn = b.wait("ctl", r"HELLO: INCOMPATIBLE peer role=2 protocol v9", 3)
+        b.send("ctl", "start 500")
+        _, refused = b.wait("ctl", r"ERR start refused: plant is incompatible", 2)
+        b.absent("plant", r"pump cmd=1", 1.0)
+    finally:
+        b.send("plant", "proto 2")
+        b.wait("plant", r"advertising protocol v2", 2)
+    b.idle(1.2)
+    b.send("ctl", "status")
+    _, cp = b.wait("ctl", r"^STAT peer ", 2)
+    if not cp.startswith("STAT peer OK"):
+        raise StepFailed(f"peer did not become compatible again: {cp}")
+    return {"ctl_warning": warn.split(" : ")[0].split("HELLO: ", 1)[-1], "start": refused.strip()}
+
+
+def sc_overfill_idle(b: Bench) -> dict:
+    """REQ-SAF-006: destination above the high limit is latched in any state."""
+    prepare(b, src=100, dst=900)
+    t0 = b.send("plant", "fault dst_inflow 100")
+    b.wait("plant", r"external inflow into destination 100", 2)
+    t1, line = b.wait("ctl", r"IDLE -> FAULT cause=OVERFILL", 3)
+    b.send("plant", "fault clear")
+    b.wait("plant", r"cleared", 2)
+    b.idle(0.5)
+    b.send("ctl", "reset")
+    _, refused = b.wait("ctl", r"reset refused: destination still above the high limit", 2)
+    b.send("plant", "set dst 800")
+    b.wait("plant", r"destination level set to 800", 2)
+    b.idle(0.6)
+    b.send("ctl", "reset")
+    b.wait("ctl", r"reset accepted", 3)
+    return {"detected_after_inflow_s": round(t1 - t0, 2),
+            "fault_line": line.split(" : ", 1)[-1], "first_reset": refused.strip()}
+
+
+def sc_sensor_frozen(b: Bench) -> dict:
+    """REQ-SEN-001: destination level frozen while liquid flows -> SENSOR_IMPLAUSIBLE."""
+    prepare(b)
+    b.send("ctl", "start 600")
+    b.wait("ctl", r"phase=PUMPING", 4)
+    b.idle(2.0)
+    t0 = b.send("plant", "fault dst_frozen 1")
+    b.wait("plant", r"dst_frozen=1", 2)
+    t1, line = b.wait("ctl", r"-> FAULT cause=SENSOR_IMPLAUSIBLE", 3)
+    b.idle(1.2)
+    b.send("plant", "status")
+    _, pst = b.wait("plant", r"^STAT t=", 2)
+    if "pump cmd=0 act=0" not in pst:
+        raise StepFailed(f"pump not off: {pst}")
+    b.send("plant", "fault clear")
+    b.wait("plant", r"cleared", 2)
+    b.idle(0.5)
+    b.send("ctl", "reset")
+    b.wait("ctl", r"reset accepted", 3)
+    return {"detected_after_freeze_s": round(t1 - t0, 2), "fault_line": line.split(" : ", 1)[-1]}
+
+
+def sc_sensor_jump_blackbox(b: Bench) -> dict:
+    """REQ-SEN-002 + REQ-DIA-002: a 1-frame level jump is a sensor fault, and the black box
+    captures ~3 s before and 1 s after the fault, also readable after a reboot."""
+    prepare(b)
+    b.send("ctl", "start 600")
+    b.wait("ctl", r"phase=PUMPING", 4)
+    b.idle(3.2)
+    b.send("plant", "set dst 700")
+    _, line = b.wait("ctl", r"-> FAULT cause=SENSOR_IMPLAUSIBLE", 2)
+    bb = b.block("ctl", r"^BLACKBOX captured .*cause=SENSOR_IMPLAUSIBLE", r"^BLACKBOX end", 4)
+    rows = [r for r in bb if r.startswith("BB dt=")]
+    dts = [int(re.match(r"BB dt=\s*([+-]?\d+)", r).group(1)) for r in rows]
+    before = [r for r, dt in zip(rows, dts) if dt < 0]
+    after = [r for r, dt in zip(rows, dts) if dt >= 0]
+    if len(rows) != 40 or len(before) < 25 or not after:
+        raise StepFailed(f"unexpected black box shape: {len(rows)} rows, {len(before)} before")
+    if not any("pump=1/1" in r for r in before) or "pump=0/0" not in after[-1]:
+        raise StepFailed("black box does not show pumping before and pump off after the fault")
+    b.idle(0.5)
+    b.send("plant", "set dst 100")
+    b.wait("plant", r"destination level set to 100", 2)
+    b.idle(0.6)
+    b.send("ctl", "reset")
+    b.wait("ctl", r"reset accepted", 3)
+    b.send("ctl", "reboot")
+    b.wait("ctl", r"BOOT controller", 8)
+    b.idle(1.0)
+    b.send("ctl", "blackbox")
+    stored = b.block("ctl", r"^BLACKBOX stored .*cause=SENSOR_IMPLAUSIBLE", r"^BLACKBOX end", 3)
+    return {"fault_line": line.split(" : ", 1)[-1], "samples": len(rows),
+            "before_fault": len(before), "after_fault": len(after),
+            "last_row": after[-1], "stored_after_reboot_rows": len(stored) - 2}
+
+
 def sc_wire_pull(b: Bench) -> dict:
     """MANUAL: operator physically unplugs one link wire during a long transfer."""
     # Keep transfers running (refill and restart after COMPLETE) for up to 3 minutes,
@@ -597,6 +722,123 @@ def sc_wire_pull(b: Bench) -> dict:
 
 MANUAL = {"wire_pull": sc_wire_pull}
 
+# ----------------------------------------------------------------------------- OTA
+
+OTA_CHUNK = 384
+FW = ROOT / "firmware" / "controller"
+
+
+def ota_flow(b: Bench, image: bytes, sha: str | None = None, echo=print) -> dict:
+    """Send an image over the controller console and follow the reboot + self-test."""
+    import base64
+    import hashlib
+
+    sha = sha or hashlib.sha256(image).hexdigest()
+    b.send("ctl", "ota status")
+    _, before = b.wait("ctl", r"^OTA status:", 3)
+    b.send("ctl", f"ota begin {len(image)} {sha}")
+    _, ready = b.wait("ctl", r"^OTA (READY|ERR)", 5)
+    if ready.startswith("OTA ERR"):
+        return {"result": "refused", "line": ready, "before": before}
+    t0 = time.monotonic()
+    off = 0
+    while off < len(image):
+        chunk = image[off:off + OTA_CHUNK]
+        for attempt in range(3):
+            b.send("ctl", f"ota w {off} {base64.b64encode(chunk).decode()}")
+            try:
+                _, ack = b.wait("ctl", r"^OTA (OK|ERR)", 3)
+                break
+            except StepFailed:
+                if attempt == 2:
+                    raise
+        if ack.startswith("OTA ERR"):
+            return {"result": "error", "line": ack, "before": before}
+        off = int(re.match(r"OTA OK (\d+)", ack).group(1))
+        if off % (OTA_CHUNK * 64) < OTA_CHUNK:
+            echo(f"  {off}/{len(image)} bytes")
+    dt = time.monotonic() - t0
+    b.send("ctl", "ota end")
+    _, done = b.wait("ctl", r"^OTA (DONE|ERR)", 10)
+    res = {"before": before, "transfer_s": round(dt, 1),
+           "kib_per_s": round(len(image) / dt / 1024, 1), "end": done}
+    if done.startswith("OTA ERR"):
+        res["result"] = "rejected at end"
+        return res
+    b.wait("ctl", r"BOOT controller", 15)
+    _, newimg = b.wait("ctl", r"^OTA: booted a NEW image", 5)
+    _, verdict = b.wait("ctl", r"^OTA: self-test (PASSED|FAILED)", 15)
+    if "FAILED" in verdict:
+        b.wait("ctl", r"BOOT controller", 15)
+    b.idle(1.0)
+    b.send("ctl", "ota status")
+    _, after = b.wait("ctl", r"^OTA status:", 3)
+    res.update({"self_test": verdict, "after": after,
+                "result": "kept" if "PASSED" in verdict else "rolled back"})
+    return res
+
+
+def _version(status_line: str) -> str:
+    m = re.search(r"version=(\S+)", status_line)
+    return m.group(1) if m else "?"
+
+
+def sc_ota_refused_in_transfer(b: Bench) -> dict:
+    """REQ-OTA-001: no firmware update while a transfer is active."""
+    prepare(b)
+    b.send("ctl", "start 500")
+    b.wait("ctl", r"phase=PUMPING", 4)
+    b.send("ctl", "ota begin 1000 " + "0" * 64)
+    _, line = b.wait("ctl", r"^OTA ERR refused: a transfer is active", 2)
+    b.wait("ctl", r"-> COMPLETE", 15)
+    return {"line": line}
+
+
+def sc_ota_bad_sha(b: Bench) -> dict:
+    """REQ-OTA-002: an image whose SHA-256 does not match is not activated."""
+    prepare(b)
+    # A real image prefix (valid header, so esp_ota_write accepts the data) announced with
+    # a wrong SHA-256: models corruption that the per-chunk transport did not catch.
+    image = (FW / "build_esp32s3_ota_good" / "transfer_controller.bin").read_bytes()[:OTA_CHUNK * 3]
+    res = ota_flow(b, image, sha="0" * 64, echo=lambda *_: None)
+    if "sha256 mismatch" not in res.get("end", ""):
+        raise StepFailed(f"expected sha256 mismatch, got {res}")
+    b.send("ctl", "ota status")
+    _, after = b.wait("ctl", r"^OTA status:", 3)
+    if _version(after) != _version(res["before"]):
+        raise StepFailed("running version changed after a rejected image")
+    return {"end": res["end"], "running": _version(after)}
+
+
+def sc_ota_update_good(b: Bench) -> dict:
+    """REQ-OTA-003: a good image is transferred, verified, booted and kept."""
+    image = (FW / "build_esp32s3_ota_good" / "transfer_controller.bin").read_bytes()
+    res = ota_flow(b, image, echo=lambda *_: None)
+    if res["result"] != "kept" or _version(res["after"]) != "ota-good-1":
+        raise StepFailed(f"update not kept: {res}")
+    return {"from": _version(res["before"]), "to": _version(res["after"]),
+            "transfer_s": res["transfer_s"], "kib_per_s": res["kib_per_s"],
+            "self_test": res["self_test"].split(": ", 1)[-1][:60]}
+
+
+def sc_ota_update_rollback(b: Bench) -> dict:
+    """REQ-OTA-004: an image that fails its self-test is rolled back by the bootloader."""
+    image = (FW / "build_esp32s3_ota_bad" / "transfer_controller.bin").read_bytes()
+    res = ota_flow(b, image, echo=lambda *_: None)
+    if res["result"] != "rolled back" or _version(res["after"]) != _version(res["before"]):
+        raise StepFailed(f"no rollback: {res}")
+    return {"running_before": _version(res["before"]), "running_after": _version(res["after"]),
+            "self_test": res["self_test"].split(": ", 1)[-1][:60]}
+
+
+# Long-running, need the OTA test images built first; run by name.
+OTA = {
+    "ota_refused_in_transfer": sc_ota_refused_in_transfer,
+    "ota_bad_sha": sc_ota_bad_sha,
+    "ota_update_good": sc_ota_update_good,
+    "ota_update_rollback": sc_ota_update_rollback,
+}
+
 SCENARIOS = {
     "happy": sc_happy,
     "insufficient_source": sc_insufficient_source,
@@ -613,6 +855,11 @@ SCENARIOS = {
     "ctl_hang": sc_ctl_hang,
     "plant_hang": sc_plant_hang,
     "fault_log_persist": sc_fault_log_persist,
+    "version_handshake": sc_version_handshake,
+    "proto_mismatch": sc_proto_mismatch,
+    "overfill_idle": sc_overfill_idle,
+    "sensor_frozen": sc_sensor_frozen,
+    "sensor_jump_blackbox": sc_sensor_jump_blackbox,
 }
 
 
@@ -634,6 +881,7 @@ def main() -> int:
     if a.cmd == "list":
         print("\n".join(SCENARIOS))
         print("manual (operator action needed):", ", ".join(MANUAL))
+        print("OTA (build the ota_good/ota_bad images first):", ", ".join(OTA))
         return 0
     if a.cmd in ("send", "watch"):
         b = Bench(a.cmd)
@@ -648,6 +896,7 @@ def main() -> int:
 
     names = list(SCENARIOS) if a.names == ["all"] else a.names
     SCENARIOS.update(MANUAL)  # manual ones run only when named explicitly
+    SCENARIOS.update(OTA)     # OTA ones need prebuilt test images, run only when named
     results = []
     b = Bench("run_" + "_".join(names) if len(names) < 4 else "run_all", echo=not a.quiet)
     try:

@@ -6,6 +6,7 @@ param(
     [Parameter(Mandatory)] [string] $Project,
     [Parameter(Mandatory)] [ValidateSet('esp32s3', 'esp32c3')] [string] $Target,
     [string] $Port,
+    [string] $Variant,   # optional: separate build dir + sdkconfig, e.g. 'ota_good'
     [Parameter(ValueFromRemainingArguments)] [string[]] $IdfArgs
 )
 $env:IDF_PATH = 'C:\esp\release-v6.0\esp-idf'
@@ -14,8 +15,9 @@ $env:IDF_PATH = 'C:\esp\release-v6.0\esp-idf'
 if (-not (Get-Command idf.py -ErrorAction SilentlyContinue)) { throw 'ESP-IDF v6.0 export failed: idf.py not on PATH' }
 
 $proj = Resolve-Path $Project
-$build = Join-Path $proj "build_$Target"
-$sdk = Join-Path $proj "sdkconfig.$Target"
+$suffix = if ($Variant) { "${Target}_$Variant" } else { $Target }
+$build = Join-Path $proj "build_$suffix"
+$sdk = Join-Path $proj "sdkconfig.$suffix"
 $common = @('-C', $proj, '-B', $build, "-DSDKCONFIG=$sdk", "-DIDF_TARGET=$Target")
 if ($Port) { $common += @('-p', $Port) }
 idf.py @common @IdfArgs

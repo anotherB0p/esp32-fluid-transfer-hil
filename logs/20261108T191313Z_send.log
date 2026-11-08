@@ -1,0 +1,9 @@
+[    0.006] bench ports: {'ctl': 'COM7', 'plant': 'COM8'}
+[    0.009] bench --> ctl: stream off
+[    0.060] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=d719168-dirty boot_id=20cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[    0.062] ctl   > stream off
+[    0.062] ctl   EVT t=68245 telemetry stream OFF
+[    0.124] plant STAT t=204007 src=236.4 dst=499.3 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=80 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=2410 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=3 tx_noise_ppm=0 tx_corrupted=0
+[    0.773] ctl   STAT t=69005 state=COMPLETE phase=- fault=NONE target=500 | src=236 dst=499 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=10 rx_ok=828 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[    0.827] ctl   STAT peer OK proto=v2 boot_id=20cd fw_id=f22121de reboots_seen=0 | self fw=d719168-dirty boot_id=33c9 proto=v2
+[    0.827] ctl   STAT diag boot=17 cmd_ack=OK rtt_ms last=90 min=90 avg=99 max=100 n=689 tx_noise_ppm=0 tx_corrupted=0

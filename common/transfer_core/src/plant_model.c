@@ -29,10 +29,13 @@ plant_cmd_result_t plant_on_cmd(plant_t *p, const proto_cmd_t *cmd, uint8_t seq,
     p->failsafe = false;
 
     if (!p->armed) {
+        p->pump_cmd = false;
+        p->valve_cmd = false;
         if (run) {
-            p->pump_cmd = false;
-            p->valve_cmd = false;
             return PLANT_CMD_REJECTED;
+        }
+        if (!(p->have_ctl_hello && p->ctl_compatible)) {
+            return PLANT_CMD_NO_PEER;
         }
         p->armed = true;
         p->restarted = false;
@@ -41,6 +44,23 @@ plant_cmd_result_t plant_on_cmd(plant_t *p, const proto_cmd_t *cmd, uint8_t seq,
     p->pump_cmd = cmd->pump_on != 0u;
     p->valve_cmd = cmd->valve_open != 0u;
     return res;
+}
+
+bool plant_on_hello(plant_t *p, const proto_hello_t *h)
+{
+    if (h->role != PROTO_ROLE_CONTROLLER) {
+        return false;
+    }
+    p->have_ctl_hello = true;
+    p->ctl_proto_ver = h->proto_ver;
+    p->ctl_compatible = (h->proto_ver == PROTO_VERSION);
+    if (!p->ctl_compatible && p->armed) {
+        /* An incompatible controller appeared: stop obeying run commands immediately. */
+        p->armed = false;
+        p->pump_cmd = false;
+        p->valve_cmd = false;
+    }
+    return p->ctl_compatible;
 }
 
 bool plant_step(plant_t *p, uint32_t now_ms)
@@ -94,6 +114,7 @@ bool plant_step(plant_t *p, uint32_t now_ms)
     p->src_ml -= moved;
     p->dst_ml += moved;
     p->src_ml = clampf(p->src_ml - p->leak_ml_s * dt_s, 0.0f, (float)PROTO_TANK_CAPACITY_ML);
+    p->dst_ml = clampf(p->dst_ml + p->dst_inflow_ml_s * dt_s, 0.0f, (float)PROTO_TANK_CAPACITY_ML);
     if (p->src_ml <= 0.0f && target > 0.0f) {
         p->flow_ml_s = 0.0f; /* pump runs dry */
     }
@@ -104,7 +125,8 @@ bool plant_step(plant_t *p, uint32_t now_ms)
 void plant_fill_telem(const plant_t *p, proto_telem_t *t)
 {
     t->src_ml = (uint16_t)(p->src_ml + 0.5f);
-    t->dst_ml = (uint16_t)(p->dst_ml + 0.5f);
+    const float dst_reported = p->fault_dst_frozen ? p->dst_frozen_value : p->dst_ml;
+    t->dst_ml = (uint16_t)(dst_reported + 0.5f);
     t->flow_ml_s = (uint16_t)(p->flow_ml_s + 0.5f);
     t->valve_open = p->valve_open ? 1u : 0u;
     t->pump_running = p->pump_running ? 1u : 0u;
@@ -112,7 +134,9 @@ void plant_fill_telem(const plant_t *p, proto_telem_t *t)
     t->flags = (uint8_t)((p->failsafe ? PLANT_FLAG_FAILSAFE : 0u) |
                          (p->armed ? 0u : PLANT_FLAG_NOT_ARMED) |
                          (p->restarted ? PLANT_FLAG_RESTARTED : 0u) |
-                         ((p->fault_valve_stuck || p->fault_pump_dead || p->leak_ml_s > 0.0f)
+                         ((p->have_ctl_hello && p->ctl_compatible) ? 0u : PLANT_FLAG_PEER_BAD) |
+                         ((p->fault_valve_stuck || p->fault_pump_dead || p->leak_ml_s > 0.0f ||
+                           p->dst_inflow_ml_s > 0.0f || p->fault_dst_frozen)
                               ? PLANT_FLAG_FAULT_INJ
                               : 0u));
 }

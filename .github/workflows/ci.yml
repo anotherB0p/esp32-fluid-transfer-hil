@@ -11,7 +11,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Build and run
-        run: bash tests/run_tests.sh
+        run: |
+          set -o pipefail
+          bash tests/run_tests.sh | tee host_results.txt
+      - name: Requirements traceability check
+        run: python3 tools/trace.py --host-results host_results.txt --check
+      - name: Upload traceability matrix
+        uses: actions/upload-artifact@v4
+        with:
+          name: traceability
+          path: docs/traceability.md
 
   static-analysis:
     name: cppcheck (core + tests)

@@ -4,10 +4,15 @@ Goal: show it working, explain what it does, walk through the architecture, expl
 how AI was used, and describe one engineering challenge (the five points from the job
 posting). Say plainly what is real hardware and what is simulated.
 
-Setup before recording: both boards on the desk with the three link wires visible, the
-OLED readable by the camera, two terminals side by side (`idf.py -p COM7 monitor` and
-`idf.py -p COM8 monitor`, or `python tools/bench.py watch -w 300`), README open in a
-third window.
+Setup before recording: both boards on the desk with the three link wires visible and
+the OLED readable by the camera. On screen, run `python tools/dashboard.py` and open
+http://127.0.0.1:8765. It shows tanks, command vs actual, the chart, the events of both
+boards, and has buttons for every command, so no terminal typing is needed on camera.
+Keep README and docs/traceability.md open in another window.
+Good live demos with the dashboard: `start 500` (normal), `valve stuck` then
+`start 500`, `plant hang (WDT)` during a transfer (watchdog reset + latched fault), and
+`plant noise 0.3%` during a transfer (CRC counters grow, transfer still completes).
+After a fault, `black box` prints the 4 s around it.
 
 ## 0:00-0:30 What it is
 

@@ -176,6 +176,10 @@ line on every transition.
 | `status` | print the current state |
 | `mute <ms>` | test hook: stop sending CMD for a while |
 | `faults [clear]` | (v2) show / clear the persistent fault log |
+| `blackbox` | (v2.1) print the last stored black-box capture |
+| `version` | (v2.1) firmware identity and protocol version |
+| `stream on/off` | (v2.1) compact TLM line every 100 ms (used by the dashboard) |
+| `ota status/begin/w/end/abort` | (v2.1) wired firmware update, see the OTA section; normally driven by `tools/ota_update.py` |
 | `noise <ppm>` | (v2) test hook: flip random bits in transmitted CMD bytes |
 | `hang` | (v2) test hook: stop the control loop, the watchdog must reset the board |
 | `reboot` | software restart |
@@ -189,6 +193,10 @@ line on every transition.
 | `fault clear` | remove all injected faults |
 | `mute <ms>` | test hook: send no TELEM and ignore CMD for a while |
 | `noise <ppm>` | (v2) test hook: flip random bits in transmitted TELEM bytes |
+| `fault dst_frozen <0/1>` | (v2.1) destination level sensor stuck at its current value |
+| `fault dst_inflow <mL/s>` | (v2.1) liquid enters the destination from outside the transfer |
+| `proto <n>` | (v2.1) test hook: advertise another protocol version in HELLO |
+| `version` | (v2.1) firmware identity |
 | `hang` | (v2) test hook: stop the plant loop, the watchdog must reset the board |
 | `status`, `reboot` | |
 
@@ -295,8 +303,73 @@ cases the rebooted plant never ran the pump on its own.
 | Pump does not deliver flow | flow < 20 mL/s after 1.5 s | FAULT `NO_FLOW` | 1.5 s | no_flow |
 | Source runs low / leak | source <= 100 mL reserve | FAULT `SOURCE_LOW` | per telemetry frame | source_low |
 | Not enough liquid to start | CHECK | FAULT `INSUFFICIENT_SOURCE`, pump never started | immediate | insufficient_source |
-| Destination above high limit | dst > 950 mL | FAULT `OVERFILL` | per telemetry frame | **not tested** |
-| Fault evidence lost by a reset | NVS fault log | last 8 faults survive reboot | - | fault_log_persist |
+| Destination above high limit (any state, v2.1) | dst > 950 mL | FAULT `OVERFILL`, reset refused while above | 0.55 s after a 100 mL/s inflow started at 900 mL | overfill_idle, host `test_loop_overfill_in_idle` |
+| Destination sensor frozen (v2.1) | no change for 1 s while flow >= 20 mL/s | FAULT `SENSOR_IMPLAUSIBLE` | 1.07 s on hardware | sensor_frozen, host `test_loop_dst_sensor_frozen` |
+| Destination sensor step (v2.1) | change > 20 mL in one frame during a transfer | FAULT `SENSOR_IMPLAUSIBLE` | next frame | sensor_jump_blackbox, host `test_loop_dst_sensor_jump` |
+| Peer speaks another protocol (v2.1) | HELLO version / role | controller refuses `start`; plant does not arm | first HELLO (500 ms period) | proto_mismatch, host tests |
+| Corrupted firmware image (v2.1) | SHA-256 of received bytes vs announced | image not activated, running image unchanged | at `ota end` | ota_bad_sha |
+| New firmware does not work (v2.1) | post-update self-test (peer, link, ack) | bootloader rollback to the previous slot | 10 s | ota_update_rollback |
+| Fault evidence lost by a reset | NVS fault log + black box | last 8 faults and the last 4 s capture survive reboot | - | fault_log_persist, sensor_jump_blackbox |
+
+## v2.1: identity, black box, sensor checks, traceability, dashboard
+
+| Area | What was added |
+|---|---|
+| Firmware identity | `version` prints the ESP-IDF app description (project, `git describe` of the build, build time, IDF version). The boot banner shows it too. |
+| HELLO handshake | New message `HELLO` (protocol version 2, role, random boot id, firmware hash) both ways every 500 ms. The controller refuses `start` with an incompatible plant; the plant does not arm without a compatible controller HELLO (`PEER_BAD` flag); a changed boot id during a transfer is `PLANT_RESTARTED`. Test hook on the plant: `proto <n>`. |
+| Black box | 40-sample ring (4 s at 10 Hz) on the controller. A fault triggers it, it records 1 s more (the reaction), then saves the capture to NVS and prints it. `blackbox` shows the stored capture after a reboot. |
+| Overfill in any state | `OVERFILL` is now an alarm in IDLE/COMPLETE too (liquid from outside the transfer). `reset` is refused while the level is still above the limit. Plant hook: `fault dst_inflow <mL/s>`. |
+| Sensor plausibility | Destination level frozen for 1 s while flowing, or a step above 20 mL in one frame, is `SENSOR_IMPLAUSIBLE`. Plant hooks: `fault dst_frozen 1`, `set dst` during a transfer. Telemetry from a rebooted / re-arming plant is excluded: its reset levels are a restart, not a sensor fault (found by a host test). |
+| Requirements | [docs/requirements.md](docs/requirements.md): 25 numbered requirements, each mapped to host tests and hardware scenarios. `tools/trace.py` generates [docs/traceability.md](docs/traceability.md) and fails CI on a requirement without verification or with a missing/failing test. |
+| Live dashboard | `python tools/dashboard.py`, then open http://127.0.0.1:8765. It shows tanks, pump/valve command vs actual, a 60 s chart, link counters, events of both boards, and buttons for operator and fault-injection commands. It uses the controller's `stream on` mode (TLM line every 100 ms) and is standard library + pyserial only. |
+
+Host tests: 39 tests (279 checks). Hardware: 20 automatic scenarios + 4 OTA scenarios,
+see [traceability.md](docs/traceability.md) for the latest result of each.
+
+### Wired firmware update (OTA) with A/B slots and rollback
+
+There is no Wi-Fi and no network: the controller is updated over the same USB console
+used for operation, as a spacecraft would be over its existing uplink.
+
+- **Flash layout** ([partitions.csv](firmware/controller/partitions.csv)): `ota_0` and
+  `ota_1`, 1.5 MB each, plus `otadata`. NVS stays at the same offset and size, so the
+  persistent fault log survived the switch to this layout (checked on the board). The
+  bootloader is built with `CONFIG_BOOTLOADER_APP_ROLLBACK_ENABLE`.
+- **Transfer** (`tools/ota_update.py`):
+  - `ota begin <size> <sha256>`, then `ota w <offset> <base64>` in 384-byte chunks, each
+    acknowledged by the board with the new offset. The offset is strictly sequential;
+    a resent chunk is acknowledged without being rewritten.
+  - `ota end` checks the size, compares the SHA-256 of the received bytes with the
+    announced one, validates the image (`esp_ota_end`), switches the boot slot and reboots.
+  - The slot is erased sector by sector as data arrives (`OTA_WITH_SEQUENTIAL_WRITES`), so
+    no long erase blocks the 10 ms control loop.
+  - `ota begin` is refused during CHECK/TRANSFER, and `start` is refused while an update
+    is in progress.
+- **Self-test and rollback.** The new image boots as `PENDING_VERIFY`. It marks itself
+  valid only after it sees a compatible plant (HELLO), fresh telemetry and acknowledged
+  commands, within 10 s. Otherwise it requests a rollback. If it crashes or is reset by
+  the watchdog first, the bootloader rolls back anyway.
+- **Measured on the bench.** 273 KB image in 42-43 s (6.3 KiB/s, bounded by one chunk per
+  10 ms loop iteration plus the USB round trip). Good image: self-test passed after
+  402-453 ms, image kept. Deliberately broken image (`-DOTA_TEST_BAD_IMAGE=1`, its
+  self-test never passes): rolled back after 10 s to the previous version.
+
+| Scenario | Result (`logs/20261108T192753Z_run_all.log`) |
+|---|---|
+| ota_refused_in_transfer | PASS: `OTA ERR refused: a transfer is active` |
+| ota_bad_sha | PASS: `OTA ERR sha256 mismatch ... (running image unchanged)` |
+| ota_update_good | PASS: transferred in 42.2 s, self-test passed after 453 ms, image kept |
+| ota_update_rollback | PASS: self-test failed within 10 s, bootloader returned to `ota-good-1` |
+
+Building the two test images:
+`.\tools\idf.ps1 -Project firmware\controller -Target esp32s3 -Variant ota_good -DPROJECT_VER=ota-good-1 build`
+and the same with `-Variant ota_bad -DPROJECT_VER=ota-bad-2 -DOTA_TEST_BAD_IMAGE=1`.
+Then run `python tools/bench.py run ota_refused_in_transfer ota_bad_sha ota_update_good ota_update_rollback`.
+
+Limits: only the controller is updatable over the console (the plant still uses esptool;
+the same module would work there). The image is not signed: integrity is checked
+(SHA-256), authenticity is not. A real system would add Secure Boot v2 / a signature
+check, which requires burning eFuses and was deliberately not done on these boards.
 
 ## Engineering challenge found on the bench
 
@@ -336,8 +409,6 @@ both, so the decoder resynchronises on the very next SOF. The regression test
   acceptable because commands are state, not events, and are resent every 100 ms.
   Under sustained byte noise above ~1 % the link therefore trips `LINK_LOST` by design.
 - Old or duplicate frames are counted (`seq_gaps`) but not rejected.
-- `OVERFILL` (destination above the 950 mL high limit) has no test: the model cannot
-  overfill while the controller works, and there is no injection hook for it yet.
 - Bit errors are injected in firmware (`noise`); real electrical faults (EMI, short to
   supply, GND disconnection) were not tested. Both boards also share ground through the
   PC USB, so a missing GND wire would go unnoticed on this bench. No long runs (hours),

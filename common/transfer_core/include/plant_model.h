@@ -48,12 +48,18 @@ typedef struct {
     bool fault_valve_stuck; /* valve keeps its current position */
     bool fault_pump_dead;   /* pump never runs */
     float leak_ml_s;        /* source loses liquid outside the pipe */
+    float dst_inflow_ml_s;  /* destination receives liquid from outside the transfer */
+    bool fault_dst_frozen;  /* destination level sensor reports a frozen value */
+    float dst_frozen_value;
 
     /* link supervision */
     bool armed; /* false after boot and after failsafe: run commands are ignored until the
                    controller sends a safe command (pump off, valve closed). Prevents the plant
                    from resuming a transfer on its own after a reboot or link recovery. */
     bool restarted; /* true from boot until the first arming */
+    bool have_ctl_hello;  /* a controller HELLO was received since boot */
+    bool ctl_compatible;  /* ... and it speaks PROTO_VERSION */
+    uint8_t ctl_proto_ver;
     bool failsafe;
     uint32_t last_cmd_ms;
     bool have_cmd;
@@ -66,7 +72,12 @@ typedef enum {
     PLANT_CMD_APPLIED = 0,
     PLANT_CMD_ARMED,    /* safe command received while not armed: now armed */
     PLANT_CMD_REJECTED, /* run command while not armed: ignored, actuators kept safe */
+    PLANT_CMD_NO_PEER,  /* safe command, but no compatible controller HELLO yet: stays unarmed */
 } plant_cmd_result_t;
+
+/* Record a controller HELLO. Arming requires a compatible one. Returns true if the
+ * controller's protocol version matches PROTO_VERSION. */
+bool plant_on_hello(plant_t *p, const proto_hello_t *h);
 
 /* Apply a valid CMD frame received at now_ms. */
 plant_cmd_result_t plant_on_cmd(plant_t *p, const proto_cmd_t *cmd, uint8_t seq, uint32_t now_ms);

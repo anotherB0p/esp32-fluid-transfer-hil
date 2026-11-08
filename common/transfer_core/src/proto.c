@@ -10,13 +10,15 @@ static uint8_t expected_len(uint8_t type)
     switch (type) {
     case MSG_CMD: return (uint8_t)(2u + PROTO_CMD_LEN);
     case MSG_TELEM: return (uint8_t)(2u + PROTO_TELEM_LEN);
+    case MSG_HELLO: return (uint8_t)(2u + PROTO_HELLO_LEN);
     default: return 0u;
     }
 }
 
 static bool len_is_known(uint8_t len)
 {
-    return len == expected_len(MSG_CMD) || len == expected_len(MSG_TELEM);
+    return len == expected_len(MSG_CMD) || len == expected_len(MSG_TELEM) ||
+           len == expected_len(MSG_HELLO);
 }
 
 uint16_t proto_crc16(const uint8_t *data, size_t len)
@@ -70,6 +72,26 @@ size_t proto_encode_telem(uint8_t seq, const proto_telem_t *t, uint8_t *out)
     out[12] = t->cmd_seq_ack;
     out[13] = t->flags;
     return finish_frame(out, MSG_TELEM, seq, PROTO_TELEM_LEN);
+}
+
+size_t proto_encode_hello(uint8_t seq, const proto_hello_t *h, uint8_t *out)
+{
+    out[4] = h->proto_ver;
+    out[5] = h->role;
+    put_u16(&out[6], h->boot_id);
+    put_u16(&out[8], (uint16_t)(h->fw_id & 0xFFFFu));
+    put_u16(&out[10], (uint16_t)(h->fw_id >> 16));
+    return finish_frame(out, MSG_HELLO, seq, PROTO_HELLO_LEN);
+}
+
+uint32_t proto_fnv1a(const char *s)
+{
+    uint32_t h = 2166136261u;
+    for (; *s; s++) {
+        h ^= (uint8_t)*s;
+        h *= 16777619u;
+    }
+    return h;
 }
 
 void proto_decoder_init(proto_decoder_t *d)
@@ -131,6 +153,21 @@ static bool parse_body(proto_decoder_t *d, proto_msg_t *msg)
         msg->u.telem = t;
         return true;
     }
+    case MSG_HELLO:
+        if (plen != PROTO_HELLO_LEN) {
+            d->stats.len_errors++;
+            return false;
+        }
+        if (p[1] != PROTO_ROLE_CONTROLLER && p[1] != PROTO_ROLE_PLANT) {
+            d->stats.range_errors++;
+            return false;
+        }
+        msg->type = MSG_HELLO;
+        msg->u.hello.proto_ver = p[0];
+        msg->u.hello.role = p[1];
+        msg->u.hello.boot_id = get_u16(&p[2]);
+        msg->u.hello.fw_id = (uint32_t)get_u16(&p[4]) | ((uint32_t)get_u16(&p[6]) << 16);
+        return true;
     default:
         d->stats.unknown_type++;
         return false;

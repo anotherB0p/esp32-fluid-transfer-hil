@@ -55,6 +55,8 @@ typedef enum {
     F_PLANT_NOT_ARMED,      /* plant recovered from failsafe during transfer (needs re-arming) */
     F_PLANT_RESTARTED,      /* plant reports it rebooted during transfer */
     F_CMD_NOT_ACKED,        /* telemetry flows but does not acknowledge recent commands */
+    F_PEER_INCOMPATIBLE,    /* no HELLO from the plant, or another protocol version */
+    F_SENSOR_IMPLAUSIBLE,   /* destination level jumps or stays frozen while liquid flows */
 } ctl_fault_t;
 
 typedef struct {
@@ -67,6 +69,8 @@ typedef struct {
     uint16_t flow_min_ml_s;     /* minimum acceptable flow while pumping */
     uint32_t stop_lead_ms;      /* stop early: dst + flow * lead >= target (latency + valve travel) */
     uint32_t cmd_ack_timeout_ms;/* newest acknowledged CMD must have been sent within this */
+    uint16_t dst_jump_ml;       /* max plausible destination change between two telemetry frames */
+    uint32_t dst_frozen_ms;     /* destination unchanged this long while flow >= flow_min */
 } ctl_config_t;
 
 #define CTL_SENT_RING 16u
@@ -110,6 +114,16 @@ typedef struct {
     uint32_t last_acked_sent_ms; /* send time of the newest CMD the plant acknowledged */
     ctl_rtt_t rtt;
 
+    /* peer identity from HELLO */
+    bool have_peer;
+    proto_hello_t peer;
+    uint32_t peer_reboots;
+
+    /* destination sensor plausibility */
+    bool have_prev_dst;
+    uint16_t prev_dst_ml;
+    uint32_t dst_changed_ms; /* last time the reported destination level changed */
+
     ctl_event_cb_t on_event;
     void *cb_ctx;
 } ctl_t;
@@ -124,6 +138,17 @@ void ctl_on_cmd_sent(ctl_t *c, uint8_t seq, uint32_t now_ms);
 
 /* True if a recently sent command has been acknowledged (see cmd_ack_timeout_ms). */
 bool ctl_ack_ok(const ctl_t *c, uint32_t now_ms);
+
+typedef enum {
+    CTL_HELLO_SAME = 0,
+    CTL_HELLO_FIRST,        /* first HELLO from this peer since our boot */
+    CTL_HELLO_PEER_REBOOT,  /* boot_id changed: the plant rebooted */
+    CTL_HELLO_INCOMPATIBLE, /* wrong role or protocol version */
+} ctl_hello_result_t;
+
+/* Feed a validated HELLO frame. */
+ctl_hello_result_t ctl_on_hello(ctl_t *c, const proto_hello_t *h, uint32_t now_ms);
+bool ctl_peer_ok(const ctl_t *c);
 
 /* Operator commands. Return false and set *why when refused. */
 bool ctl_start(ctl_t *c, uint16_t target_dst_ml, uint32_t now_ms, const char **why);

@@ -23,6 +23,12 @@ void link_set_noise_ppm(uint32_t ppm);
 uint32_t link_noise_ppm(void);
 uint32_t link_corrupted_bytes(void);
 
+/* Firmware identity: app version (git describe of the project, set by ESP-IDF at
+ * configure time), build date/time, IDF version; a random 16-bit id per boot. */
+const char *bench_fw_version(void);
+const char *bench_build_info(void);
+uint16_t bench_boot_id(void);
+
 /* Human-readable esp_reset_reason(). */
 const char *bench_reset_reason_str(void);
 

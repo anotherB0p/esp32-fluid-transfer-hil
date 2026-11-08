@@ -8,6 +8,7 @@
 #include "driver/uart.h"
 #include "driver/usb_serial_jtag.h"
 #include "driver/usb_serial_jtag_vfs.h"
+#include "esp_app_desc.h"
 #include "esp_err.h"
 #include "esp_random.h"
 #include "esp_system.h"
@@ -80,6 +81,32 @@ void link_write(const uint8_t *buf, size_t len)
     uart_write_bytes(LINK_UART, tmp, len);
 }
 
+const char *bench_fw_version(void)
+{
+    return esp_app_get_description()->version;
+}
+
+const char *bench_build_info(void)
+{
+    /* project_name[32] + version[32] + date[16] + time[16] + idf_ver[32] + text: fits in 160 */
+    static char buf[160];
+    if (buf[0] == '\0') {
+        const esp_app_desc_t *d = esp_app_get_description();
+        snprintf(buf, sizeof(buf), "%s %s built %s %s, IDF %s", d->project_name, d->version,
+                 d->date, d->time, d->idf_ver);
+    }
+    return buf;
+}
+
+uint16_t bench_boot_id(void)
+{
+    static uint16_t id;
+    while (id == 0u) {
+        id = (uint16_t)(esp_random() & 0xFFFFu);
+    }
+    return id;
+}
+
 const char *bench_reset_reason_str(void)
 {
     switch (esp_reset_reason()) {
@@ -111,6 +138,7 @@ void bench_wdt_feed(void)
 void console_init(void)
 {
     usb_serial_jtag_driver_config_t cfg = USB_SERIAL_JTAG_DRIVER_CONFIG_DEFAULT();
+    cfg.rx_buffer_size = 2048; /* room for long lines (OTA chunks are ~520 chars) */
     ESP_ERROR_CHECK(usb_serial_jtag_driver_install(&cfg));
     usb_serial_jtag_vfs_use_driver(); /* printf goes through the same driver */
     setvbuf(stdout, NULL, _IOLBF, 0);
@@ -118,7 +146,7 @@ void console_init(void)
 
 bool console_poll_line(char *line, size_t max)
 {
-    static char acc[96];
+    static char acc[640];
     static size_t len;
     static bool overflow;
     uint8_t c;

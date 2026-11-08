@@ -22,4 +22,11 @@ void fault_log_record(uint8_t cause, const char *cause_name, const char *detail,
 void fault_log_print(void);
 void fault_log_clear(void);
 
+/* Black box: hand over a completed capture (copied; non-blocking, dropped if the previous
+ * one is still being written). The writer task stores it in NVS and prints it. */
+#include "blackbox.h"
+void fault_log_save_blackbox(const blackbox_t *bb, const char *cause_name);
+/* Print the last stored black box (survives reboots). */
+void fault_log_print_blackbox(void);
+
 #endif

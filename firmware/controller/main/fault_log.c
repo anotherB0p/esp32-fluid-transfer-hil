@@ -24,6 +24,18 @@ typedef struct {
     fault_rec_t rec[FAULT_LOG_LEN];
 } fault_store_t;
 
+typedef struct {
+    uint32_t boot;
+    uint32_t trigger_ms;
+    uint32_t count;
+    char cause_name[20];
+    bb_sample_t s[BB_LEN];
+} bb_store_t;
+
+static bb_store_t s_bb_pending_data; /* filled by the control task, read by the writer */
+static volatile bool s_bb_pending;
+static uint32_t s_bb_dropped;
+
 static uint32_t s_boot;
 static QueueHandle_t s_q;
 static uint32_t s_dropped;
@@ -53,12 +65,51 @@ static esp_err_t save(void)
     return err;
 }
 
+static const char *st_name(uint8_t s)
+{
+    static const char *n[] = {"IDLE", "CHECK", "TRANSFER", "COMPLETE", "FAULT"};
+    return s < 5 ? n[s] : "?";
+}
+
+static const char *ph_name(uint8_t p)
+{
+    static const char *n[] = {"-", "OPEN_VALVE", "PUMPING", "STOPPING"};
+    return p < 4 ? n[p] : "?";
+}
+
+static void print_bb(const bb_store_t *b, const char *origin)
+{
+    printf("BLACKBOX %s boot=%lu cause=%s trigger_t=%lu samples=%lu (dt relative to the fault)\n",
+           origin, (unsigned long)b->boot, b->cause_name, (unsigned long)b->trigger_ms,
+           (unsigned long)b->count);
+    for (uint32_t i = 0; i < b->count && i < BB_LEN; i++) {
+        const bb_sample_t *s = &b->s[i];
+        printf("BB dt=%+6ld %-8s %-10s pump=%u/%u valve=%u/%u src=%u dst=%u flow=%u flags=0x%02x "
+               "age=%u\n",
+               (long)((int32_t)(s->t_ms - b->trigger_ms)), st_name(s->state), ph_name(s->phase),
+               (s->io & BB_IO_PUMP_CMD) ? 1 : 0, (s->io & BB_IO_PUMP_ACT) ? 1 : 0,
+               (s->io & BB_IO_VALVE_CMD) ? 1 : 0, (s->io & BB_IO_VALVE_ACT) ? 1 : 0, s->src_ml,
+               s->dst_ml, s->flow_ml_s, s->flags, s->link_age_ms);
+    }
+    printf("BLACKBOX end (pump/valve shown as commanded/actual)\n");
+}
+
+static void save_bb(const bb_store_t *b)
+{
+    nvs_handle_t h;
+    if (!s_nvs_ok || nvs_open(NS, NVS_READWRITE, &h) != ESP_OK) return;
+    if (nvs_set_blob(h, "bbox", b, sizeof(*b)) == ESP_OK) {
+        nvs_commit(h);
+    }
+    nvs_close(h);
+}
+
 static void writer_task(void *arg)
 {
     (void)arg;
     fault_rec_t r;
     for (;;) {
-        if (xQueueReceive(s_q, &r, portMAX_DELAY) == pdTRUE) {
+        if (xQueueReceive(s_q, &r, pdMS_TO_TICKS(50)) == pdTRUE) {
             s_store.rec[s_store.next % FAULT_LOG_LEN] = r;
             s_store.next++;
             const esp_err_t err = s_nvs_ok ? save() : ESP_ERR_INVALID_STATE;
@@ -66,7 +117,46 @@ static void writer_task(void *arg)
                 printf("WARN fault log: NVS write failed (%s)\n", esp_err_to_name(err));
             }
         }
+        if (s_bb_pending) {
+            save_bb(&s_bb_pending_data);
+            print_bb(&s_bb_pending_data, "captured");
+            s_bb_pending = false;
+        }
     }
+}
+
+void fault_log_save_blackbox(const blackbox_t *bb, const char *cause_name)
+{
+    if (s_bb_pending) {
+        s_bb_dropped++;
+        return;
+    }
+    s_bb_pending_data.boot = s_boot;
+    s_bb_pending_data.trigger_ms = bb->trigger_ms;
+    s_bb_pending_data.count = bb_count(bb);
+    snprintf(s_bb_pending_data.cause_name, sizeof(s_bb_pending_data.cause_name), "%s", cause_name);
+    for (uint32_t i = 0; i < s_bb_pending_data.count; i++) {
+        s_bb_pending_data.s[i] = *bb_at(bb, i);
+    }
+    s_bb_pending = true;
+}
+
+void fault_log_print_blackbox(void)
+{
+    static bb_store_t b; /* static: too large for the console task stack */
+    nvs_handle_t h;
+    size_t sz = sizeof(b);
+    if (!s_nvs_ok || nvs_open(NS, NVS_READONLY, &h) != ESP_OK) {
+        printf("BLACKBOX none stored\n");
+        return;
+    }
+    const esp_err_t err = nvs_get_blob(h, "bbox", &b, &sz);
+    nvs_close(h);
+    if (err != ESP_OK || sz != sizeof(b)) {
+        printf("BLACKBOX none stored\n");
+        return;
+    }
+    print_bb(&b, "stored");
 }
 
 uint32_t fault_log_init(void)

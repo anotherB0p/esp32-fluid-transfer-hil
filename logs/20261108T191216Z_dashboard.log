@@ -1,0 +1,722 @@
+[    0.005] bench --> ctl: stream on
+[    0.068] ctl   > stream on
+[    0.068] ctl   EVT t=10925 telemetry stream ON
+[    0.102] ctl   TLM t=11005 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    0.102] ctl   STAT t=11005 state=IDLE phase=- fault=NONE target=0 | src=636 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=0 rx_ok=132 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[    0.102] ctl   STAT peer OK proto=v2 boot_id=20cd fw_id=f22121de reboots_seen=0 | self fw=d719168-dirty boot_id=33c9 proto=v2
+[    0.163] ctl   STAT diag boot=17 cmd_ack=OK rtt_ms last=100 min=100 avg=100 max=100 n=109 tx_noise_ppm=0 tx_corrupted=0
+[    0.226] ctl   TLM t=11105 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    0.352] ctl   TLM t=11205 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    0.414] ctl   TLM t=11305 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    0.446] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=d719168-dirty boot_id=20cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[    0.446] plant STAT t=147007 src=635.7 dst=100.0 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=80 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1726 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=3 tx_noise_ppm=0 tx_corrupted=0
+[    0.539] ctl   TLM t=11405 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    0.601] ctl   TLM t=11505 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    0.725] ctl   TLM t=11605 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    0.850] ctl   TLM t=11705 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    0.912] ctl   TLM t=11805 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    1.035] ctl   TLM t=11905 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    1.099] ctl   TLM t=12005 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    1.160] ctl   STAT t=12005 state=IDLE phase=- fault=NONE target=0 | src=636 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=0 rx_ok=144 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[    1.161] ctl   STAT peer OK proto=v2 boot_id=20cd fw_id=f22121de reboots_seen=0 | self fw=d719168-dirty boot_id=33c9 proto=v2
+[    1.161] ctl   STAT diag boot=17 cmd_ack=OK rtt_ms last=100 min=100 avg=100 max=100 n=119 tx_noise_ppm=0 tx_corrupted=0
+[    1.223] ctl   TLM t=12105 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    1.348] ctl   TLM t=12205 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    1.410] ctl   TLM t=12305 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    1.441] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=d719168-dirty boot_id=20cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[    1.442] plant STAT t=148007 src=635.7 dst=100.0 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=80 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1738 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=3 tx_noise_ppm=0 tx_corrupted=0
+[    1.536] ctl   TLM t=12405 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    1.599] ctl   TLM t=12505 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    1.724] ctl   TLM t=12605 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    1.849] ctl   TLM t=12705 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    1.912] ctl   TLM t=12805 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    2.020] ctl   TLM t=12905 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    2.020] ctl   > status
+[    2.021] ctl   STAT t=12925 state=IDLE phase=- fault=NONE target=0 | src=636 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=20 rx_ok=155 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[    2.021] ctl   STAT peer OK proto=v2 boot_id=20cd fw_id=f22121de reboots_seen=0 | self fw=d719168-dirty boot_id=33c9 proto=v2
+[    2.069] plant > status
+[    2.069] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=d719168-dirty boot_id=20cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[    2.069] plant STAT t=148637 src=635.7 dst=100.0 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=10 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1746 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=3 tx_noise_ppm=0 tx_corrupted=0
+[    2.084] ctl   STAT diag boot=17 cmd_ack=OK rtt_ms last=100 min=100 avg=100 max=100 n=128 tx_noise_ppm=0 tx_corrupted=0
+[    2.102] ctl   TLM t=13005 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    2.102] ctl   STAT t=13005 state=IDLE phase=- fault=NONE target=0 | src=636 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=0 rx_ok=156 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[    2.102] ctl   STAT peer OK proto=v2 boot_id=20cd fw_id=f22121de reboots_seen=0 | self fw=d719168-dirty boot_id=33c9 proto=v2
+[    2.161] ctl   STAT diag boot=17 cmd_ack=OK rtt_ms last=100 min=100 avg=100 max=100 n=129 tx_noise_ppm=0 tx_corrupted=0
+[    2.224] ctl   TLM t=13105 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    2.350] ctl   TLM t=13205 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    2.411] ctl   TLM t=13305 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    2.442] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=d719168-dirty boot_id=20cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[    2.442] plant STAT t=149007 src=635.7 dst=100.0 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=80 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1750 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=3 tx_noise_ppm=0 tx_corrupted=0
+[    2.536] ctl   TLM t=13405 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    2.599] ctl   TLM t=13505 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    2.723] ctl   TLM t=13605 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    2.848] ctl   TLM t=13705 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    2.910] ctl   TLM t=13805 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    3.037] ctl   TLM t=13905 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    3.098] ctl   TLM t=14005 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    3.161] ctl   STAT t=14005 state=IDLE phase=- fault=NONE target=0 | src=636 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=0 rx_ok=168 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[    3.161] ctl   STAT peer OK proto=v2 boot_id=20cd fw_id=f22121de reboots_seen=0 | self fw=d719168-dirty boot_id=33c9 proto=v2
+[    3.162] ctl   STAT diag boot=17 cmd_ack=OK rtt_ms last=100 min=100 avg=100 max=100 n=139 tx_noise_ppm=0 tx_corrupted=0
+[    3.223] ctl   TLM t=14105 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    3.347] ctl   TLM t=14205 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    3.410] ctl   TLM t=14305 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    3.441] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=d719168-dirty boot_id=20cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[    3.442] plant STAT t=150007 src=635.7 dst=100.0 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=80 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1762 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=3 tx_noise_ppm=0 tx_corrupted=0
+[    3.534] ctl   TLM t=14405 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    3.660] ctl   TLM t=14505 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    3.722] ctl   TLM t=14605 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    3.848] ctl   TLM t=14705 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    3.910] ctl   TLM t=14805 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    4.020] ctl   TLM t=14905 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    4.020] ctl   > status
+[    4.020] ctl   STAT t=14925 state=IDLE phase=- fault=NONE target=0 | src=636 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=20 rx_ok=179 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[    4.020] ctl   STAT peer OK proto=v2 boot_id=20cd fw_id=f22121de reboots_seen=0 | self fw=d719168-dirty boot_id=33c9 proto=v2
+[    4.067] plant > status
+[    4.067] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=d719168-dirty boot_id=20cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[    4.067] plant STAT t=150637 src=635.7 dst=100.0 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=10 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1770 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=3 tx_noise_ppm=0 tx_corrupted=0
+[    4.083] ctl   STAT diag boot=17 cmd_ack=OK rtt_ms last=100 min=100 avg=100 max=100 n=148 tx_noise_ppm=0 tx_corrupted=0
+[    4.102] ctl   TLM t=15005 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    4.102] ctl   STAT t=15005 state=IDLE phase=- fault=NONE target=0 | src=636 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=0 rx_ok=180 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[    4.102] ctl   STAT peer OK proto=v2 boot_id=20cd fw_id=f22121de reboots_seen=0 | self fw=d719168-dirty boot_id=33c9 proto=v2
+[    4.162] ctl   STAT diag boot=17 cmd_ack=OK rtt_ms last=100 min=100 avg=100 max=100 n=149 tx_noise_ppm=0 tx_corrupted=0
+[    4.224] ctl   TLM t=15105 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    4.349] ctl   TLM t=15205 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    4.410] ctl   TLM t=15305 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    4.441] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=d719168-dirty boot_id=20cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[    4.441] plant STAT t=151007 src=635.7 dst=100.0 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=80 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1774 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=3 tx_noise_ppm=0 tx_corrupted=0
+[    4.533] ctl   TLM t=15405 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    4.656] ctl   TLM t=15505 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    4.719] ctl   TLM t=15605 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    4.845] ctl   TLM t=15705 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    4.907] ctl   TLM t=15805 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    5.034] ctl   TLM t=15905 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    5.097] ctl   TLM t=16005 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    5.159] ctl   STAT t=16005 state=IDLE phase=- fault=NONE target=0 | src=636 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=0 rx_ok=192 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[    5.159] ctl   STAT peer OK proto=v2 boot_id=20cd fw_id=f22121de reboots_seen=0 | self fw=d719168-dirty boot_id=33c9 proto=v2
+[    5.159] ctl   STAT diag boot=17 cmd_ack=OK rtt_ms last=100 min=100 avg=100 max=100 n=159 tx_noise_ppm=0 tx_corrupted=0
+[    5.220] ctl   TLM t=16105 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    5.344] ctl   TLM t=16205 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    5.407] ctl   TLM t=16305 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    5.438] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=d719168-dirty boot_id=20cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[    5.438] plant STAT t=152007 src=635.7 dst=100.0 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=80 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1786 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=3 tx_noise_ppm=0 tx_corrupted=0
+[    5.532] ctl   TLM t=16405 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    5.657] ctl   TLM t=16505 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    5.718] ctl   TLM t=16605 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    5.844] ctl   TLM t=16705 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    5.903] ctl   TLM t=16805 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    6.020] ctl   TLM t=16905 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    6.020] ctl   > status
+[    6.020] ctl   STAT t=16925 state=IDLE phase=- fault=NONE target=0 | src=636 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=20 rx_ok=203 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[    6.020] ctl   STAT peer OK proto=v2 boot_id=20cd fw_id=f22121de reboots_seen=0 | self fw=d719168-dirty boot_id=33c9 proto=v2
+[    6.058] plant > status
+[    6.058] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=d719168-dirty boot_id=20cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[    6.058] plant STAT t=152637 src=635.7 dst=100.0 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=10 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1794 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=3 tx_noise_ppm=0 tx_corrupted=0
+[    6.073] ctl   STAT diag boot=17 cmd_ack=OK rtt_ms last=100 min=100 avg=100 max=100 n=168 tx_noise_ppm=0 tx_corrupted=0
+[    6.102] ctl   TLM t=17005 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    6.102] ctl   STAT t=17005 state=IDLE phase=- fault=NONE target=0 | src=636 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=0 rx_ok=204 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[    6.102] ctl   STAT peer OK proto=v2 boot_id=20cd fw_id=f22121de reboots_seen=0 | self fw=d719168-dirty boot_id=33c9 proto=v2
+[    6.152] ctl   STAT diag boot=17 cmd_ack=OK rtt_ms last=100 min=100 avg=100 max=100 n=169 tx_noise_ppm=0 tx_corrupted=0
+[    6.216] ctl   TLM t=17105 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    6.338] ctl   TLM t=17205 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    6.400] ctl   TLM t=17305 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    6.431] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=d719168-dirty boot_id=20cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[    6.432] plant STAT t=153007 src=635.7 dst=100.0 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=80 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1798 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=3 tx_noise_ppm=0 tx_corrupted=0
+[    6.524] ctl   TLM t=17405 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    6.651] ctl   TLM t=17505 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    6.713] ctl   TLM t=17605 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    6.837] ctl   TLM t=17705 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    6.900] ctl   TLM t=17805 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    7.026] ctl   TLM t=17905 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    7.102] ctl   TLM t=18005 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    7.102] ctl   STAT t=18005 state=IDLE phase=- fault=NONE target=0 | src=636 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=0 rx_ok=216 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[    7.102] ctl   STAT peer OK proto=v2 boot_id=20cd fw_id=f22121de reboots_seen=0 | self fw=d719168-dirty boot_id=33c9 proto=v2
+[    7.166] ctl   STAT diag boot=17 cmd_ack=OK rtt_ms last=100 min=100 avg=100 max=100 n=179 tx_noise_ppm=0 tx_corrupted=0
+[    7.228] ctl   TLM t=18105 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    7.353] ctl   TLM t=18205 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    7.416] ctl   TLM t=18305 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    7.432] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=d719168-dirty boot_id=20cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[    7.432] plant STAT t=154007 src=635.7 dst=100.0 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=80 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1810 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=3 tx_noise_ppm=0 tx_corrupted=0
+[    7.542] ctl   TLM t=18405 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    7.605] ctl   TLM t=18505 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    7.729] ctl   TLM t=18605 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    7.854] ctl   TLM t=18705 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    7.917] ctl   TLM t=18805 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    8.020] ctl   TLM t=18905 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    8.021] ctl   > status
+[    8.021] ctl   STAT t=18925 state=IDLE phase=- fault=NONE target=0 | src=636 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=20 rx_ok=227 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[    8.021] ctl   STAT peer OK proto=v2 boot_id=20cd fw_id=f22121de reboots_seen=0 | self fw=d719168-dirty boot_id=33c9 proto=v2
+[    8.057] plant > status
+[    8.057] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=d719168-dirty boot_id=20cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[    8.057] plant STAT t=154637 src=635.7 dst=100.0 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=10 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1818 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=3 tx_noise_ppm=0 tx_corrupted=0
+[    8.072] ctl   STAT diag boot=17 cmd_ack=OK rtt_ms last=100 min=100 avg=100 max=100 n=188 tx_noise_ppm=0 tx_corrupted=0
+[    8.102] ctl   TLM t=19005 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    8.102] ctl   STAT t=19005 state=IDLE phase=- fault=NONE target=0 | src=636 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=0 rx_ok=228 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[    8.102] ctl   STAT peer OK proto=v2 boot_id=20cd fw_id=f22121de reboots_seen=0 | self fw=d719168-dirty boot_id=33c9 proto=v2
+[    8.166] ctl   STAT diag boot=17 cmd_ack=OK rtt_ms last=100 min=100 avg=100 max=100 n=189 tx_noise_ppm=0 tx_corrupted=0
+[    8.227] ctl   TLM t=19105 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    8.350] ctl   TLM t=19205 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    8.414] ctl   TLM t=19305 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    8.429] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=d719168-dirty boot_id=20cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[    8.429] plant STAT t=155007 src=635.7 dst=100.0 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=80 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1822 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=3 tx_noise_ppm=0 tx_corrupted=0
+[    8.539] ctl   TLM t=19405 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    8.601] ctl   TLM t=19505 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    8.726] ctl   TLM t=19605 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    8.850] ctl   TLM t=19705 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    8.912] ctl   TLM t=19805 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    9.037] ctl   TLM t=19905 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    9.099] ctl   TLM t=20005 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    9.160] ctl   STAT t=20005 state=IDLE phase=- fault=NONE target=0 | src=636 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=0 rx_ok=240 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[    9.161] ctl   STAT peer OK proto=v2 boot_id=20cd fw_id=f22121de reboots_seen=0 | self fw=d719168-dirty boot_id=33c9 proto=v2
+[    9.161] ctl   STAT diag boot=17 cmd_ack=OK rtt_ms last=100 min=100 avg=100 max=100 n=199 tx_noise_ppm=0 tx_corrupted=0
+[    9.223] ctl   TLM t=20105 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    9.353] ctl   TLM t=20205 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    9.412] ctl   TLM t=20305 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    9.428] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=d719168-dirty boot_id=20cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[    9.428] plant STAT t=156007 src=635.7 dst=100.0 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=80 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1834 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=3 tx_noise_ppm=0 tx_corrupted=0
+[    9.538] ctl   TLM t=20405 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    9.599] ctl   TLM t=20505 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    9.725] ctl   TLM t=20605 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    9.841] ctl   TLM t=20705 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[    9.904] ctl   TLM t=20805 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   10.020] ctl   TLM t=20905 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   10.021] ctl   > status
+[   10.021] ctl   STAT t=20925 state=IDLE phase=- fault=NONE target=0 | src=636 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=20 rx_ok=251 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   10.021] ctl   STAT peer OK proto=v2 boot_id=20cd fw_id=f22121de reboots_seen=0 | self fw=d719168-dirty boot_id=33c9 proto=v2
+[   10.046] plant > status
+[   10.046] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=d719168-dirty boot_id=20cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[   10.046] plant STAT t=156637 src=635.7 dst=100.0 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=10 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1842 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=3 tx_noise_ppm=0 tx_corrupted=0
+[   10.078] ctl   STAT diag boot=17 cmd_ack=OK rtt_ms last=100 min=100 avg=100 max=100 n=208 tx_noise_ppm=0 tx_corrupted=0
+[   10.102] ctl   TLM t=21005 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   10.102] ctl   STAT t=21005 state=IDLE phase=- fault=NONE target=0 | src=636 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=0 rx_ok=252 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   10.102] ctl   STAT peer OK proto=v2 boot_id=20cd fw_id=f22121de reboots_seen=0 | self fw=d719168-dirty boot_id=33c9 proto=v2
+[   10.155] ctl   STAT diag boot=17 cmd_ack=OK rtt_ms last=100 min=100 avg=100 max=100 n=209 tx_noise_ppm=0 tx_corrupted=0
+[   10.217] ctl   TLM t=21105 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   10.343] ctl   TLM t=21205 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   10.406] ctl   TLM t=21305 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   10.422] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=d719168-dirty boot_id=20cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[   10.422] plant STAT t=157007 src=635.7 dst=100.0 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=80 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1846 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=3 tx_noise_ppm=0 tx_corrupted=0
+[   10.532] ctl   TLM t=21405 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   10.656] ctl   TLM t=21505 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   10.719] ctl   TLM t=21605 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   10.843] ctl   TLM t=21705 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   10.905] ctl   TLM t=21805 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   11.029] ctl   TLM t=21905 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   11.102] ctl   TLM t=22005 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   11.102] ctl   STAT t=22005 state=IDLE phase=- fault=NONE target=0 | src=636 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=0 rx_ok=264 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   11.102] ctl   STAT peer OK proto=v2 boot_id=20cd fw_id=f22121de reboots_seen=0 | self fw=d719168-dirty boot_id=33c9 proto=v2
+[   11.155] ctl   STAT diag boot=17 cmd_ack=OK rtt_ms last=100 min=100 avg=100 max=100 n=219 tx_noise_ppm=0 tx_corrupted=0
+[   11.217] ctl   TLM t=22105 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   11.343] ctl   TLM t=22205 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   11.405] ctl   TLM t=22305 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   11.420] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=d719168-dirty boot_id=20cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[   11.421] plant STAT t=158007 src=635.7 dst=100.0 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=80 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1858 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=3 tx_noise_ppm=0 tx_corrupted=0
+[   11.529] ctl   TLM t=22405 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   11.653] ctl   TLM t=22505 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   11.715] ctl   TLM t=22605 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   11.839] ctl   TLM t=22705 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   11.901] ctl   TLM t=22805 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   12.020] ctl   TLM t=22905 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   12.021] ctl   > status
+[   12.021] ctl   STAT t=22925 state=IDLE phase=- fault=NONE target=0 | src=636 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=20 rx_ok=275 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   12.021] ctl   STAT peer OK proto=v2 boot_id=20cd fw_id=f22121de reboots_seen=0 | self fw=d719168-dirty boot_id=33c9 proto=v2
+[   12.040] plant > status
+[   12.041] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=d719168-dirty boot_id=20cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[   12.041] plant STAT t=158637 src=635.7 dst=100.0 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=10 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1866 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=3 tx_noise_ppm=0 tx_corrupted=0
+[   12.072] ctl   STAT diag boot=17 cmd_ack=OK rtt_ms last=100 min=100 avg=100 max=100 n=228 tx_noise_ppm=0 tx_corrupted=0
+[   12.102] ctl   TLM t=23005 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   12.102] ctl   STAT t=23005 state=IDLE phase=- fault=NONE target=0 | src=636 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=0 rx_ok=276 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   12.102] ctl   STAT peer OK proto=v2 boot_id=20cd fw_id=f22121de reboots_seen=0 | self fw=d719168-dirty boot_id=33c9 proto=v2
+[   12.165] ctl   STAT diag boot=17 cmd_ack=OK rtt_ms last=100 min=100 avg=100 max=100 n=229 tx_noise_ppm=0 tx_corrupted=0
+[   12.228] ctl   TLM t=23105 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   12.353] ctl   TLM t=23205 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   12.416] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=d719168-dirty boot_id=20cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[   12.416] plant STAT t=159007 src=635.7 dst=100.0 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=80 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1870 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=3 tx_noise_ppm=0 tx_corrupted=0
+[   12.416] ctl   TLM t=23305 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   12.541] ctl   TLM t=23405 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   12.603] ctl   TLM t=23505 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   12.728] ctl   TLM t=23605 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   12.853] ctl   TLM t=23705 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   12.915] ctl   TLM t=23805 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   13.041] ctl   TLM t=23905 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   13.102] ctl   TLM t=24005 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   13.102] ctl   STAT t=24005 state=IDLE phase=- fault=NONE target=0 | src=636 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=0 rx_ok=288 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   13.103] ctl   STAT peer OK proto=v2 boot_id=20cd fw_id=f22121de reboots_seen=0 | self fw=d719168-dirty boot_id=33c9 proto=v2
+[   13.163] ctl   STAT diag boot=17 cmd_ack=OK rtt_ms last=100 min=100 avg=100 max=100 n=239 tx_noise_ppm=0 tx_corrupted=0
+[   13.226] ctl   TLM t=24105 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   13.350] ctl   TLM t=24205 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   13.411] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=d719168-dirty boot_id=20cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[   13.412] ctl   TLM t=24305 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   13.412] plant STAT t=160007 src=635.7 dst=100.0 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=80 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1882 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=3 tx_noise_ppm=0 tx_corrupted=0
+[   13.537] ctl   TLM t=24405 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   13.599] ctl   TLM t=24505 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   13.723] ctl   TLM t=24605 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   13.847] ctl   TLM t=24705 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   13.910] ctl   TLM t=24805 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   14.020] ctl   TLM t=24905 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   14.021] ctl   > status
+[   14.021] ctl   STAT t=24925 state=IDLE phase=- fault=NONE target=0 | src=636 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=20 rx_ok=299 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   14.021] ctl   STAT peer OK proto=v2 boot_id=20cd fw_id=f22121de reboots_seen=0 | self fw=d719168-dirty boot_id=33c9 proto=v2
+[   14.035] plant > status
+[   14.035] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=d719168-dirty boot_id=20cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[   14.035] plant STAT t=160637 src=635.7 dst=100.0 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=10 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1890 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=3 tx_noise_ppm=0 tx_corrupted=0
+[   14.082] ctl   STAT diag boot=17 cmd_ack=OK rtt_ms last=100 min=100 avg=100 max=100 n=248 tx_noise_ppm=0 tx_corrupted=0
+[   14.102] ctl   TLM t=25005 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   14.102] ctl   STAT t=25005 state=IDLE phase=- fault=NONE target=0 | src=636 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=0 rx_ok=300 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   14.102] ctl   STAT peer OK proto=v2 boot_id=20cd fw_id=f22121de reboots_seen=0 | self fw=d719168-dirty boot_id=33c9 proto=v2
+[   14.160] ctl   STAT diag boot=17 cmd_ack=OK rtt_ms last=100 min=100 avg=100 max=100 n=249 tx_noise_ppm=0 tx_corrupted=0
+[   14.222] ctl   TLM t=25105 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   14.348] ctl   TLM t=25205 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   14.410] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=d719168-dirty boot_id=20cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[   14.411] ctl   TLM t=25305 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   14.411] plant STAT t=161007 src=635.7 dst=100.0 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=80 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1894 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=3 tx_noise_ppm=0 tx_corrupted=0
+[   14.534] ctl   TLM t=25405 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   14.658] ctl   TLM t=25505 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   14.721] ctl   TLM t=25605 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   14.845] ctl   TLM t=25705 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   14.908] ctl   TLM t=25805 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   15.033] ctl   TLM t=25905 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   15.102] ctl   TLM t=26005 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   15.102] ctl   STAT t=26005 state=IDLE phase=- fault=NONE target=0 | src=636 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=0 rx_ok=312 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   15.102] ctl   STAT peer OK proto=v2 boot_id=20cd fw_id=f22121de reboots_seen=0 | self fw=d719168-dirty boot_id=33c9 proto=v2
+[   15.157] ctl   STAT diag boot=17 cmd_ack=OK rtt_ms last=100 min=100 avg=100 max=100 n=259 tx_noise_ppm=0 tx_corrupted=0
+[   15.211] ctl   TLM t=26105 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   15.336] ctl   TLM t=26205 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   15.398] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=d719168-dirty boot_id=20cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[   15.399] plant STAT t=162007 src=635.7 dst=100.0 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=80 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1906 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=3 tx_noise_ppm=0 tx_corrupted=0
+[   15.399] ctl   TLM t=26305 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   15.522] ctl   TLM t=26405 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   15.646] ctl   TLM t=26505 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   15.707] ctl   TLM t=26605 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   15.831] ctl   TLM t=26705 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   15.956] ctl   TLM t=26805 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   16.019] ctl   TLM t=26905 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   16.019] plant > status
+[   16.020] ctl   > status
+[   16.020] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=d719168-dirty boot_id=20cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[   16.020] ctl   STAT t=26925 state=IDLE phase=- fault=NONE target=0 | src=636 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=20 rx_ok=323 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   16.021] plant STAT t=162637 src=635.7 dst=100.0 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=10 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1914 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=3 tx_noise_ppm=0 tx_corrupted=0
+[   16.080] ctl   STAT peer OK proto=v2 boot_id=20cd fw_id=f22121de reboots_seen=0 | self fw=d719168-dirty boot_id=33c9 proto=v2
+[   16.081] ctl   STAT diag boot=17 cmd_ack=OK rtt_ms last=100 min=100 avg=100 max=100 n=268 tx_noise_ppm=0 tx_corrupted=0
+[   16.102] ctl   TLM t=27005 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   16.102] ctl   STAT t=27005 state=IDLE phase=- fault=NONE target=0 | src=636 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=0 rx_ok=324 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   16.102] ctl   STAT peer OK proto=v2 boot_id=20cd fw_id=f22121de reboots_seen=0 | self fw=d719168-dirty boot_id=33c9 proto=v2
+[   16.159] ctl   STAT diag boot=17 cmd_ack=OK rtt_ms last=100 min=100 avg=100 max=100 n=269 tx_noise_ppm=0 tx_corrupted=0
+[   16.221] ctl   TLM t=27105 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   16.340] ctl   TLM t=27205 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   16.388] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=d719168-dirty boot_id=20cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[   16.403] ctl   TLM t=27305 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   16.450] plant STAT t=163007 src=635.7 dst=100.0 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=80 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1918 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=3 tx_noise_ppm=0 tx_corrupted=0
+[   16.528] ctl   TLM t=27405 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   16.651] ctl   TLM t=27505 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   16.712] ctl   TLM t=27605 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   16.836] ctl   TLM t=27705 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   16.899] ctl   TLM t=27805 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   17.025] ctl   TLM t=27905 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   17.102] ctl   TLM t=28005 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   17.102] ctl   STAT t=28005 state=IDLE phase=- fault=NONE target=0 | src=636 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=0 rx_ok=336 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   17.103] ctl   STAT peer OK proto=v2 boot_id=20cd fw_id=f22121de reboots_seen=0 | self fw=d719168-dirty boot_id=33c9 proto=v2
+[   17.166] ctl   STAT diag boot=17 cmd_ack=OK rtt_ms last=100 min=100 avg=100 max=100 n=279 tx_noise_ppm=0 tx_corrupted=0
+[   17.227] ctl   TLM t=28105 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   17.353] ctl   TLM t=28205 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   17.415] ctl   TLM t=28305 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   17.447] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=d719168-dirty boot_id=20cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[   17.447] plant STAT t=164007 src=635.7 dst=100.0 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=80 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1930 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=3 tx_noise_ppm=0 tx_corrupted=0
+[   17.539] ctl   TLM t=28405 st=IDLE ph=- fault=NONE tgt=0 src=636 dst=100 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   17.556] bench --> ctl: start 500
+[   17.602] ctl   > start 500
+[   17.602] ctl   EVT t=28476 IDLE -> CHECK : start requested
+[   17.602] ctl   EVT t=28476 CHECK -> TRANSFER phase=OPEN_VALVE : CHECK ok: src 636 dst 100 target 500 mL
+[   17.602] ctl   TLM t=28505 st=TRANSFER ph=OPEN_VALVE fault=NONE tgt=500 src=636 dst=100 flow=0 pc=0 pa=0 vc=1 va=0 fl=0 age=0 ack=1 rtt=100
+[   17.728] ctl   TLM t=28605 st=TRANSFER ph=OPEN_VALVE fault=NONE tgt=500 src=636 dst=100 flow=0 pc=0 pa=0 vc=1 va=0 fl=0 age=0 ack=1 rtt=100
+[   17.851] ctl   TLM t=28705 st=TRANSFER ph=OPEN_VALVE fault=NONE tgt=500 src=636 dst=100 flow=0 pc=0 pa=0 vc=1 va=0 fl=0 age=0 ack=1 rtt=100
+[   17.913] ctl   EVT t=28806 TRANSFER phase=PUMPING : valve open confirmed after 330 ms
+[   17.913] ctl   TLM t=28805 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=636 dst=100 flow=0 pc=1 pa=0 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   18.020] ctl   TLM t=28905 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=634 dst=102 flow=15 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   18.020] ctl   > status
+[   18.021] ctl   STAT t=28925 state=TRANSFER phase=PUMPING fault=NONE target=500 | src=634 dst=102 flow=15 valve cmd=1 act=1 pump cmd=1 act=1 plant_failsafe=0 | link=OK age=20 rx_ok=347 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   18.021] ctl   STAT peer OK proto=v2 boot_id=20cd fw_id=f22121de reboots_seen=0 | self fw=d719168-dirty boot_id=33c9 proto=v2
+[   18.070] plant > status
+[   18.070] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=d719168-dirty boot_id=20cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[   18.070] plant STAT t=164637 src=634.2 dst=101.5 flow=15.0 | pump cmd=1 act=1 valve cmd=1 act=1 | failsafe=0 armed=1 cmd_age=10 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1938 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=3 tx_noise_ppm=0 tx_corrupted=0
+[   18.086] ctl   STAT diag boot=17 cmd_ack=OK rtt_ms last=100 min=100 avg=100 max=100 n=288 tx_noise_ppm=0 tx_corrupted=0
+[   18.102] ctl   TLM t=29005 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=632 dst=104 flow=26 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   18.102] ctl   STAT t=29005 state=TRANSFER phase=PUMPING fault=NONE target=500 | src=632 dst=104 flow=26 valve cmd=1 act=1 pump cmd=1 act=1 plant_failsafe=0 | link=OK age=0 rx_ok=348 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   18.103] ctl   STAT peer OK proto=v2 boot_id=20cd fw_id=f22121de reboots_seen=0 | self fw=d719168-dirty boot_id=33c9 proto=v2
+[   18.163] ctl   STAT diag boot=17 cmd_ack=OK rtt_ms last=100 min=100 avg=100 max=100 n=289 tx_noise_ppm=0 tx_corrupted=0
+[   18.225] ctl   TLM t=29105 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=628 dst=107 flow=33 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   18.349] ctl   TLM t=29205 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=625 dst=111 flow=38 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   18.410] ctl   TLM t=29305 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=620 dst=115 flow=42 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   18.442] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=d719168-dirty boot_id=20cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[   18.442] plant STAT t=165007 src=620.4 dst=115.3 flow=41.6 | pump cmd=1 act=1 valve cmd=1 act=1 | failsafe=0 armed=1 cmd_age=80 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1942 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=3 tx_noise_ppm=0 tx_corrupted=0
+[   18.536] ctl   TLM t=29405 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=616 dst=120 flow=44 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   18.599] ctl   TLM t=29505 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=611 dst=124 flow=46 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   18.724] ctl   TLM t=29605 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=607 dst=129 flow=47 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   18.851] ctl   TLM t=29705 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=602 dst=134 flow=48 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   18.912] ctl   TLM t=29805 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=597 dst=139 flow=49 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   19.038] ctl   TLM t=29905 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=592 dst=144 flow=49 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   19.100] ctl   TLM t=30005 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=587 dst=148 flow=49 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   19.100] ctl   STAT t=30005 state=TRANSFER phase=PUMPING fault=NONE target=500 | src=587 dst=148 flow=49 valve cmd=1 act=1 pump cmd=1 act=1 plant_failsafe=0 | link=OK age=0 rx_ok=360 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   19.162] ctl   STAT peer OK proto=v2 boot_id=20cd fw_id=f22121de reboots_seen=0 | self fw=d719168-dirty boot_id=33c9 proto=v2
+[   19.163] ctl   STAT diag boot=17 cmd_ack=OK rtt_ms last=100 min=100 avg=100 max=100 n=299 tx_noise_ppm=0 tx_corrupted=0
+[   19.224] ctl   TLM t=30105 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=582 dst=153 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   19.347] ctl   TLM t=30205 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=577 dst=158 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   19.411] ctl   TLM t=30305 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=572 dst=163 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   19.442] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=d719168-dirty boot_id=20cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[   19.442] plant STAT t=166007 src=572.3 dst=163.4 flow=49.8 | pump cmd=1 act=1 valve cmd=1 act=1 | failsafe=0 armed=1 cmd_age=80 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1954 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=3 tx_noise_ppm=0 tx_corrupted=0
+[   19.535] ctl   TLM t=30405 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=567 dst=168 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   19.659] ctl   TLM t=30505 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=562 dst=173 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   19.722] ctl   TLM t=30605 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=557 dst=178 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   19.847] ctl   TLM t=30705 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=552 dst=183 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   19.910] ctl   TLM t=30805 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=547 dst=188 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   20.020] ctl   TLM t=30905 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=542 dst=193 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   20.020] ctl   > status
+[   20.020] ctl   STAT t=30925 state=TRANSFER phase=PUMPING fault=NONE target=500 | src=542 dst=193 flow=50 valve cmd=1 act=1 pump cmd=1 act=1 plant_failsafe=0 | link=OK age=20 rx_ok=371 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   20.021] ctl   STAT peer OK proto=v2 boot_id=20cd fw_id=f22121de reboots_seen=0 | self fw=d719168-dirty boot_id=33c9 proto=v2
+[   20.064] plant > status
+[   20.064] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=d719168-dirty boot_id=20cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[   20.064] plant STAT t=166637 src=542.4 dst=193.3 flow=50.0 | pump cmd=1 act=1 valve cmd=1 act=1 | failsafe=0 armed=1 cmd_age=10 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1962 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=3 tx_noise_ppm=0 tx_corrupted=0
+[   20.080] ctl   STAT diag boot=17 cmd_ack=OK rtt_ms last=100 min=100 avg=100 max=100 n=308 tx_noise_ppm=0 tx_corrupted=0
+[   20.102] ctl   TLM t=31005 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=537 dst=198 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   20.102] ctl   STAT t=31005 state=TRANSFER phase=PUMPING fault=NONE target=500 | src=537 dst=198 flow=50 valve cmd=1 act=1 pump cmd=1 act=1 plant_failsafe=0 | link=OK age=0 rx_ok=372 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   20.102] ctl   STAT peer OK proto=v2 boot_id=20cd fw_id=f22121de reboots_seen=0 | self fw=d719168-dirty boot_id=33c9 proto=v2
+[   20.159] ctl   STAT diag boot=17 cmd_ack=OK rtt_ms last=100 min=100 avg=100 max=100 n=309 tx_noise_ppm=0 tx_corrupted=0
+[   20.220] ctl   TLM t=31105 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=532 dst=203 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   20.347] ctl   TLM t=31205 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=527 dst=208 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   20.408] ctl   TLM t=31305 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=522 dst=213 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   20.439] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=d719168-dirty boot_id=20cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[   20.439] plant STAT t=167007 src=522.4 dst=213.3 flow=50.0 | pump cmd=1 act=1 valve cmd=1 act=1 | failsafe=0 armed=1 cmd_age=80 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1966 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=3 tx_noise_ppm=0 tx_corrupted=0
+[   20.532] ctl   TLM t=31405 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=517 dst=218 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   20.656] ctl   TLM t=31505 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=512 dst=223 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   20.718] ctl   TLM t=31605 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=507 dst=228 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   20.843] ctl   TLM t=31705 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=502 dst=233 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   20.904] ctl   TLM t=31805 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=497 dst=238 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   21.029] ctl   TLM t=31905 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=492 dst=243 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   21.102] ctl   TLM t=32005 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=487 dst=248 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   21.102] ctl   STAT t=32005 state=TRANSFER phase=PUMPING fault=NONE target=500 | src=487 dst=248 flow=50 valve cmd=1 act=1 pump cmd=1 act=1 plant_failsafe=0 | link=OK age=0 rx_ok=384 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   21.103] ctl   STAT peer OK proto=v2 boot_id=20cd fw_id=f22121de reboots_seen=0 | self fw=d719168-dirty boot_id=33c9 proto=v2
+[   21.154] ctl   STAT diag boot=17 cmd_ack=OK rtt_ms last=100 min=100 avg=100 max=100 n=319 tx_noise_ppm=0 tx_corrupted=0
+[   21.217] ctl   TLM t=32105 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=482 dst=253 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   21.341] ctl   TLM t=32205 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=477 dst=258 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   21.402] ctl   TLM t=32305 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=472 dst=263 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   21.432] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=d719168-dirty boot_id=20cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[   21.433] plant STAT t=168007 src=472.4 dst=263.3 flow=50.0 | pump cmd=1 act=1 valve cmd=1 act=1 | failsafe=0 armed=1 cmd_age=80 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1978 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=3 tx_noise_ppm=0 tx_corrupted=0
+[   21.527] ctl   TLM t=32405 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=467 dst=268 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   21.651] ctl   TLM t=32505 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=462 dst=273 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   21.714] ctl   TLM t=32605 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=457 dst=278 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   21.838] ctl   TLM t=32705 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=452 dst=283 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   21.903] ctl   TLM t=32805 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=447 dst=288 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   22.020] ctl   TLM t=32905 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=442 dst=293 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   22.021] ctl   > status
+[   22.021] ctl   STAT t=32925 state=TRANSFER phase=PUMPING fault=NONE target=500 | src=442 dst=293 flow=50 valve cmd=1 act=1 pump cmd=1 act=1 plant_failsafe=0 | link=OK age=20 rx_ok=395 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   22.021] ctl   STAT peer OK proto=v2 boot_id=20cd fw_id=f22121de reboots_seen=0 | self fw=d719168-dirty boot_id=33c9 proto=v2
+[   22.056] plant > status
+[   22.056] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=d719168-dirty boot_id=20cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[   22.057] plant STAT t=168637 src=442.4 dst=293.3 flow=50.0 | pump cmd=1 act=1 valve cmd=1 act=1 | failsafe=0 armed=1 cmd_age=10 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1986 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=3 tx_noise_ppm=0 tx_corrupted=0
+[   22.087] ctl   STAT diag boot=17 cmd_ack=OK rtt_ms last=100 min=100 avg=100 max=100 n=328 tx_noise_ppm=0 tx_corrupted=0
+[   22.102] ctl   TLM t=33005 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=437 dst=298 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   22.102] ctl   STAT t=33005 state=TRANSFER phase=PUMPING fault=NONE target=500 | src=437 dst=298 flow=50 valve cmd=1 act=1 pump cmd=1 act=1 plant_failsafe=0 | link=OK age=0 rx_ok=396 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   22.102] ctl   STAT peer OK proto=v2 boot_id=20cd fw_id=f22121de reboots_seen=0 | self fw=d719168-dirty boot_id=33c9 proto=v2
+[   22.165] ctl   STAT diag boot=17 cmd_ack=OK rtt_ms last=100 min=100 avg=100 max=100 n=329 tx_noise_ppm=0 tx_corrupted=0
+[   22.227] ctl   TLM t=33105 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=432 dst=303 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   22.354] ctl   TLM t=33205 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=427 dst=308 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   22.417] ctl   TLM t=33305 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=422 dst=313 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   22.432] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=d719168-dirty boot_id=20cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[   22.432] plant STAT t=169007 src=422.4 dst=313.3 flow=50.0 | pump cmd=1 act=1 valve cmd=1 act=1 | failsafe=0 armed=1 cmd_age=80 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1990 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=3 tx_noise_ppm=0 tx_corrupted=0
+[   22.541] ctl   TLM t=33405 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=417 dst=318 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   22.603] ctl   TLM t=33505 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=412 dst=323 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   22.729] ctl   TLM t=33605 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=407 dst=328 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   22.854] ctl   TLM t=33705 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=402 dst=333 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   22.919] ctl   TLM t=33805 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=397 dst=338 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   23.043] ctl   TLM t=33905 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=392 dst=343 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   23.102] ctl   TLM t=34005 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=387 dst=348 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   23.102] ctl   STAT t=34005 state=TRANSFER phase=PUMPING fault=NONE target=500 | src=387 dst=348 flow=50 valve cmd=1 act=1 pump cmd=1 act=1 plant_failsafe=0 | link=OK age=0 rx_ok=408 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   23.102] ctl   STAT peer OK proto=v2 boot_id=20cd fw_id=f22121de reboots_seen=0 | self fw=d719168-dirty boot_id=33c9 proto=v2
+[   23.166] ctl   STAT diag boot=17 cmd_ack=OK rtt_ms last=100 min=100 avg=100 max=100 n=339 tx_noise_ppm=0 tx_corrupted=0
+[   23.228] ctl   TLM t=34105 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=382 dst=353 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   23.353] ctl   TLM t=34205 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=377 dst=358 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   23.415] ctl   TLM t=34305 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=372 dst=363 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   23.430] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=d719168-dirty boot_id=20cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[   23.431] plant STAT t=170007 src=372.4 dst=363.3 flow=50.0 | pump cmd=1 act=1 valve cmd=1 act=1 | failsafe=0 armed=1 cmd_age=80 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=2002 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=3 tx_noise_ppm=0 tx_corrupted=0
+[   23.541] ctl   TLM t=34405 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=367 dst=368 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   23.603] ctl   TLM t=34505 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=362 dst=373 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   23.727] ctl   TLM t=34605 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=357 dst=378 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   23.852] ctl   TLM t=34705 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=352 dst=383 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   23.913] ctl   TLM t=34805 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=347 dst=388 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   24.020] ctl   TLM t=34905 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=342 dst=393 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   24.021] ctl   > status
+[   24.021] ctl   STAT t=34925 state=TRANSFER phase=PUMPING fault=NONE target=500 | src=342 dst=393 flow=50 valve cmd=1 act=1 pump cmd=1 act=1 plant_failsafe=0 | link=OK age=20 rx_ok=419 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   24.021] ctl   STAT peer OK proto=v2 boot_id=20cd fw_id=f22121de reboots_seen=0 | self fw=d719168-dirty boot_id=33c9 proto=v2
+[   24.055] plant > status
+[   24.055] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=d719168-dirty boot_id=20cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[   24.055] plant STAT t=170647 src=342.4 dst=393.3 flow=50.0 | pump cmd=1 act=1 valve cmd=1 act=1 | failsafe=0 armed=1 cmd_age=20 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=2010 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=3 tx_noise_ppm=0 tx_corrupted=0
+[   24.086] ctl   STAT diag boot=17 cmd_ack=OK rtt_ms last=100 min=100 avg=100 max=100 n=348 tx_noise_ppm=0 tx_corrupted=0
+[   24.102] ctl   TLM t=35005 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=337 dst=398 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   24.102] ctl   STAT t=35005 state=TRANSFER phase=PUMPING fault=NONE target=500 | src=337 dst=398 flow=50 valve cmd=1 act=1 pump cmd=1 act=1 plant_failsafe=0 | link=OK age=0 rx_ok=420 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   24.103] ctl   STAT peer OK proto=v2 boot_id=20cd fw_id=f22121de reboots_seen=0 | self fw=d719168-dirty boot_id=33c9 proto=v2
+[   24.164] ctl   STAT diag boot=17 cmd_ack=OK rtt_ms last=100 min=100 avg=100 max=100 n=349 tx_noise_ppm=0 tx_corrupted=0
+[   24.226] ctl   TLM t=35105 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=332 dst=403 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   24.351] ctl   TLM t=35205 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=327 dst=408 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   24.414] ctl   TLM t=35305 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=322 dst=413 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   24.429] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=d719168-dirty boot_id=20cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[   24.429] plant STAT t=171007 src=322.4 dst=413.3 flow=50.0 | pump cmd=1 act=1 valve cmd=1 act=1 | failsafe=0 armed=1 cmd_age=80 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=2014 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=3 tx_noise_ppm=0 tx_corrupted=0
+[   24.539] ctl   TLM t=35405 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=317 dst=418 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   24.601] ctl   TLM t=35505 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=312 dst=423 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   24.725] ctl   TLM t=35605 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=307 dst=428 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   24.850] ctl   TLM t=35705 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=302 dst=433 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   24.914] ctl   TLM t=35805 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=297 dst=438 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   25.039] ctl   TLM t=35905 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=292 dst=443 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   25.100] ctl   TLM t=36005 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=287 dst=448 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   25.163] ctl   STAT t=36005 state=TRANSFER phase=PUMPING fault=NONE target=500 | src=287 dst=448 flow=50 valve cmd=1 act=1 pump cmd=1 act=1 plant_failsafe=0 | link=OK age=0 rx_ok=432 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   25.163] ctl   STAT peer OK proto=v2 boot_id=20cd fw_id=f22121de reboots_seen=0 | self fw=d719168-dirty boot_id=33c9 proto=v2
+[   25.163] ctl   STAT diag boot=17 cmd_ack=OK rtt_ms last=100 min=100 avg=100 max=100 n=359 tx_noise_ppm=0 tx_corrupted=0
+[   25.225] ctl   TLM t=36105 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=282 dst=453 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   25.351] ctl   TLM t=36205 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=277 dst=458 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   25.414] ctl   TLM t=36305 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=272 dst=463 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   25.428] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=d719168-dirty boot_id=20cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[   25.429] plant STAT t=172007 src=272.4 dst=463.3 flow=50.0 | pump cmd=1 act=1 valve cmd=1 act=1 | failsafe=0 armed=1 cmd_age=80 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=2026 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=3 tx_noise_ppm=0 tx_corrupted=0
+[   25.538] ctl   TLM t=36405 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=267 dst=468 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   25.600] ctl   TLM t=36505 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=262 dst=473 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   25.722] ctl   TLM t=36605 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=257 dst=478 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   25.847] ctl   TLM t=36705 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=252 dst=483 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   25.909] ctl   TLM t=36805 st=TRANSFER ph=PUMPING fault=NONE tgt=500 src=247 dst=488 flow=50 pc=1 pa=1 vc=1 va=1 fl=0 age=0 ack=1 rtt=100
+[   26.029] ctl   EVT t=36906 TRANSFER phase=STOPPING : target reached: dst 493 + flow 50 x 180 ms >= 500 mL
+[   26.029] ctl   TLM t=36905 st=TRANSFER ph=STOPPING fault=NONE tgt=500 src=242 dst=493 flow=50 pc=0 pa=1 vc=0 va=1 fl=0 age=0 ack=1 rtt=100
+[   26.029] ctl   > status
+[   26.030] ctl   STAT t=36935 state=TRANSFER phase=STOPPING fault=NONE target=500 | src=242 dst=493 flow=50 valve cmd=0 act=1 pump cmd=0 act=1 plant_failsafe=0 | link=OK age=30 rx_ok=443 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   26.051] plant > status
+[   26.051] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=d719168-dirty boot_id=20cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[   26.051] plant STAT t=172647 src=242.4 dst=493.3 flow=50.0 | pump cmd=0 act=1 valve cmd=0 act=1 | failsafe=0 armed=1 cmd_age=20 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=2034 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=3 tx_noise_ppm=0 tx_corrupted=0
+[   26.081] ctl   STAT peer OK proto=v2 boot_id=20cd fw_id=f22121de reboots_seen=0 | self fw=d719168-dirty boot_id=33c9 proto=v2
+[   26.082] ctl   STAT diag boot=17 cmd_ack=OK rtt_ms last=100 min=100 avg=100 max=100 n=368 tx_noise_ppm=0 tx_corrupted=0
+[   26.102] ctl   TLM t=37005 st=TRANSFER ph=STOPPING fault=NONE tgt=500 src=239 dst=497 flow=35 pc=0 pa=0 vc=0 va=1 fl=0 age=0 ack=1 rtt=100
+[   26.102] ctl   STAT t=37005 state=TRANSFER phase=STOPPING fault=NONE target=500 | src=239 dst=497 flow=35 valve cmd=0 act=1 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=0 rx_ok=444 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   26.103] ctl   STAT peer OK proto=v2 boot_id=20cd fw_id=f22121de reboots_seen=0 | self fw=d719168-dirty boot_id=33c9 proto=v2
+[   26.160] ctl   STAT diag boot=17 cmd_ack=OK rtt_ms last=100 min=100 avg=100 max=100 n=369 tx_noise_ppm=0 tx_corrupted=0
+[   26.222] ctl   TLM t=37105 st=TRANSFER ph=STOPPING fault=NONE tgt=500 src=236 dst=499 flow=24 pc=0 pa=0 vc=0 va=1 fl=0 age=0 ack=1 rtt=100
+[   26.347] ctl   EVT t=37206 TRANSFER -> COMPLETE : stopped: dst 499 mL, src 236 mL
+[   26.347] ctl   TLM t=37205 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   26.409] ctl   TLM t=37305 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   26.426] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=d719168-dirty boot_id=20cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[   26.426] plant STAT t=173007 src=236.4 dst=499.3 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=80 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=2038 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=3 tx_noise_ppm=0 tx_corrupted=0
+[   26.535] ctl   TLM t=37405 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   26.657] ctl   TLM t=37505 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   26.721] ctl   TLM t=37605 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   26.845] ctl   TLM t=37705 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   26.908] ctl   TLM t=37805 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   27.033] ctl   TLM t=37905 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   27.102] ctl   TLM t=38005 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   27.102] ctl   STAT t=38005 state=COMPLETE phase=- fault=NONE target=500 | src=236 dst=499 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=0 rx_ok=456 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   27.103] ctl   STAT peer OK proto=v2 boot_id=20cd fw_id=f22121de reboots_seen=0 | self fw=d719168-dirty boot_id=33c9 proto=v2
+[   27.166] ctl   STAT diag boot=17 cmd_ack=OK rtt_ms last=100 min=100 avg=100 max=100 n=379 tx_noise_ppm=0 tx_corrupted=0
+[   27.229] ctl   TLM t=38105 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   27.353] ctl   TLM t=38205 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   27.415] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=d719168-dirty boot_id=20cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[   27.415] ctl   TLM t=38305 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   27.415] plant STAT t=174007 src=236.4 dst=499.3 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=80 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=2050 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=3 tx_noise_ppm=0 tx_corrupted=0
+[   27.539] ctl   TLM t=38405 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   27.602] ctl   TLM t=38505 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   27.725] ctl   TLM t=38605 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   27.849] ctl   TLM t=38705 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   27.913] ctl   TLM t=38805 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   28.030] ctl   TLM t=38905 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   28.031] ctl   > status
+[   28.031] ctl   STAT t=38935 state=COMPLETE phase=- fault=NONE target=500 | src=236 dst=499 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=30 rx_ok=467 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   28.031] ctl   STAT peer OK proto=v2 boot_id=20cd fw_id=f22121de reboots_seen=0 | self fw=d719168-dirty boot_id=33c9 proto=v2
+[   28.036] plant > status
+[   28.036] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=d719168-dirty boot_id=20cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[   28.036] plant STAT t=174647 src=236.4 dst=499.3 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=20 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=2058 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=3 tx_noise_ppm=0 tx_corrupted=0
+[   28.083] ctl   STAT diag boot=17 cmd_ack=OK rtt_ms last=100 min=100 avg=100 max=100 n=388 tx_noise_ppm=0 tx_corrupted=0
+[   28.102] ctl   TLM t=39005 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   28.102] ctl   STAT t=39005 state=COMPLETE phase=- fault=NONE target=500 | src=236 dst=499 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=0 rx_ok=468 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   28.103] ctl   STAT peer OK proto=v2 boot_id=20cd fw_id=f22121de reboots_seen=0 | self fw=d719168-dirty boot_id=33c9 proto=v2
+[   28.162] ctl   STAT diag boot=17 cmd_ack=OK rtt_ms last=100 min=100 avg=100 max=100 n=389 tx_noise_ppm=0 tx_corrupted=0
+[   28.224] ctl   TLM t=39105 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   28.350] ctl   TLM t=39205 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   28.413] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=d719168-dirty boot_id=20cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[   28.413] plant STAT t=175007 src=236.4 dst=499.3 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=80 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=2062 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=3 tx_noise_ppm=0 tx_corrupted=0
+[   28.413] ctl   TLM t=39305 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   28.537] ctl   TLM t=39405 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   28.600] ctl   TLM t=39505 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   28.724] ctl   TLM t=39605 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   28.849] ctl   TLM t=39705 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   28.912] ctl   TLM t=39805 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   29.036] ctl   TLM t=39905 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   29.098] ctl   TLM t=40005 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   29.159] ctl   STAT t=40005 state=COMPLETE phase=- fault=NONE target=500 | src=236 dst=499 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=0 rx_ok=480 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   29.159] ctl   STAT peer OK proto=v2 boot_id=20cd fw_id=f22121de reboots_seen=0 | self fw=d719168-dirty boot_id=33c9 proto=v2
+[   29.160] ctl   STAT diag boot=17 cmd_ack=OK rtt_ms last=100 min=100 avg=100 max=100 n=399 tx_noise_ppm=0 tx_corrupted=0
+[   29.220] ctl   TLM t=40105 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   29.344] ctl   TLM t=40205 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   29.406] ctl   TLM t=40305 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   29.406] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=d719168-dirty boot_id=20cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[   29.407] plant STAT t=176007 src=236.4 dst=499.3 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=80 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=2074 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=3 tx_noise_ppm=0 tx_corrupted=0
+[   29.531] ctl   TLM t=40405 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   29.654] ctl   TLM t=40505 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   29.718] ctl   TLM t=40605 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   29.843] ctl   TLM t=40705 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   29.906] ctl   TLM t=40805 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   30.031] plant > status
+[   30.031] ctl   TLM t=40905 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   30.032] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=d719168-dirty boot_id=20cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[   30.032] ctl   > status
+[   30.032] plant STAT t=176647 src=236.4 dst=499.3 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=20 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=2082 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=3 tx_noise_ppm=0 tx_corrupted=0
+[   30.032] ctl   STAT t=40935 state=COMPLETE phase=- fault=NONE target=500 | src=236 dst=499 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=30 rx_ok=491 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   30.033] ctl   STAT peer OK proto=v2 boot_id=20cd fw_id=f22121de reboots_seen=0 | self fw=d719168-dirty boot_id=33c9 proto=v2
+[   30.093] ctl   STAT diag boot=17 cmd_ack=OK rtt_ms last=100 min=100 avg=100 max=100 n=408 tx_noise_ppm=0 tx_corrupted=0
+[   30.102] ctl   TLM t=41005 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   30.102] ctl   STAT t=41005 state=COMPLETE phase=- fault=NONE target=500 | src=236 dst=499 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=0 rx_ok=492 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   30.103] ctl   STAT peer OK proto=v2 boot_id=20cd fw_id=f22121de reboots_seen=0 | self fw=d719168-dirty boot_id=33c9 proto=v2
+[   30.156] ctl   STAT diag boot=17 cmd_ack=OK rtt_ms last=100 min=100 avg=100 max=100 n=409 tx_noise_ppm=0 tx_corrupted=0
+[   30.219] ctl   TLM t=41105 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   30.345] ctl   TLM t=41205 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   30.407] ctl   TLM t=41305 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   30.407] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=d719168-dirty boot_id=20cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[   30.407] plant STAT t=177007 src=236.4 dst=499.3 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=80 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=2086 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=3 tx_noise_ppm=0 tx_corrupted=0
+[   30.532] ctl   TLM t=41405 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   30.655] ctl   TLM t=41505 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   30.718] ctl   TLM t=41605 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   30.843] ctl   TLM t=41705 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   30.904] ctl   TLM t=41805 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   31.030] ctl   TLM t=41905 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   31.102] ctl   TLM t=42005 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   31.102] ctl   STAT t=42005 state=COMPLETE phase=- fault=NONE target=500 | src=236 dst=499 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=0 rx_ok=504 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   31.103] ctl   STAT peer OK proto=v2 boot_id=20cd fw_id=f22121de reboots_seen=0 | self fw=d719168-dirty boot_id=33c9 proto=v2
+[   31.155] ctl   STAT diag boot=17 cmd_ack=OK rtt_ms last=100 min=100 avg=100 max=100 n=419 tx_noise_ppm=0 tx_corrupted=0
+[   31.216] ctl   TLM t=42105 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   31.340] ctl   TLM t=42205 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   31.403] ctl   TLM t=42305 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   31.403] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=d719168-dirty boot_id=20cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[   31.403] plant STAT t=178007 src=236.4 dst=499.3 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=80 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=2098 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=3 tx_noise_ppm=0 tx_corrupted=0
+[   31.527] ctl   TLM t=42405 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   31.651] ctl   TLM t=42505 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   31.715] ctl   TLM t=42605 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   31.840] ctl   TLM t=42705 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   31.902] ctl   TLM t=42805 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   32.027] ctl   TLM t=42905 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   32.027] ctl   > status
+[   32.027] plant > status
+[   32.027] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=d719168-dirty boot_id=20cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[   32.090] ctl   STAT t=42935 state=COMPLETE phase=- fault=NONE target=500 | src=236 dst=499 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=30 rx_ok=515 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   32.090] plant STAT t=178647 src=236.4 dst=499.3 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=20 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=2106 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=3 tx_noise_ppm=0 tx_corrupted=0
+[   32.090] ctl   STAT peer OK proto=v2 boot_id=20cd fw_id=f22121de reboots_seen=0 | self fw=d719168-dirty boot_id=33c9 proto=v2
+[   32.091] ctl   STAT diag boot=17 cmd_ack=OK rtt_ms last=100 min=100 avg=100 max=100 n=428 tx_noise_ppm=0 tx_corrupted=0
+[   32.102] ctl   TLM t=43005 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   32.102] ctl   STAT t=43005 state=COMPLETE phase=- fault=NONE target=500 | src=236 dst=499 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=0 rx_ok=516 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   32.103] ctl   STAT peer OK proto=v2 boot_id=20cd fw_id=f22121de reboots_seen=0 | self fw=d719168-dirty boot_id=33c9 proto=v2
+[   32.153] ctl   STAT diag boot=17 cmd_ack=OK rtt_ms last=100 min=100 avg=100 max=100 n=429 tx_noise_ppm=0 tx_corrupted=0
+[   32.216] ctl   TLM t=43105 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   32.339] ctl   TLM t=43205 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   32.402] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=d719168-dirty boot_id=20cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[   32.402] plant STAT t=179007 src=236.4 dst=499.3 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=80 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=2110 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=3 tx_noise_ppm=0 tx_corrupted=0
+[   32.403] ctl   TLM t=43305 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   32.525] ctl   TLM t=43405 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   32.650] ctl   TLM t=43505 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   32.712] ctl   TLM t=43605 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   32.836] ctl   TLM t=43705 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   32.901] ctl   TLM t=43805 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   33.026] ctl   TLM t=43905 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   33.102] ctl   TLM t=44005 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   33.102] ctl   STAT t=44005 state=COMPLETE phase=- fault=NONE target=500 | src=236 dst=499 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=0 rx_ok=528 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   33.103] ctl   STAT peer OK proto=v2 boot_id=20cd fw_id=f22121de reboots_seen=0 | self fw=d719168-dirty boot_id=33c9 proto=v2
+[   33.166] ctl   STAT diag boot=17 cmd_ack=OK rtt_ms last=100 min=100 avg=100 max=100 n=439 tx_noise_ppm=0 tx_corrupted=0
+[   33.228] ctl   TLM t=44105 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   33.355] ctl   TLM t=44205 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   33.401] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=d719168-dirty boot_id=20cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[   33.401] plant STAT t=180007 src=236.4 dst=499.3 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=80 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=2122 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=3 tx_noise_ppm=0 tx_corrupted=0
+[   33.415] ctl   TLM t=44305 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   33.539] ctl   TLM t=44405 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   33.601] ctl   TLM t=44505 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   33.726] ctl   TLM t=44605 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   33.852] ctl   TLM t=44705 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   33.914] ctl   TLM t=44805 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   34.031] ctl   TLM t=44905 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   34.031] ctl   > status
+[   34.031] ctl   STAT t=44935 state=COMPLETE phase=- fault=NONE target=500 | src=236 dst=499 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=30 rx_ok=539 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   34.031] ctl   STAT peer OK proto=v2 boot_id=20cd fw_id=f22121de reboots_seen=0 | self fw=d719168-dirty boot_id=33c9 proto=v2
+[   34.084] plant > status
+[   34.084] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=d719168-dirty boot_id=20cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[   34.084] plant STAT t=180647 src=236.4 dst=499.3 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=20 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=2130 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=3 tx_noise_ppm=0 tx_corrupted=0
+[   34.084] ctl   STAT diag boot=17 cmd_ack=OK rtt_ms last=100 min=100 avg=100 max=100 n=448 tx_noise_ppm=0 tx_corrupted=0
+[   34.102] ctl   TLM t=45005 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   34.103] ctl   STAT t=45005 state=COMPLETE phase=- fault=NONE target=500 | src=236 dst=499 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=0 rx_ok=540 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   34.103] ctl   STAT peer OK proto=v2 boot_id=20cd fw_id=f22121de reboots_seen=0 | self fw=d719168-dirty boot_id=33c9 proto=v2
+[   34.163] ctl   STAT diag boot=17 cmd_ack=OK rtt_ms last=100 min=100 avg=100 max=100 n=449 tx_noise_ppm=0 tx_corrupted=0
+[   34.224] ctl   TLM t=45105 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   34.350] ctl   TLM t=45205 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   34.398] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=d719168-dirty boot_id=20cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[   34.398] plant STAT t=181007 src=236.4 dst=499.3 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=80 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=2134 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=3 tx_noise_ppm=0 tx_corrupted=0
+[   34.414] ctl   TLM t=45305 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   34.539] ctl   TLM t=45405 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   34.602] ctl   TLM t=45505 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   34.729] ctl   TLM t=45605 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   34.853] ctl   TLM t=45705 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   34.915] ctl   TLM t=45805 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   35.040] ctl   TLM t=45905 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   35.102] ctl   TLM t=46005 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   35.102] ctl   STAT t=46005 state=COMPLETE phase=- fault=NONE target=500 | src=236 dst=499 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=0 rx_ok=552 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   35.102] ctl   STAT peer OK proto=v2 boot_id=20cd fw_id=f22121de reboots_seen=0 | self fw=d719168-dirty boot_id=33c9 proto=v2
+[   35.164] ctl   STAT diag boot=17 cmd_ack=OK rtt_ms last=100 min=100 avg=100 max=100 n=459 tx_noise_ppm=0 tx_corrupted=0
+[   35.226] ctl   TLM t=46105 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   35.349] ctl   TLM t=46205 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   35.396] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=d719168-dirty boot_id=20cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[   35.396] plant STAT t=182007 src=236.4 dst=499.3 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=80 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=2146 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=3 tx_noise_ppm=0 tx_corrupted=0
+[   35.412] ctl   TLM t=46305 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   35.537] ctl   TLM t=46405 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   35.599] ctl   TLM t=46505 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   35.724] ctl   TLM t=46605 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   35.849] ctl   TLM t=46705 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   35.912] ctl   TLM t=46805 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   36.031] ctl   TLM t=46905 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   36.031] ctl   > status
+[   36.031] ctl   STAT t=46935 state=COMPLETE phase=- fault=NONE target=500 | src=236 dst=499 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=30 rx_ok=563 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   36.031] ctl   STAT peer OK proto=v2 boot_id=20cd fw_id=f22121de reboots_seen=0 | self fw=d719168-dirty boot_id=33c9 proto=v2
+[   36.083] plant > status
+[   36.084] ctl   STAT diag boot=17 cmd_ack=OK rtt_ms last=100 min=100 avg=100 max=100 n=468 tx_noise_ppm=0 tx_corrupted=0
+[   36.084] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=d719168-dirty boot_id=20cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[   36.084] plant STAT t=182647 src=236.4 dst=499.3 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=20 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=2154 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=3 tx_noise_ppm=0 tx_corrupted=0
+[   36.102] ctl   TLM t=47005 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   36.103] ctl   STAT t=47005 state=COMPLETE phase=- fault=NONE target=500 | src=236 dst=499 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=0 rx_ok=564 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   36.103] ctl   STAT peer OK proto=v2 boot_id=20cd fw_id=f22121de reboots_seen=0 | self fw=d719168-dirty boot_id=33c9 proto=v2
+[   36.161] ctl   STAT diag boot=17 cmd_ack=OK rtt_ms last=100 min=100 avg=100 max=100 n=469 tx_noise_ppm=0 tx_corrupted=0
+[   36.224] ctl   TLM t=47105 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   36.347] ctl   TLM t=47205 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   36.394] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=d719168-dirty boot_id=20cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[   36.394] plant STAT t=183007 src=236.4 dst=499.3 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=80 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=2158 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=3 tx_noise_ppm=0 tx_corrupted=0
+[   36.410] ctl   TLM t=47305 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   36.535] ctl   TLM t=47405 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   36.599] ctl   TLM t=47505 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   36.724] ctl   TLM t=47605 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   36.849] ctl   TLM t=47705 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   36.910] ctl   TLM t=47805 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   37.035] ctl   TLM t=47905 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   37.159] ctl   TLM t=48005 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   37.159] ctl   STAT t=48005 state=COMPLETE phase=- fault=NONE target=500 | src=236 dst=499 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=0 rx_ok=576 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   37.159] ctl   STAT peer OK proto=v2 boot_id=20cd fw_id=f22121de reboots_seen=0 | self fw=d719168-dirty boot_id=33c9 proto=v2
+[   37.160] ctl   STAT diag boot=17 cmd_ack=OK rtt_ms last=100 min=100 avg=100 max=100 n=479 tx_noise_ppm=0 tx_corrupted=0
+[   37.222] ctl   TLM t=48105 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   37.346] ctl   TLM t=48205 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   37.392] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=d719168-dirty boot_id=20cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[   37.393] plant STAT t=184007 src=236.4 dst=499.3 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=80 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=2170 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=3 tx_noise_ppm=0 tx_corrupted=0
+[   37.408] ctl   TLM t=48305 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   37.534] ctl   TLM t=48405 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   37.597] ctl   TLM t=48505 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   37.722] ctl   TLM t=48605 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   37.846] ctl   TLM t=48705 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   37.910] ctl   TLM t=48805 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   38.031] ctl   TLM t=48905 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   38.031] ctl   > status
+[   38.031] ctl   STAT t=48935 state=COMPLETE phase=- fault=NONE target=500 | src=236 dst=499 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=30 rx_ok=587 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   38.031] ctl   STAT peer OK proto=v2 boot_id=20cd fw_id=f22121de reboots_seen=0 | self fw=d719168-dirty boot_id=33c9 proto=v2
+[   38.080] plant > status
+[   38.080] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=d719168-dirty boot_id=20cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[   38.080] plant STAT t=184647 src=236.4 dst=499.3 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=20 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=2178 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=3 tx_noise_ppm=0 tx_corrupted=0
+[   38.096] ctl   STAT diag boot=17 cmd_ack=OK rtt_ms last=100 min=100 avg=100 max=100 n=488 tx_noise_ppm=0 tx_corrupted=0
+[   38.102] ctl   TLM t=49005 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   38.103] ctl   STAT t=49005 state=COMPLETE phase=- fault=NONE target=500 | src=236 dst=499 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=0 rx_ok=588 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   38.103] ctl   STAT peer OK proto=v2 boot_id=20cd fw_id=f22121de reboots_seen=0 | self fw=d719168-dirty boot_id=33c9 proto=v2
+[   38.159] ctl   STAT diag boot=17 cmd_ack=OK rtt_ms last=100 min=100 avg=100 max=100 n=489 tx_noise_ppm=0 tx_corrupted=0
+[   38.221] ctl   TLM t=49105 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   38.345] ctl   TLM t=49205 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100
+[   38.392] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=d719168-dirty boot_id=20cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[   38.392] plant STAT t=185007 src=236.4 dst=499.3 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=80 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=2182 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=3 tx_noise_ppm=0 tx_corrupted=0
+[   38.407] ctl   TLM t=49305 st=COMPLETE ph=- fault=NONE tgt=500 src=236 dst=499 flow=0 pc=0 pa=0 vc=0 va=0 fl=0 age=0 ack=1 rtt=100

@@ -31,10 +31,28 @@
 #define PROTO_TANK_CAPACITY_ML 1000u
 #define PROTO_MAX_FLOW_ML_S 200u
 
+/* Bumped whenever a message layout or meaning changes. Both boards exchange it in HELLO
+ * and refuse to run with a peer that speaks another version. */
+#define PROTO_VERSION 2u
+
 typedef enum {
     MSG_CMD = 0x01,   /* controller -> plant, every 100 ms */
     MSG_TELEM = 0x02, /* plant -> controller, every 100 ms */
+    MSG_HELLO = 0x03, /* both directions, at boot and every 500 ms */
 } proto_msg_type_t;
+
+#define PROTO_ROLE_CONTROLLER 1u
+#define PROTO_ROLE_PLANT 2u
+
+/* Identity of the sender. proto_ver is NOT range-checked by the decoder on purpose:
+ * a peer with another version must be reported as incompatible, not silently dropped. */
+typedef struct {
+    uint8_t proto_ver;
+    uint8_t role;     /* PROTO_ROLE_* */
+    uint16_t boot_id; /* random per boot: a change means the peer rebooted */
+    uint32_t fw_id;   /* hash of the firmware version string, for logs */
+} proto_hello_t;
+#define PROTO_HELLO_LEN 8u
 
 /* Controller -> plant: commanded actuator state. */
 typedef struct {
@@ -48,8 +66,10 @@ typedef struct {
 #define PLANT_FLAG_FAULT_INJ 0x02u /* at least one simulated fault is injected (for logs only) */
 #define PLANT_FLAG_NOT_ARMED 0x04u /* after boot/failsafe: run commands ignored until a safe CMD */
 #define PLANT_FLAG_RESTARTED 0x08u /* plant booted and has not been armed since */
-#define PLANT_FLAGS_ALL \
-    (PLANT_FLAG_FAILSAFE | PLANT_FLAG_FAULT_INJ | PLANT_FLAG_NOT_ARMED | PLANT_FLAG_RESTARTED)
+#define PLANT_FLAG_PEER_BAD 0x10u  /* plant has no compatible controller HELLO: will not arm */
+#define PLANT_FLAGS_ALL                                                                  \
+    (PLANT_FLAG_FAILSAFE | PLANT_FLAG_FAULT_INJ | PLANT_FLAG_NOT_ARMED | PLANT_FLAG_RESTARTED | \
+     PLANT_FLAG_PEER_BAD)
 
 /* Plant -> controller: simulated sensors and actual actuator state. */
 typedef struct {
@@ -69,6 +89,10 @@ uint16_t proto_crc16(const uint8_t *data, size_t len);
 /* Encoders. Return frame length written to out (out must hold PROTO_MAX_FRAME). */
 size_t proto_encode_cmd(uint8_t seq, const proto_cmd_t *cmd, uint8_t *out);
 size_t proto_encode_telem(uint8_t seq, const proto_telem_t *t, uint8_t *out);
+size_t proto_encode_hello(uint8_t seq, const proto_hello_t *h, uint8_t *out);
+
+/* 32-bit FNV-1a, used for fw_id. */
+uint32_t proto_fnv1a(const char *s);
 
 /* Streaming decoder. */
 typedef struct {
@@ -94,6 +118,7 @@ typedef struct {
     union {
         proto_cmd_t cmd;
         proto_telem_t telem;
+        proto_hello_t hello;
     } u;
 } proto_msg_t;
 
