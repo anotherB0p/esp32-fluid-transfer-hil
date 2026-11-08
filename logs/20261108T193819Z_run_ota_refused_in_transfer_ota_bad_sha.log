@@ -1,0 +1,129 @@
+[    0.008] bench ports: {'ctl': 'COM7', 'plant': 'COM8'}
+[    0.569] bench ===== scenario ota_refused_in_transfer =====
+[    0.569] bench --> plant: fault clear
+[    0.582] ctl   STAT t=2000 state=IDLE phase=- fault=NONE target=0 | src=641 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=70 rx_ok=24 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[    0.607] plant > fault clear
+[    0.607] plant EVT t=26977 SIM: all injected faults cleared
+[    0.607] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=f44a399 boot_id=a5cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[    0.612] bench --> plant: set src 800
+[    0.632] ctl   STAT peer OK proto=v2 boot_id=a5cd fw_id=e57fcbc3 reboots_seen=0 | self fw=f44a399 boot_id=9e6f proto=v2
+[    0.632] ctl   STAT diag boot=35 cmd_ack=OK rtt_ms last=30 min=30 avg=32 max=40 n=19 tx_noise_ppm=0 tx_corrupted=0
+[    0.663] plant STAT t=27007 src=640.7 dst=100.0 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=20 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=320 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=2 tx_noise_ppm=0 tx_corrupted=0
+[    0.663] plant > set src 800
+[    0.663] plant EVT t=27017 SIM: source level set to 800 mL
+[    0.663] bench --> plant: set dst 100
+[    0.725] plant > set dst 100
+[    0.725] plant EVT t=27067 SIM: destination level set to 100 mL
+[    1.348] bench --> ctl: status
+[    1.362] ctl   > status
+[    1.362] ctl   STAT t=2780 state=IDLE phase=- fault=NONE target=0 | src=800 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=50 rx_ok=34 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[    1.362] bench --> ctl: status
+[    1.365] ctl   STAT peer OK proto=v2 boot_id=a5cd fw_id=e57fcbc3 reboots_seen=0 | self fw=f44a399 boot_id=9e6f proto=v2
+[    1.365] ctl   STAT diag boot=35 cmd_ack=OK rtt_ms last=30 min=30 avg=32 max=40 n=27 tx_noise_ppm=0 tx_corrupted=0
+[    1.365] ctl   > status
+[    1.369] ctl   STAT t=2780 state=IDLE phase=- fault=NONE target=0 | src=800 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=50 rx_ok=34 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[    1.369] ctl   STAT peer OK proto=v2 boot_id=a5cd fw_id=e57fcbc3 reboots_seen=0 | self fw=f44a399 boot_id=9e6f proto=v2
+[    1.369] bench --> ctl: start 500
+[    1.425] ctl   STAT diag boot=35 cmd_ack=OK rtt_ms last=30 min=30 avg=32 max=40 n=27 tx_noise_ppm=0 tx_corrupted=0
+[    1.425] ctl   > start 500
+[    1.425] ctl   EVT t=2792 IDLE -> CHECK : start requested
+[    1.425] ctl   EVT t=2793 CHECK -> TRANSFER phase=OPEN_VALVE : CHECK ok: src 800 dst 100 target 500 mL
+[    1.582] ctl   STAT t=3000 state=TRANSFER phase=OPEN_VALVE fault=NONE target=500 | src=800 dst=100 flow=0 valve cmd=1 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=70 rx_ok=36 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[    1.607] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=f44a399 boot_id=a5cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[    1.636] ctl   STAT peer OK proto=v2 boot_id=a5cd fw_id=e57fcbc3 reboots_seen=0 | self fw=f44a399 boot_id=9e6f proto=v2
+[    1.636] ctl   STAT diag boot=35 cmd_ack=OK rtt_ms last=30 min=30 avg=32 max=40 n=29 tx_noise_ppm=0 tx_corrupted=0
+[    1.636] ctl   EVT t=3031 TRANSFER phase=PUMPING : valve open confirmed after 250 ms
+[    1.637] bench --> ctl: ota begin 1000 0000000000000000000000000000000000000000000000000000000000000000
+[    1.667] plant STAT t=28007 src=800.0 dst=100.0 flow=0.0 | pump cmd=0 act=0 valve cmd=1 act=1 | failsafe=0 armed=1 cmd_age=20 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=332 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=2 tx_noise_ppm=0 tx_corrupted=0
+[    1.698] ctl   > ota begin 1000 0000000000000000000000000000000000000000000000000000000000000000
+[    1.698] ctl   OTA ERR refused: a transfer is active (allowed in IDLE, COMPLETE or FAULT)
+[    2.582] ctl   STAT t=4000 state=TRANSFER phase=PUMPING fault=NONE target=500 | src=766 dst=134 flow=48 valve cmd=1 act=1 pump cmd=1 act=1 plant_failsafe=0 | link=OK age=70 rx_ok=48 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[    2.608] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=f44a399 boot_id=a5cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[    2.638] ctl   STAT peer OK proto=v2 boot_id=a5cd fw_id=e57fcbc3 reboots_seen=0 | self fw=f44a399 boot_id=9e6f proto=v2
+[    2.638] ctl   STAT diag boot=35 cmd_ack=OK rtt_ms last=30 min=30 avg=32 max=40 n=39 tx_noise_ppm=0 tx_corrupted=0
+[    2.670] plant STAT t=29007 src=761.3 dst=138.7 flow=48.6 | pump cmd=1 act=1 valve cmd=1 act=1 | failsafe=0 armed=1 cmd_age=20 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=344 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=2 tx_noise_ppm=0 tx_corrupted=0
+[    3.582] ctl   STAT t=5000 state=TRANSFER phase=PUMPING fault=NONE target=500 | src=717 dst=183 flow=50 valve cmd=1 act=1 pump cmd=1 act=1 plant_failsafe=0 | link=OK age=70 rx_ok=60 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[    3.606] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=f44a399 boot_id=a5cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[    3.637] ctl   STAT peer OK proto=v2 boot_id=a5cd fw_id=e57fcbc3 reboots_seen=0 | self fw=f44a399 boot_id=9e6f proto=v2
+[    3.637] ctl   STAT diag boot=35 cmd_ack=OK rtt_ms last=30 min=30 avg=32 max=40 n=49 tx_noise_ppm=0 tx_corrupted=0
+[    3.669] plant STAT t=30007 src=711.7 dst=188.3 flow=50.0 | pump cmd=1 act=1 valve cmd=1 act=1 | failsafe=0 armed=1 cmd_age=20 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=356 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=2 tx_noise_ppm=0 tx_corrupted=0
+[    4.582] ctl   STAT t=6000 state=TRANSFER phase=PUMPING fault=NONE target=500 | src=667 dst=233 flow=50 valve cmd=1 act=1 pump cmd=1 act=1 plant_failsafe=0 | link=OK age=70 rx_ok=72 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[    4.607] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=f44a399 boot_id=a5cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[    4.634] ctl   STAT peer OK proto=v2 boot_id=a5cd fw_id=e57fcbc3 reboots_seen=0 | self fw=f44a399 boot_id=9e6f proto=v2
+[    4.634] ctl   STAT diag boot=35 cmd_ack=OK rtt_ms last=30 min=30 avg=32 max=40 n=59 tx_noise_ppm=0 tx_corrupted=0
+[    4.665] plant STAT t=31007 src=661.7 dst=238.3 flow=50.0 | pump cmd=1 act=1 valve cmd=1 act=1 | failsafe=0 armed=1 cmd_age=20 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=368 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=2 tx_noise_ppm=0 tx_corrupted=0
+[    5.582] ctl   STAT t=7000 state=TRANSFER phase=PUMPING fault=NONE target=500 | src=617 dst=283 flow=50 valve cmd=1 act=1 pump cmd=1 act=1 plant_failsafe=0 | link=OK age=70 rx_ok=84 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[    5.607] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=f44a399 boot_id=a5cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[    5.642] ctl   STAT peer OK proto=v2 boot_id=a5cd fw_id=e57fcbc3 reboots_seen=0 | self fw=f44a399 boot_id=9e6f proto=v2
+[    5.642] ctl   STAT diag boot=35 cmd_ack=OK rtt_ms last=30 min=30 avg=32 max=40 n=69 tx_noise_ppm=0 tx_corrupted=0
+[    5.658] plant STAT t=32007 src=611.7 dst=288.3 flow=50.0 | pump cmd=1 act=1 valve cmd=1 act=1 | failsafe=0 armed=1 cmd_age=20 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=380 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=2 tx_noise_ppm=0 tx_corrupted=0
+[    6.582] ctl   STAT t=8000 state=TRANSFER phase=PUMPING fault=NONE target=500 | src=567 dst=333 flow=50 valve cmd=1 act=1 pump cmd=1 act=1 plant_failsafe=0 | link=OK age=70 rx_ok=96 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[    6.607] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=f44a399 boot_id=a5cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[    6.637] ctl   STAT peer OK proto=v2 boot_id=a5cd fw_id=e57fcbc3 reboots_seen=0 | self fw=f44a399 boot_id=9e6f proto=v2
+[    6.638] ctl   STAT diag boot=35 cmd_ack=OK rtt_ms last=30 min=30 avg=32 max=40 n=79 tx_noise_ppm=0 tx_corrupted=0
+[    6.670] plant STAT t=33007 src=561.7 dst=338.3 flow=50.0 | pump cmd=1 act=1 valve cmd=1 act=1 | failsafe=0 armed=1 cmd_age=20 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=392 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=2 tx_noise_ppm=0 tx_corrupted=0
+[    7.582] ctl   STAT t=9000 state=TRANSFER phase=PUMPING fault=NONE target=500 | src=517 dst=383 flow=50 valve cmd=1 act=1 pump cmd=1 act=1 plant_failsafe=0 | link=OK age=70 rx_ok=108 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[    7.607] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=f44a399 boot_id=a5cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[    7.635] ctl   STAT peer OK proto=v2 boot_id=a5cd fw_id=e57fcbc3 reboots_seen=0 | self fw=f44a399 boot_id=9e6f proto=v2
+[    7.635] ctl   STAT diag boot=35 cmd_ack=OK rtt_ms last=30 min=30 avg=31 max=40 n=89 tx_noise_ppm=0 tx_corrupted=0
+[    7.667] plant STAT t=34007 src=511.7 dst=388.3 flow=50.0 | pump cmd=1 act=1 valve cmd=1 act=1 | failsafe=0 armed=1 cmd_age=20 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=404 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=2 tx_noise_ppm=0 tx_corrupted=0
+[    8.582] ctl   STAT t=10000 state=TRANSFER phase=PUMPING fault=NONE target=500 | src=467 dst=433 flow=50 valve cmd=1 act=1 pump cmd=1 act=1 plant_failsafe=0 | link=OK age=70 rx_ok=120 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[    8.607] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=f44a399 boot_id=a5cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[    8.642] ctl   STAT peer OK proto=v2 boot_id=a5cd fw_id=e57fcbc3 reboots_seen=0 | self fw=f44a399 boot_id=9e6f proto=v2
+[    8.642] ctl   STAT diag boot=35 cmd_ack=OK rtt_ms last=30 min=30 avg=31 max=40 n=99 tx_noise_ppm=0 tx_corrupted=0
+[    8.672] plant STAT t=35007 src=461.7 dst=438.3 flow=50.0 | pump cmd=1 act=1 valve cmd=1 act=1 | failsafe=0 armed=1 cmd_age=20 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=416 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=2 tx_noise_ppm=0 tx_corrupted=0
+[    9.582] ctl   STAT t=11000 state=TRANSFER phase=PUMPING fault=NONE target=500 | src=417 dst=483 flow=50 valve cmd=1 act=1 pump cmd=1 act=1 plant_failsafe=0 | link=OK age=70 rx_ok=132 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[    9.607] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=f44a399 boot_id=a5cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[    9.638] ctl   STAT peer OK proto=v2 boot_id=a5cd fw_id=e57fcbc3 reboots_seen=0 | self fw=f44a399 boot_id=9e6f proto=v2
+[    9.638] ctl   STAT diag boot=35 cmd_ack=OK rtt_ms last=30 min=30 avg=31 max=40 n=109 tx_noise_ppm=0 tx_corrupted=0
+[    9.669] plant STAT t=36007 src=411.7 dst=488.3 flow=50.0 | pump cmd=1 act=1 valve cmd=1 act=1 | failsafe=0 armed=1 cmd_age=20 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=428 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=2 tx_noise_ppm=0 tx_corrupted=0
+[    9.759] ctl   EVT t=11131 TRANSFER phase=STOPPING : target reached: dst 493 + flow 50 x 180 ms >= 500 mL
+[   10.070] ctl   EVT t=11431 TRANSFER -> COMPLETE : stopped: dst 499 mL, src 401 mL
+[   10.071] bench ===== ota_refused_in_transfer: PASS {'line': 'OTA ERR refused: a transfer is active (allowed in IDLE, COMPLETE or FAULT)'}
+[   10.071] bench ===== scenario ota_bad_sha =====
+[   10.071] bench --> plant: fault clear
+[   10.102] plant > fault clear
+[   10.102] plant EVT t=36477 SIM: all injected faults cleared
+[   10.102] bench --> plant: set src 800
+[   10.165] plant > set src 800
+[   10.165] plant EVT t=36507 SIM: source level set to 800 mL
+[   10.165] bench --> plant: set dst 100
+[   10.228] plant > set dst 100
+[   10.228] plant EVT t=36577 SIM: destination level set to 100 mL
+[   10.582] ctl   STAT t=12000 state=COMPLETE phase=- fault=NONE target=500 | src=800 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=70 rx_ok=144 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   10.607] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=f44a399 boot_id=a5cd proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[   10.634] ctl   STAT peer OK proto=v2 boot_id=a5cd fw_id=e57fcbc3 reboots_seen=0 | self fw=f44a399 boot_id=9e6f proto=v2
+[   10.634] ctl   STAT diag boot=35 cmd_ack=OK rtt_ms last=30 min=30 avg=31 max=40 n=119 tx_noise_ppm=0 tx_corrupted=0
+[   10.666] plant STAT t=37007 src=800.0 dst=100.0 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=20 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=440 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=2 tx_noise_ppm=0 tx_corrupted=0
+[   10.853] bench --> ctl: status
+[   10.862] ctl   > status
+[   10.862] ctl   STAT t=12280 state=COMPLETE phase=- fault=NONE target=500 | src=800 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=50 rx_ok=148 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   10.862] bench --> ctl: reset
+[   10.916] ctl   STAT peer OK proto=v2 boot_id=a5cd fw_id=e57fcbc3 reboots_seen=0 | self fw=f44a399 boot_id=9e6f proto=v2
+[   10.916] ctl   STAT diag boot=35 cmd_ack=OK rtt_ms last=30 min=30 avg=31 max=40 n=122 tx_noise_ppm=0 tx_corrupted=0
+[   10.916] ctl   > reset
+[   10.916] ctl   EVT t=12287 COMPLETE -> IDLE : reset accepted
+[   10.917] bench --> ctl: status
+[   10.922] ctl   > status
+[   10.922] ctl   STAT t=12340 state=IDLE phase=- fault=NONE target=500 | src=800 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=10 rx_ok=149 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   10.936] bench --> ctl: ota status
+[   10.940] ctl   STAT peer OK proto=v2 boot_id=a5cd fw_id=e57fcbc3 reboots_seen=0 | self fw=f44a399 boot_id=9e6f proto=v2
+[   10.940] ctl   STAT diag boot=35 cmd_ack=OK rtt_ms last=30 min=30 avg=31 max=40 n=123 tx_noise_ppm=0 tx_corrupted=0
+[   10.940] ctl   > ota status
+[   10.994] ctl   OTA status: running=ota_0 @0x020000 state=VALID version=f44a399 next_slot=ota_1
+[   10.994] bench --> ctl: ota begin 1152 0000000000000000000000000000000000000000000000000000000000000000
+[   11.057] ctl   > ota begin 1152 0000000000000000000000000000000000000000000000000000000000000000
+[   11.057] ctl   OTA READY slot=ota_1 @0x1a0000 size=1152
+[   11.058] bench --> ctl: ota w 0 6QYCLzhXN0DuAAAACQAAAABjAAAAAAABIAADPIzmAAAyVM2rAAAAAAAAAAAAAAAAb3RhLWdvb2QtMQAAAAAAAAAAAAAAAAAAAAAAAAAAAAB0cmFuc2Zlcl9jb250cm9sbGVyAAAAAAAAAAAAAAAAADIwOjIxOjQ3AAAAAAAAAABOb3YgIDggMjAyNgAAAAAAYTIwODYyNWUtZGlydHkAAAAAAAAAAAAAAAAAAAAAAACAJUmF11D6YIneFn66Qk6dI9blfvqhy1HKeoig/z9j8AAAxwAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAL2Rldi91c2JzZXJqdGFnAC9kZXYvdWFydC8tMQAAAAAvZGV2L2NvbnNvbGUAAAAAZWZ1c2VfaW5pdAAARSAoJWx1KSAlczogJXMoJWQpOiBGYWlsZWQgaW4gc2VjdXJl
+[   11.122] ctl   OTA OK 384
+[   11.122] bench --> ctl: ota w 384 IGVGdXNlIGluaXQKAAAAAGRpbwBXICglbHUpICVzOiBPY3RhbCBmbGFzaCBjaGlwIGlzIHVzaW5nIGJ1dCAlcyBtb2RlIGlzIHNlbGVjdGVkLCB3aWxsIGF1dG9tYXRpY2FsbHkgc3dpdGNoIHRvIE9jdGFsIG1vZGUKAGNvbmZpZy0+aG9zdF9pZCAhPSBTUEkxX0hPU1QgfHwgZGV2X2lkICE9IDAALy9JREYvY29tcG9uZW50cy9zcGlfZmxhc2gvZXNwX2ZsYXNoX3NwaV9pbml0LmMARSAoJWx1KSAlczogRGV0ZWN0ZWQgc2l6ZSglZGspIHNtYWxsZXIgdGhhbiB0aGUgc2l6ZSBpbiB0aGUgYmluYXJ5IGltYWdlIGhlYWRlciglZGspLiBQcm9iZSBmYWlsZWQuCgAAAABXICglbHUpICVzOiBEZXRlY3RlZCBzaXplKCVkaykgbGFyZ2VyIHRoYW4gdGhlIHNpemUgaW4gdGhlIGJpbmFy
+[   11.185] ctl   OTA OK 768
+[   11.186] bench --> ctl: ota w 768 eSBpbWFnZSBoZWFkZXIoJWRrKS4gVXNpbmcgdGhlIHNpemUgaW4gdGhlIGJpbmFyeSBpbWFnZSBoZWFkZXIuCgAAAABFICglbHUpICVzOiAlcyglZCk6IDMyYml0IGFkZHJlc3MgZmVhdHVyZSBjaGVjayBmYWlsZWQKAGZsYXNoX3JldCA9PSBFU1BfT0sAc19mbGFzaF9vcF9tdXRleCAhPSBOVUxMAAAAAC8vSURGL2NvbXBvbmVudHMvc3BpX2ZsYXNoL2NhY2hlX3V0aWxzLmMAAAAAZXNwX3Rhc2tfc3RhY2tfaXNfc2FuZV9jYWNoZV9kaXNhYmxlZCgpAHNfZmxhc2hfb3BfY3B1ID09IC0xAAAAAG90aGVyX2NwdWlkID09IDEAAAAAY3B1aWQgPT0gc19mbGFzaF9vcF9jcHUAISh4VGFza0dldFNjaGVkdWxlclN0YXRlKCkgPT0gdGFza1NDSEVEVUxFUl9OT1RfU1RBUlRFRCAmJiBj
+[   11.247] ctl   OTA OK 1152
+[   11.247] bench --> ctl: ota end
+[   11.309] ctl   > ota end
+[   11.309] ctl   OTA ERR sha256 mismatch: image corrupted in transfer (running image unchanged)
+[   11.309] bench --> ctl: ota status
+[   11.371] ctl   > ota status
+[   11.371] ctl   OTA status: running=ota_0 @0x020000 state=VALID version=f44a399 next_slot=ota_1
+[   11.372] bench ===== ota_bad_sha: PASS {'end': 'OTA ERR sha256 mismatch: image corrupted in transfer (running image unchanged)', 'running': 'f44a399'}

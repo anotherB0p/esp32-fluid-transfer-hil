@@ -63,3 +63,6 @@ Not part of the 3-hour budget. Requested by the owner after the repository was p
 | ~20:18 | OTA (owner's request): A/B partition table with bootloader rollback, console OTA module (SHA-256 via PSA, sequential erase), self-test that marks the image valid, `tools/ota_update.py`. Controller flashed with the new layout; the NVS fault log survived the layout change. |
 | 20:25 | OTA good image: 273 KB in 43 s, self-test passed after 402 ms, kept. 20:26 OTA deliberately bad image: self-test failed, bootloader rolled back to the previous version. |
 | 20:28 | OTA bench scenarios (refused during transfer, bad SHA-256, good, rollback): **4/4 PASS** (`logs/20261108T192753Z_run_all.log`). 4 OTA requirements added. |
+| ~20:30 | cppcheck caught a style issue in the new HELLO code (variable scope), fixed before CI. Committed `f44a399`. |
+| ~20:33 | Rebuilt both firmwares from the commit. A first rebuild passed an empty `-DPROJECT_VER=` and the version became "1"; fixed by clearing the CMake cache, version is now `f44a399`. |
+| 20:36-20:38 | Final hardware run on `f44a399`: **20/20 PASS** (`logs/20261108T193631Z_run_all.log`) and OTA refused/bad-SHA **2/2 PASS**. The OTA good/rollback scenarios ran at 20:28 on the same OTA code, before the cppcheck fix (variable scope only, no behaviour change). |

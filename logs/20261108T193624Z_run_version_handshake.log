@@ -1,0 +1,27 @@
+[    0.011] bench ports: {'ctl': 'COM7', 'plant': 'COM8'}
+[    0.539] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=f44a399 boot_id=4294 proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[    0.540] bench ===== scenario version_handshake =====
+[    0.593] plant STAT t=1007 src=800.0 dst=100.0 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=70 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=12 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0 tx_noise_ppm=0 tx_corrupted=0
+[    0.662] ctl   STAT t=83007 state=IDLE phase=- fault=NONE target=0 | src=800 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=10 rx_ok=976 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=1
+[    0.719] ctl   STAT peer OK proto=v2 boot_id=4294 fw_id=e57fcbc3 reboots_seen=1 | self fw=f44a399 boot_id=63da proto=v2
+[    0.719] ctl   STAT diag boot=31 cmd_ack=OK rtt_ms last=90 min=90 avg=106 max=110 n=811 tx_noise_ppm=0 tx_corrupted=0
+[    1.539] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=f44a399 boot_id=4294 proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[    1.591] plant STAT t=2007 src=800.0 dst=100.0 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=70 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=24 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0 tx_noise_ppm=0 tx_corrupted=0
+[    1.592] bench --> ctl: version
+[    1.655] ctl   > version
+[    1.655] ctl   VERSION transfer_controller f44a399 built Nov  8 2026 20:34:33, IDF a208625e-dirty | protocol v2 | boot_id 63da
+[    1.657] bench --> plant: version
+[    1.662] ctl   STAT t=84007 state=IDLE phase=- fault=NONE target=0 | src=800 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=10 rx_ok=988 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=1
+[    1.716] plant > version
+[    1.716] plant VERSION transfer_plant f44a399 built Nov  8 2026 20:35:54, IDF a208625e-dirty | protocol v2 | boot_id 4294
+[    1.716] ctl   STAT peer OK proto=v2 boot_id=4294 fw_id=e57fcbc3 reboots_seen=1 | self fw=f44a399 boot_id=63da proto=v2
+[    1.716] ctl   STAT diag boot=31 cmd_ack=OK rtt_ms last=90 min=90 avg=105 max=110 n=821 tx_noise_ppm=0 tx_corrupted=0
+[    1.717] bench --> ctl: status
+[    1.722] ctl   > status
+[    1.722] ctl   STAT t=84067 state=IDLE phase=- fault=NONE target=0 | src=800 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=70 rx_ok=988 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=1
+[    1.778] ctl   STAT peer OK proto=v2 boot_id=4294 fw_id=e57fcbc3 reboots_seen=1 | self fw=f44a399 boot_id=63da proto=v2
+[    1.778] ctl   STAT diag boot=31 cmd_ack=OK rtt_ms last=90 min=90 avg=105 max=110 n=821 tx_noise_ppm=0 tx_corrupted=0
+[    1.778] bench --> plant: status
+[    1.789] plant > status
+[    1.789] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=f44a399 boot_id=4294 proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[    1.789] bench ===== version_handshake: PASS {'ctl': 'transfer_controller f44a399 built Nov  8 2026 20:34:33, IDF a208625e-dirty | protocol v2 | boot_id 63da', 'plant': 'transfer_plant f44a399 built Nov  8 2026 20:35:54, IDF a208625e-dirty | protocol v2 | boot_id 4294'}

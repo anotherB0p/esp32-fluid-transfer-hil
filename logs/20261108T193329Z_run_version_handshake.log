@@ -1,0 +1,27 @@
+[    0.006] bench ports: {'ctl': 'COM7', 'plant': 'COM8'}
+[    0.395] ctl   STAT t=84007 state=IDLE phase=- fault=NONE target=0 | src=800 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=30 rx_ok=986 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=1
+[    0.448] ctl   STAT peer OK proto=v2 boot_id=cce5 fw_id=340ca71c reboots_seen=1 | self fw=1 boot_id=011c proto=v2
+[    0.448] ctl   STAT diag boot=30 cmd_ack=OK rtt_ms last=70 min=50 avg=53 max=70 n=821 tx_noise_ppm=0 tx_corrupted=0
+[    0.454] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=1 boot_id=cce5 proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[    0.510] plant STAT t=7007 src=800.0 dst=100.0 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=50 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=84 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0 tx_noise_ppm=0 tx_corrupted=0
+[    0.510] bench ===== scenario version_handshake =====
+[    1.395] ctl   STAT t=85007 state=IDLE phase=- fault=NONE target=0 | src=800 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=30 rx_ok=998 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=1
+[    1.446] ctl   STAT peer OK proto=v2 boot_id=cce5 fw_id=340ca71c reboots_seen=1 | self fw=1 boot_id=011c proto=v2
+[    1.446] ctl   STAT diag boot=30 cmd_ack=OK rtt_ms last=70 min=50 avg=53 max=70 n=831 tx_noise_ppm=0 tx_corrupted=0
+[    1.454] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=1 boot_id=cce5 proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[    1.508] plant STAT t=8007 src=800.0 dst=100.0 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=50 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=96 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0 tx_noise_ppm=0 tx_corrupted=0
+[    1.570] bench --> ctl: version
+[    1.633] ctl   > version
+[    1.633] ctl   VERSION transfer_controller 1 built Nov  8 2026 20:31:36, IDF a208625e-dirty | protocol v2 | boot_id 011c
+[    1.633] bench --> plant: version
+[    1.695] plant > version
+[    1.695] plant VERSION transfer_plant 1 built Nov  8 2026 20:32:56, IDF a208625e-dirty | protocol v2 | boot_id cce5
+[    1.695] bench --> ctl: status
+[    1.705] ctl   > status
+[    1.705] ctl   STAT t=85317 state=IDLE phase=- fault=NONE target=0 | src=800 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=40 rx_ok=1002 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=1
+[    1.757] ctl   STAT peer OK proto=v2 boot_id=cce5 fw_id=340ca71c reboots_seen=1 | self fw=1 boot_id=011c proto=v2
+[    1.758] ctl   STAT diag boot=30 cmd_ack=OK rtt_ms last=70 min=50 avg=53 max=70 n=834 tx_noise_ppm=0 tx_corrupted=0
+[    1.758] bench --> plant: status
+[    1.765] plant > status
+[    1.765] plant STAT peer ctl_hello=OK ctl_proto=v2 | self fw=1 boot_id=cce5 proto=v2 | sim: dst_frozen=0 dst_inflow=0
+[    1.765] bench ===== version_handshake: PASS {'ctl': 'transfer_controller 1 built Nov  8 2026 20:31:36, IDF a208625e-dirty | protocol v2 | boot_id 011c', 'plant': 'transfer_plant 1 built Nov  8 2026 20:32:56, IDF a208625e-dirty | protocol v2 | boot_id cce5'}
