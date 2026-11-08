@@ -1,0 +1,15 @@
+# ESP-IDF build output and generated per-target configs
+build/
+build_*/
+sdkconfig
+sdkconfig.esp32*
+sdkconfig.old
+managed_components/
+dependencies.lock
+
+# Host test build output
+tests/build/
+
+# Logs captured during bench runs are kept under logs/, raw dumps are not committed
+*.bin
+__pycache__/
