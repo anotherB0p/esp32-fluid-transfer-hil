@@ -1,0 +1,92 @@
+[    0.009] bench ports: {'ctl': 'COM7', 'plant': 'COM8'}
+[    0.477] ctl   STAT t=157006 state=IDLE phase=- fault=NONE target=600 | src=800 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=40 rx_ok=1568 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=1
+[    0.540] plant STAT t=153005 src=800.0 dst=100.0 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=40 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1530 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[    0.540] bench ===== scenario wire_pull =====
+[    0.545] bench >>> OPERATOR: unplug ONE link wire during the transfer (up to 3 min) <<<
+[    0.545] bench --> plant: fault clear
+[    0.602] plant > fault clear
+[    0.602] plant EVT t=153055 SIM: all injected faults cleared
+[    0.602] bench --> plant: set src 1000
+[    0.664] plant > set src 1000
+[    0.664] plant EVT t=153115 SIM: source level set to 1000 mL
+[    0.664] bench --> plant: set dst 0
+[    0.727] plant > set dst 0
+[    0.727] plant EVT t=153175 SIM: destination level set to 0 mL
+[    1.330] bench --> ctl: status
+[    1.392] ctl   > status
+[    1.392] ctl   STAT t=157886 state=IDLE phase=- fault=NONE target=600 | src=1000 dst=0 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=20 rx_ok=1577 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=1
+[    1.392] bench --> ctl: status
+[    1.454] ctl   > status
+[    1.454] ctl   STAT t=157946 state=IDLE phase=- fault=NONE target=600 | src=1000 dst=0 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=80 rx_ok=1577 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=1
+[    1.455] bench --> ctl: start 900
+[    1.462] ctl   > start 900
+[    1.462] ctl   EVT t=158007 IDLE -> CHECK : start requested
+[    1.462] ctl   EVT t=158007 CHECK -> TRANSFER phase=OPEN_VALVE : CHECK ok: src 1000 dst 0 target 900 mL
+[    1.516] plant STAT t=154005 src=1000.0 dst=0.0 flow=0.0 | pump cmd=0 act=0 valve cmd=1 act=0 | failsafe=0 armed=1 cmd_age=30 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1540 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[    1.516] ctl   STAT t=158006 state=TRANSFER phase=OPEN_VALVE fault=NONE target=900 | src=1000 dst=0 flow=0 valve cmd=1 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=40 rx_ok=1578 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=1
+[    1.763] ctl   EVT t=158266 TRANSFER phase=PUMPING : valve open confirmed after 260 ms
+[    2.473] ctl   STAT t=159006 state=TRANSFER phase=PUMPING fault=NONE target=900 | src=976 dst=24 flow=46 valve cmd=1 act=1 pump cmd=1 act=1 plant_failsafe=0 | link=OK age=40 rx_ok=1588 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=1
+[    2.536] plant STAT t=155005 src=975.7 dst=24.3 flow=45.9 | pump cmd=1 act=1 valve cmd=1 act=1 | failsafe=0 armed=1 cmd_age=40 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1550 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[    3.470] ctl   STAT t=160006 state=TRANSFER phase=PUMPING fault=NONE target=900 | src=927 dst=73 flow=50 valve cmd=1 act=1 pump cmd=1 act=1 plant_failsafe=0 | link=OK age=40 rx_ok=1598 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=1
+[    3.531] plant STAT t=156005 src=926.6 dst=73.4 flow=49.9 | pump cmd=1 act=1 valve cmd=1 act=1 | failsafe=0 armed=1 cmd_age=40 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1560 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[    4.520] plant STAT t=157005 src=876.7 dst=123.3 flow=50.0 | pump cmd=1 act=1 valve cmd=1 act=1 | failsafe=0 armed=1 cmd_age=40 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1570 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[    4.520] ctl   STAT t=161006 state=TRANSFER phase=PUMPING fault=NONE target=900 | src=877 dst=123 flow=50 valve cmd=1 act=1 pump cmd=1 act=1 plant_failsafe=0 | link=OK age=40 rx_ok=1608 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=1
+[    5.516] plant STAT t=158005 src=826.7 dst=173.3 flow=50.0 | pump cmd=1 act=1 valve cmd=1 act=1 | failsafe=0 armed=1 cmd_age=40 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1580 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[    5.516] ctl   STAT t=162006 state=TRANSFER phase=PUMPING fault=NONE target=900 | src=827 dst=173 flow=50 valve cmd=1 act=1 pump cmd=1 act=1 plant_failsafe=0 | link=OK age=40 rx_ok=1618 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=1
+[    6.513] plant STAT t=159005 src=776.7 dst=223.3 flow=50.0 | pump cmd=1 act=1 valve cmd=1 act=1 | failsafe=0 armed=1 cmd_age=40 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1590 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[    6.513] ctl   STAT t=163006 state=TRANSFER phase=PUMPING fault=NONE target=900 | src=777 dst=223 flow=50 valve cmd=1 act=1 pump cmd=1 act=1 plant_failsafe=0 | link=OK age=40 rx_ok=1628 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=1
+[    7.510] plant STAT t=160005 src=726.7 dst=273.3 flow=50.0 | pump cmd=1 act=1 valve cmd=1 act=1 | failsafe=0 armed=1 cmd_age=40 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1600 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[    7.510] ctl   STAT t=164006 state=TRANSFER phase=PUMPING fault=NONE target=900 | src=727 dst=273 flow=50 valve cmd=1 act=1 pump cmd=1 act=1 plant_failsafe=0 | link=OK age=40 rx_ok=1638 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=1
+[    8.497] ctl   STAT t=165006 state=TRANSFER phase=PUMPING fault=NONE target=900 | src=677 dst=323 flow=50 valve cmd=1 act=1 pump cmd=1 act=1 plant_failsafe=0 | link=OK age=40 rx_ok=1648 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=1
+[    8.559] plant STAT t=161005 src=676.7 dst=323.3 flow=50.0 | pump cmd=1 act=1 valve cmd=1 act=1 | failsafe=0 armed=1 cmd_age=40 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1610 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[    9.496] ctl   STAT t=166006 state=TRANSFER phase=PUMPING fault=NONE target=900 | src=627 dst=373 flow=50 valve cmd=1 act=1 pump cmd=1 act=1 plant_failsafe=0 | link=OK age=40 rx_ok=1658 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=1
+[    9.558] plant STAT t=162005 src=626.7 dst=373.3 flow=50.0 | pump cmd=1 act=1 valve cmd=1 act=1 | failsafe=0 armed=1 cmd_age=40 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1620 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   10.494] ctl   STAT t=167006 state=TRANSFER phase=PUMPING fault=NONE target=900 | src=577 dst=423 flow=50 valve cmd=1 act=1 pump cmd=1 act=1 plant_failsafe=0 | link=OK age=40 rx_ok=1668 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=1
+[   10.548] plant STAT t=163005 src=576.7 dst=423.3 flow=50.0 | pump cmd=1 act=1 valve cmd=1 act=1 | failsafe=0 armed=1 cmd_age=30 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1630 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   11.470] ctl   STAT t=168006 state=TRANSFER phase=PUMPING fault=NONE target=900 | src=527 dst=473 flow=50 valve cmd=1 act=1 pump cmd=1 act=1 plant_failsafe=0 | link=OK age=40 rx_ok=1678 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=1
+[   11.532] plant STAT t=164005 src=526.7 dst=473.3 flow=50.0 | pump cmd=1 act=1 valve cmd=1 act=1 | failsafe=0 armed=1 cmd_age=30 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1640 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   12.521] ctl   STAT t=169006 state=TRANSFER phase=PUMPING fault=NONE target=900 | src=477 dst=523 flow=50 valve cmd=1 act=1 pump cmd=1 act=1 plant_failsafe=0 | link=OK age=40 rx_ok=1688 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=1
+[   12.521] plant STAT t=165005 src=476.7 dst=523.3 flow=50.0 | pump cmd=1 act=1 valve cmd=1 act=1 | failsafe=0 armed=1 cmd_age=30 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1650 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   13.520] plant STAT t=166005 src=426.7 dst=573.3 flow=50.0 | pump cmd=1 act=1 valve cmd=1 act=1 | failsafe=0 armed=1 cmd_age=30 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1660 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   13.520] ctl   STAT t=170006 state=TRANSFER phase=PUMPING fault=NONE target=900 | src=427 dst=573 flow=50 valve cmd=1 act=1 pump cmd=1 act=1 plant_failsafe=0 | link=OK age=40 rx_ok=1698 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=1
+[   14.510] ctl   STAT t=171006 state=TRANSFER phase=PUMPING fault=NONE target=900 | src=377 dst=623 flow=50 valve cmd=1 act=1 pump cmd=1 act=1 plant_failsafe=0 | link=OK age=40 rx_ok=1708 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=1
+[   14.510] plant STAT t=167005 src=376.7 dst=623.3 flow=50.0 | pump cmd=1 act=1 valve cmd=1 act=1 | failsafe=0 armed=1 cmd_age=30 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1670 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   15.498] ctl   STAT t=172006 state=TRANSFER phase=PUMPING fault=NONE target=900 | src=327 dst=673 flow=50 valve cmd=1 act=1 pump cmd=1 act=1 plant_failsafe=0 | link=OK age=40 rx_ok=1718 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=1
+[   15.560] plant STAT t=168005 src=326.7 dst=673.3 flow=50.0 | pump cmd=1 act=1 valve cmd=1 act=1 | failsafe=0 armed=1 cmd_age=30 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1680 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   16.487] ctl   STAT t=173006 state=TRANSFER phase=PUMPING fault=NONE target=900 | src=277 dst=723 flow=50 valve cmd=1 act=1 pump cmd=1 act=1 plant_failsafe=0 | link=OK age=40 rx_ok=1728 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=1
+[   16.549] plant STAT t=169005 src=276.7 dst=723.3 flow=50.0 | pump cmd=1 act=1 valve cmd=1 act=1 | failsafe=0 armed=1 cmd_age=30 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1690 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   17.476] ctl   STAT t=174006 state=TRANSFER phase=PUMPING fault=NONE target=900 | src=227 dst=773 flow=50 valve cmd=1 act=1 pump cmd=1 act=1 plant_failsafe=0 | link=OK age=40 rx_ok=1738 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=1
+[   17.536] plant STAT t=170005 src=226.7 dst=773.3 flow=50.0 | pump cmd=1 act=1 valve cmd=1 act=1 | failsafe=0 armed=1 cmd_age=30 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1700 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   18.469] ctl   STAT t=175006 state=TRANSFER phase=PUMPING fault=NONE target=900 | src=177 dst=823 flow=50 valve cmd=1 act=1 pump cmd=1 act=1 plant_failsafe=0 | link=OK age=40 rx_ok=1748 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=1
+[   18.531] plant STAT t=171005 src=176.7 dst=823.3 flow=50.0 | pump cmd=1 act=1 valve cmd=1 act=1 | failsafe=0 armed=1 cmd_age=30 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1710 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   19.466] ctl   STAT t=176006 state=TRANSFER phase=PUMPING fault=NONE target=900 | src=127 dst=873 flow=50 valve cmd=1 act=1 pump cmd=1 act=1 plant_failsafe=0 | link=OK age=40 rx_ok=1758 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=1
+[   19.527] plant STAT t=172005 src=126.7 dst=873.3 flow=50.0 | pump cmd=1 act=1 valve cmd=1 act=1 | failsafe=0 armed=1 cmd_age=30 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1720 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   20.026] ctl   EVT t=176566 TRANSFER phase=STOPPING : target reached: dst 903 >= 900 mL
+[   20.333] ctl   EVT t=176866 TRANSFER -> COMPLETE : stopped: dst 909 mL, src 91 mL
+[   20.519] ctl   STAT t=177006 state=COMPLETE phase=- fault=NONE target=900 | src=91 dst=909 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=40 rx_ok=1768 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=1
+[   20.520] plant STAT t=173005 src=90.7 dst=909.3 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=30 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1730 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   21.510] ctl   STAT t=178006 state=COMPLETE phase=- fault=NONE target=900 | src=91 dst=909 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=40 rx_ok=1778 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=1
+[   21.510] plant STAT t=174005 src=90.7 dst=909.3 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=30 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1740 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   22.497] ctl   STAT t=179006 state=COMPLETE phase=- fault=NONE target=900 | src=91 dst=909 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=40 rx_ok=1788 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=1
+[   22.559] plant STAT t=175005 src=90.7 dst=909.3 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=30 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1750 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   23.480] ctl   STAT t=180006 state=COMPLETE phase=- fault=NONE target=900 | src=91 dst=909 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=40 rx_ok=1798 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=1
+[   23.541] plant STAT t=176005 src=90.7 dst=909.3 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=30 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1760 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   24.465] ctl   STAT t=181006 state=COMPLETE phase=- fault=NONE target=900 | src=91 dst=909 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=40 rx_ok=1808 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=1
+[   24.526] plant STAT t=177005 src=90.7 dst=909.3 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=30 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1770 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   25.512] plant STAT t=178005 src=90.7 dst=909.3 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=30 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1780 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   25.512] ctl   STAT t=182006 state=COMPLETE phase=- fault=NONE target=900 | src=91 dst=909 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=40 rx_ok=1818 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=1
+[   26.508] plant STAT t=179005 src=90.7 dst=909.3 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=30 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1790 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   26.509] ctl   STAT t=183006 state=COMPLETE phase=- fault=NONE target=900 | src=91 dst=909 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=40 rx_ok=1828 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=1
+[   27.504] ctl   STAT t=184006 state=COMPLETE phase=- fault=NONE target=900 | src=91 dst=909 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=40 rx_ok=1838 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=1
+[   27.504] plant STAT t=180005 src=90.7 dst=909.3 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=30 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1800 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   28.498] ctl   STAT t=185006 state=COMPLETE phase=- fault=NONE target=900 | src=91 dst=909 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=40 rx_ok=1848 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=1
+[   28.560] plant STAT t=181005 src=90.7 dst=909.3 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=30 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1810 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   29.498] ctl   STAT t=186006 state=COMPLETE phase=- fault=NONE target=900 | src=91 dst=909 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=40 rx_ok=1858 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=1
+[   29.562] plant STAT t=182005 src=90.7 dst=909.3 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=30 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1820 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   30.495] ctl   STAT t=187006 state=COMPLETE phase=- fault=NONE target=900 | src=91 dst=909 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=40 rx_ok=1868 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=1
+[   30.558] plant STAT t=183005 src=90.7 dst=909.3 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=30 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1830 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   31.491] ctl   STAT t=188006 state=COMPLETE phase=- fault=NONE target=900 | src=91 dst=909 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=40 rx_ok=1878 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=1
+[   31.554] plant STAT t=184005 src=90.7 dst=909.3 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=30 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1840 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   31.864] bench ===== wire_pull: FAIL timeout 5s waiting for ctl: /-> COMPLETE/
+[   32.486] ctl   STAT t=189006 state=COMPLETE phase=- fault=NONE target=900 | src=91 dst=909 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=40 rx_ok=1888 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=1
+[   32.549] plant STAT t=185005 src=90.7 dst=909.3 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 armed=1 cmd_age=30 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1850 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0

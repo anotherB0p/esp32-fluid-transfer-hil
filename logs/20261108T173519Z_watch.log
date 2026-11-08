@@ -1,0 +1,7 @@
+[    0.006] bench ports: {'ctl': 'COM7', 'plant': 'COM8'}
+[    0.219] ctl   STAT t=65007 state=IDLE phase=- fault=NONE target=0 | src=800 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=10 rx_ok=563 crc_err=0 len_err=0 range_err=0 junk=126 seq_gaps=0
+[    0.895] plant STAT t=57005 src=800.0 dst=100.0 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 cmd_age=60 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=570 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[    1.235] ctl   STAT t=66007 state=IDLE phase=- fault=NONE target=0 | src=800 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=10 rx_ok=573 crc_err=0 len_err=0 range_err=0 junk=126 seq_gaps=0
+[    1.901] plant STAT t=58005 src=800.0 dst=100.0 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 cmd_age=60 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=580 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[    2.240] ctl   STAT t=67007 state=IDLE phase=- fault=NONE target=0 | src=800 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=10 rx_ok=583 crc_err=0 len_err=0 range_err=0 junk=126 seq_gaps=0
+[    2.913] plant STAT t=59005 src=800.0 dst=100.0 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 cmd_age=60 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=590 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0

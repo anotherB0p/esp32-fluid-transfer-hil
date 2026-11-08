@@ -1,0 +1,476 @@
+[    0.007] bench ports: {'ctl': 'COM7', 'plant': 'COM8'}
+[    0.514] bench ===== scenario insufficient_source =====
+[    0.514] bench --> plant: fault clear
+[    0.569] plant > fault clear
+[    0.569] plant EVT t=87895 SIM: all injected faults cleared
+[    0.570] bench --> plant: set src 300
+[    0.624] plant > set src 300
+[    0.624] plant EVT t=87955 SIM: source level set to 300 mL
+[    0.624] bench --> plant: set dst 100
+[    0.631] plant > set dst 100
+[    0.631] plant EVT t=88005 SIM: destination level set to 100 mL
+[    0.684] plant STAT t=88005 src=300.0 dst=100.0 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 cmd_age=60 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=880 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[    1.005] ctl   STAT t=97007 state=COMPLETE phase=- fault=NONE target=500 | src=300 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=20 rx_ok=883 crc_err=0 len_err=0 range_err=0 junk=126 seq_gaps=0
+[    1.285] bench --> ctl: status
+[    1.339] ctl   > status
+[    1.339] ctl   STAT t=97337 state=COMPLETE phase=- fault=NONE target=500 | src=300 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=50 rx_ok=886 crc_err=0 len_err=0 range_err=0 junk=126 seq_gaps=0
+[    1.339] bench --> ctl: reset
+[    1.395] ctl   > reset
+[    1.395] ctl   EVT t=97388 COMPLETE -> IDLE : reset accepted
+[    1.396] bench --> ctl: status
+[    1.451] ctl   > status
+[    1.451] ctl   STAT t=97447 state=IDLE phase=- fault=NONE target=500 | src=300 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=60 rx_ok=887 crc_err=0 len_err=0 range_err=0 junk=126 seq_gaps=0
+[    1.451] bench --> ctl: start 500
+[    1.502] ctl   > start 500
+[    1.502] ctl   EVT t=97508 IDLE -> CHECK : start requested
+[    1.502] ctl   EVT t=97508 CHECK -> FAULT cause=INSUFFICIENT_SOURCE : CHECK: src 300 < needed 500 mL (incl. reserve 100)
+[    1.633] plant STAT t=89005 src=300.0 dst=100.0 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 cmd_age=60 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=890 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[    1.965] ctl   STAT t=98007 state=FAULT phase=- fault=INSUFFICIENT_SOURCE target=500 | src=300 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=20 rx_ok=893 crc_err=0 len_err=0 range_err=0 junk=126 seq_gaps=0
+[    2.016] ctl   STAT fault_detail: CHECK: src 300 < needed 500 mL (incl. reserve 100)
+[    2.669] plant STAT t=90005 src=300.0 dst=100.0 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 cmd_age=60 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=900 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[    2.965] ctl   STAT t=99007 state=FAULT phase=- fault=INSUFFICIENT_SOURCE target=500 | src=300 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=20 rx_ok=903 crc_err=0 len_err=0 range_err=0 junk=126 seq_gaps=0
+[    3.024] bench --> ctl: reset
+[    3.024] ctl   STAT fault_detail: CHECK: src 300 < needed 500 mL (incl. reserve 100)
+[    3.078] ctl   > reset
+[    3.078] ctl   EVT t=99078 FAULT -> IDLE : reset accepted
+[    3.079] bench ===== insufficient_source: PASS {'fault_line': 'CHECK: src 300 < needed 500 mL (incl. reserve 100)'}
+[    3.079] bench ===== scenario valve_stuck_closed =====
+[    3.079] bench --> plant: fault clear
+[    3.121] plant > fault clear
+[    3.121] plant EVT t=90465 SIM: all injected faults cleared
+[    3.122] bench --> plant: set src 800
+[    3.181] plant > set src 800
+[    3.181] plant EVT t=90505 SIM: source level set to 800 mL
+[    3.181] bench --> plant: set dst 100
+[    3.242] plant > set dst 100
+[    3.242] plant EVT t=90565 SIM: destination level set to 100 mL
+[    3.683] plant STAT t=91005 src=800.0 dst=100.0 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 cmd_age=60 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=910 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[    3.853] bench --> ctl: status
+[    3.908] ctl   > status
+[    3.908] ctl   STAT t=99907 state=IDLE phase=- fault=NONE target=500 | src=800 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=20 rx_ok=912 crc_err=0 len_err=0 range_err=0 junk=126 seq_gaps=0
+[    3.909] bench --> ctl: status
+[    3.962] ctl   > status
+[    3.962] ctl   STAT t=99957 state=IDLE phase=- fault=NONE target=500 | src=800 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=70 rx_ok=912 crc_err=0 len_err=0 range_err=0 junk=126 seq_gaps=0
+[    3.962] bench --> plant: fault valve_stuck 1
+[    4.018] ctl   STAT t=100007 state=IDLE phase=- fault=NONE target=500 | src=800 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=20 rx_ok=913 crc_err=0 len_err=0 range_err=0 junk=126 seq_gaps=0
+[    4.023] plant > fault valve_stuck 1
+[    4.023] plant EVT t=91345 SIM: valve_stuck=1 (valve frozen CLOSED)
+[    4.024] bench --> ctl: start 500
+[    4.071] ctl   > start 500
+[    4.071] ctl   EVT t=100078 IDLE -> CHECK : start requested
+[    4.071] ctl   EVT t=100078 CHECK -> TRANSFER phase=OPEN_VALVE : CHECK ok: src 800 dst 100 target 500 mL
+[    4.635] plant STAT t=92005 src=800.0 dst=100.0 flow=0.0 | pump cmd=0 act=0 valve cmd=1 act=0 | failsafe=0 cmd_age=60 | faults: valve_stuck=1 pump_dead=0 leak=0 | rx_ok=920 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[    4.969] ctl   STAT t=101007 state=TRANSFER phase=OPEN_VALVE fault=NONE target=500 | src=800 dst=100 flow=0 valve cmd=1 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=20 rx_ok=923 crc_err=0 len_err=0 range_err=0 junk=126 seq_gaps=0
+[    5.078] ctl   EVT t=101087 TRANSFER -> FAULT cause=VALVE_NOT_OPEN : valve commanded OPEN, actual CLOSED after 1010 ms
+[    5.078] bench --> plant: status
+[    5.132] plant > status
+[    5.132] plant STAT t=92465 src=800.0 dst=100.0 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 cmd_age=20 | faults: valve_stuck=1 pump_dead=0 leak=0 | rx_ok=925 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[    5.132] bench --> plant: fault clear
+[    5.188] plant > fault clear
+[    5.188] plant EVT t=92515 SIM: all injected faults cleared
+[    5.653] plant STAT t=93005 src=800.0 dst=100.0 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 cmd_age=60 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=930 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[    5.708] bench --> ctl: reset
+[    5.768] ctl   > reset
+[    5.768] ctl   EVT t=101758 FAULT -> IDLE : reset accepted
+[    5.769] bench ===== valve_stuck_closed: PASS {'detect_after_start_s': 1.05, 'fault_line': 'valve commanded OPEN, actual CLOSED after 1010 ms'}
+[    5.769] bench ===== scenario no_flow =====
+[    5.769] bench --> plant: fault clear
+[    5.828] plant > fault clear
+[    5.828] plant EVT t=93155 SIM: all injected faults cleared
+[    5.828] bench --> plant: set src 800
+[    5.878] plant > set src 800
+[    5.878] plant EVT t=93215 SIM: source level set to 800 mL
+[    5.878] bench --> plant: set dst 100
+[    5.931] plant > set dst 100
+[    5.931] plant EVT t=93265 SIM: destination level set to 100 mL
+[    5.981] ctl   STAT t=102007 state=IDLE phase=- fault=NONE target=500 | src=800 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=20 rx_ok=933 crc_err=0 len_err=0 range_err=0 junk=126 seq_gaps=0
+[    6.538] bench --> ctl: status
+[    6.550] ctl   > status
+[    6.550] ctl   STAT t=102587 state=IDLE phase=- fault=NONE target=500 | src=800 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=0 rx_ok=939 crc_err=0 len_err=0 range_err=0 junk=126 seq_gaps=0
+[    6.551] bench --> ctl: status
+[    6.614] ctl   > status
+[    6.614] ctl   STAT t=102597 state=IDLE phase=- fault=NONE target=500 | src=800 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=10 rx_ok=939 crc_err=0 len_err=0 range_err=0 junk=126 seq_gaps=0
+[    6.614] bench --> plant: fault pump_dead 1
+[    6.630] plant > fault pump_dead 1
+[    6.630] plant EVT t=93995 SIM: pump_dead=1
+[    6.631] bench --> ctl: start 500
+[    6.665] ctl   > start 500
+[    6.665] ctl   EVT t=102678 IDLE -> CHECK : start requested
+[    6.665] ctl   EVT t=102678 CHECK -> TRANSFER phase=OPEN_VALVE : CHECK ok: src 800 dst 100 target 500 mL
+[    6.684] plant STAT t=94005 src=800.0 dst=100.0 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 cmd_age=60 | faults: valve_stuck=0 pump_dead=1 leak=0 | rx_ok=940 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[    6.950] ctl   EVT t=102987 TRANSFER phase=PUMPING : valve open confirmed after 310 ms
+[    7.005] ctl   STAT t=103007 state=TRANSFER phase=PUMPING fault=NONE target=500 | src=800 dst=100 flow=0 valve cmd=1 act=1 pump cmd=1 act=0 plant_failsafe=0 | link=OK age=20 rx_ok=943 crc_err=0 len_err=0 range_err=0 junk=126 seq_gaps=0
+[    7.648] plant STAT t=95005 src=800.0 dst=100.0 flow=0.0 | pump cmd=1 act=0 valve cmd=1 act=1 | failsafe=0 cmd_age=60 | faults: valve_stuck=0 pump_dead=1 leak=0 | rx_ok=950 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[    8.020] ctl   STAT t=104007 state=TRANSFER phase=PUMPING fault=NONE target=500 | src=800 dst=100 flow=0 valve cmd=1 act=1 pump cmd=1 act=0 plant_failsafe=0 | link=OK age=20 rx_ok=953 crc_err=0 len_err=0 range_err=0 junk=126 seq_gaps=0
+[    8.466] ctl   EVT t=104497 TRANSFER -> FAULT cause=NO_FLOW : flow 0 < 20 mL/s, pump actual=0
+[    8.466] bench --> plant: fault clear
+[    8.490] plant > fault clear
+[    8.490] plant EVT t=95845 SIM: all injected faults cleared
+[    8.654] plant STAT t=96005 src=800.0 dst=100.0 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=1 | failsafe=0 cmd_age=60 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=960 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[    8.965] ctl   STAT t=105007 state=FAULT phase=- fault=NO_FLOW target=500 | src=800 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=20 rx_ok=963 crc_err=0 len_err=0 range_err=0 junk=126 seq_gaps=0
+[    9.017] ctl   STAT fault_detail: flow 0 < 20 mL/s, pump actual=0
+[    9.296] bench --> ctl: reset
+[    9.351] ctl   > reset
+[    9.351] ctl   EVT t=105348 FAULT -> IDLE : reset accepted
+[    9.351] bench ===== no_flow: PASS {'detect_after_pump_cmd_s': 1.52, 'fault_line': 'flow 0 < 20 mL/s, pump actual=0'}
+[    9.351] bench ===== scenario source_low =====
+[    9.351] bench --> plant: fault clear
+[    9.387] plant > fault clear
+[    9.387] plant EVT t=96735 SIM: all injected faults cleared
+[    9.387] bench --> plant: set src 800
+[    9.441] plant > set src 800
+[    9.441] plant EVT t=96765 SIM: source level set to 800 mL
+[    9.442] bench --> plant: set dst 100
+[    9.493] plant > set dst 100
+[    9.493] plant EVT t=96825 SIM: destination level set to 100 mL
+[    9.653] plant STAT t=97005 src=800.0 dst=100.0 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 cmd_age=60 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=970 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[    9.968] ctl   STAT t=106007 state=IDLE phase=- fault=NONE target=500 | src=800 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=20 rx_ok=973 crc_err=0 len_err=0 range_err=0 junk=126 seq_gaps=0
+[   10.132] bench --> ctl: status
+[   10.187] ctl   > status
+[   10.187] ctl   STAT t=106187 state=IDLE phase=- fault=NONE target=500 | src=800 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=0 rx_ok=975 crc_err=0 len_err=0 range_err=0 junk=126 seq_gaps=0
+[   10.187] bench --> ctl: status
+[   10.241] ctl   > status
+[   10.242] ctl   STAT t=106237 state=IDLE phase=- fault=NONE target=500 | src=800 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=50 rx_ok=975 crc_err=0 len_err=0 range_err=0 junk=126 seq_gaps=0
+[   10.242] bench --> ctl: start 700
+[   10.296] ctl   > start 700
+[   10.296] ctl   EVT t=106298 IDLE -> CHECK : start requested
+[   10.296] ctl   EVT t=106298 CHECK -> TRANSFER phase=OPEN_VALVE : CHECK ok: src 800 dst 100 target 700 mL
+[   10.566] ctl   EVT t=106587 TRANSFER phase=PUMPING : valve open confirmed after 290 ms
+[   10.678] plant STAT t=98005 src=800.0 dst=100.0 flow=0.0 | pump cmd=1 act=0 valve cmd=1 act=1 | failsafe=0 cmd_age=60 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=980 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   11.005] ctl   STAT t=107007 state=TRANSFER phase=PUMPING fault=NONE target=700 | src=789 dst=111 flow=38 valve cmd=1 act=1 pump cmd=1 act=1 plant_failsafe=0 | link=OK age=20 rx_ok=983 crc_err=0 len_err=0 range_err=0 junk=126 seq_gaps=0
+[   11.683] plant STAT t=99005 src=761.3 dst=138.7 flow=48.6 | pump cmd=1 act=1 valve cmd=1 act=1 | failsafe=0 cmd_age=60 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=990 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   11.968] ctl   STAT t=108007 state=TRANSFER phase=PUMPING fault=NONE target=700 | src=742 dst=158 flow=50 valve cmd=1 act=1 pump cmd=1 act=1 plant_failsafe=0 | link=OK age=20 rx_ok=993 crc_err=0 len_err=0 range_err=0 junk=126 seq_gaps=0
+[   12.587] bench --> plant: fault leak 150
+[   12.629] plant > fault leak 150
+[   12.630] plant EVT t=99965 SIM: source leak 150 mL/s
+[   12.684] plant STAT t=100005 src=711.7 dst=188.3 flow=50.0 | pump cmd=1 act=1 valve cmd=1 act=1 | failsafe=0 cmd_age=60 | faults: valve_stuck=0 pump_dead=0 leak=150 | rx_ok=1000 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   12.968] ctl   STAT t=109007 state=TRANSFER phase=PUMPING fault=NONE target=700 | src=632 dst=208 flow=50 valve cmd=1 act=1 pump cmd=1 act=1 plant_failsafe=0 | link=OK age=20 rx_ok=1003 crc_err=0 len_err=0 range_err=0 junk=126 seq_gaps=0
+[   13.641] plant STAT t=101005 src=511.7 dst=238.3 flow=50.0 | pump cmd=1 act=1 valve cmd=1 act=1 | failsafe=0 cmd_age=60 | faults: valve_stuck=0 pump_dead=0 leak=150 | rx_ok=1010 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   13.992] ctl   STAT t=110007 state=TRANSFER phase=PUMPING fault=NONE target=700 | src=432 dst=258 flow=50 valve cmd=1 act=1 pump cmd=1 act=1 plant_failsafe=0 | link=OK age=20 rx_ok=1013 crc_err=0 len_err=0 range_err=0 junk=126 seq_gaps=0
+[   14.688] plant STAT t=102005 src=311.7 dst=288.3 flow=50.0 | pump cmd=1 act=1 valve cmd=1 act=1 | failsafe=0 cmd_age=60 | faults: valve_stuck=0 pump_dead=0 leak=150 | rx_ok=1020 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   15.011] ctl   STAT t=111007 state=TRANSFER phase=PUMPING fault=NONE target=700 | src=232 dst=308 flow=50 valve cmd=1 act=1 pump cmd=1 act=1 plant_failsafe=0 | link=OK age=20 rx_ok=1023 crc_err=0 len_err=0 range_err=0 junk=126 seq_gaps=0
+[   15.666] plant STAT t=103005 src=111.7 dst=338.3 flow=50.0 | pump cmd=1 act=1 valve cmd=1 act=1 | failsafe=0 cmd_age=60 | faults: valve_stuck=0 pump_dead=0 leak=150 | rx_ok=1030 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   15.666] ctl   EVT t=111687 TRANSFER -> FAULT cause=SOURCE_LOW : src 92 <= reserve 100 mL
+[   15.965] ctl   STAT t=112007 state=FAULT phase=- fault=SOURCE_LOW target=700 | src=41 dst=349 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=20 rx_ok=1033 crc_err=0 len_err=0 range_err=0 junk=126 seq_gaps=0
+[   16.017] ctl   STAT fault_detail: src 92 <= reserve 100 mL
+[   16.671] plant STAT t=104005 src=0.0 dst=349.3 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 cmd_age=60 | faults: valve_stuck=0 pump_dead=0 leak=150 | rx_ok=1040 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   16.890] bench --> plant: status
+[   16.944] plant > status
+[   16.944] plant STAT t=104275 src=0.0 dst=349.3 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 cmd_age=30 | faults: valve_stuck=0 pump_dead=0 leak=150 | rx_ok=1043 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   16.945] bench --> plant: fault clear
+[   16.965] ctl   STAT t=113007 state=FAULT phase=- fault=SOURCE_LOW target=700 | src=0 dst=349 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=20 rx_ok=1043 crc_err=0 len_err=0 range_err=0 junk=126 seq_gaps=0
+[   16.999] plant > fault clear
+[   16.999] plant EVT t=104325 SIM: all injected faults cleared
+[   16.999] bench --> ctl: reset
+[   17.023] ctl   STAT fault_detail: src 92 <= reserve 100 mL
+[   17.023] ctl   > reset
+[   17.023] ctl   EVT t=113048 FAULT -> IDLE : reset accepted
+[   17.023] bench ===== source_low: PASS {'fault_line': 'src 92 <= reserve 100 mL'}
+[   17.023] bench ===== scenario valve_stuck_open =====
+[   17.023] bench --> plant: fault clear
+[   17.053] plant > fault clear
+[   17.053] plant EVT t=104405 SIM: all injected faults cleared
+[   17.054] bench --> plant: set src 800
+[   17.108] plant > set src 800
+[   17.108] plant EVT t=104435 SIM: source level set to 800 mL
+[   17.108] bench --> plant: set dst 100
+[   17.168] plant > set dst 100
+[   17.168] plant EVT t=104495 SIM: destination level set to 100 mL
+[   17.630] plant STAT t=105005 src=800.0 dst=100.0 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 cmd_age=60 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1050 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   17.799] bench --> ctl: status
+[   17.855] ctl   > status
+[   17.855] ctl   STAT t=113847 state=IDLE phase=- fault=NONE target=700 | src=800 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=60 rx_ok=1051 crc_err=0 len_err=0 range_err=0 junk=126 seq_gaps=0
+[   17.855] bench --> ctl: status
+[   17.910] ctl   > status
+[   17.910] ctl   STAT t=113907 state=IDLE phase=- fault=NONE target=700 | src=800 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=20 rx_ok=1052 crc_err=0 len_err=0 range_err=0 junk=126 seq_gaps=0
+[   17.911] bench --> ctl: start 300
+[   17.963] ctl   > start 300
+[   17.963] ctl   EVT t=113958 IDLE -> CHECK : start requested
+[   17.963] ctl   EVT t=113958 CHECK -> TRANSFER phase=OPEN_VALVE : CHECK ok: src 800 dst 100 target 300 mL
+[   18.017] ctl   STAT t=114007 state=TRANSFER phase=OPEN_VALVE fault=NONE target=300 | src=800 dst=100 flow=0 valve cmd=1 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=20 rx_ok=1053 crc_err=0 len_err=0 range_err=0 junk=126 seq_gaps=0
+[   18.292] ctl   EVT t=114287 TRANSFER phase=PUMPING : valve open confirmed after 330 ms
+[   18.292] bench --> plant: fault valve_stuck 1
+[   18.352] plant > fault valve_stuck 1
+[   18.352] plant EVT t=105675 SIM: valve_stuck=1 (valve frozen OPEN)
+[   18.638] plant STAT t=106005 src=792.7 dst=107.3 flow=32.8 | pump cmd=1 act=1 valve cmd=1 act=1 | failsafe=0 cmd_age=60 | faults: valve_stuck=1 pump_dead=0 leak=0 | rx_ok=1060 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   18.989] ctl   STAT t=115007 state=TRANSFER phase=PUMPING fault=NONE target=300 | src=776 dst=124 flow=46 valve cmd=1 act=1 pump cmd=1 act=1 plant_failsafe=0 | link=OK age=20 rx_ok=1063 crc_err=0 len_err=0 range_err=0 junk=126 seq_gaps=0
+[   19.661] plant STAT t=107005 src=746.6 dst=153.4 flow=49.5 | pump cmd=1 act=1 valve cmd=1 act=1 | failsafe=0 cmd_age=60 | faults: valve_stuck=1 pump_dead=0 leak=0 | rx_ok=1070 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   19.998] ctl   STAT t=116007 state=TRANSFER phase=PUMPING fault=NONE target=300 | src=727 dst=173 flow=50 valve cmd=1 act=1 pump cmd=1 act=1 plant_failsafe=0 | link=OK age=20 rx_ok=1073 crc_err=0 len_err=0 range_err=0 junk=126 seq_gaps=0
+[   20.659] plant STAT t=108005 src=696.7 dst=203.3 flow=50.0 | pump cmd=1 act=1 valve cmd=1 act=1 | failsafe=0 cmd_age=60 | faults: valve_stuck=1 pump_dead=0 leak=0 | rx_ok=1080 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   20.983] ctl   STAT t=117007 state=TRANSFER phase=PUMPING fault=NONE target=300 | src=677 dst=223 flow=50 valve cmd=1 act=1 pump cmd=1 act=1 plant_failsafe=0 | link=OK age=20 rx_ok=1083 crc_err=0 len_err=0 range_err=0 junk=126 seq_gaps=0
+[   21.661] plant STAT t=109005 src=646.7 dst=253.3 flow=50.0 | pump cmd=1 act=1 valve cmd=1 act=1 | failsafe=0 cmd_age=60 | faults: valve_stuck=1 pump_dead=0 leak=0 | rx_ok=1090 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   22.001] ctl   STAT t=118007 state=TRANSFER phase=PUMPING fault=NONE target=300 | src=627 dst=273 flow=50 valve cmd=1 act=1 pump cmd=1 act=1 plant_failsafe=0 | link=OK age=20 rx_ok=1093 crc_err=0 len_err=0 range_err=0 junk=126 seq_gaps=0
+[   22.566] ctl   EVT t=118587 TRANSFER phase=STOPPING : target reached: dst 303 >= 300 mL
+[   22.671] plant STAT t=110005 src=596.7 dst=303.3 flow=50.0 | pump cmd=0 act=1 valve cmd=0 act=1 | failsafe=0 cmd_age=60 | faults: valve_stuck=1 pump_dead=0 leak=0 | rx_ok=1100 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   23.014] ctl   STAT t=119007 state=TRANSFER phase=STOPPING fault=NONE target=300 | src=588 dst=312 flow=12 valve cmd=0 act=1 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=20 rx_ok=1103 crc_err=0 len_err=0 range_err=0 junk=126 seq_gaps=0
+[   23.568] ctl   EVT t=119597 TRANSFER -> FAULT cause=VALVE_NOT_CLOSED : valve commanded CLOSED, actual OPEN after 1010 ms
+[   23.677] plant STAT t=111005 src=585.3 dst=314.7 flow=1.4 | pump cmd=0 act=0 valve cmd=0 act=1 | failsafe=0 cmd_age=60 | faults: valve_stuck=1 pump_dead=0 leak=0 | rx_ok=1110 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   23.965] ctl   STAT t=120007 state=FAULT phase=- fault=VALVE_NOT_CLOSED target=300 | src=585 dst=315 flow=0 valve cmd=0 act=1 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=20 rx_ok=1113 crc_err=0 len_err=0 range_err=0 junk=126 seq_gaps=0
+[   24.017] ctl   STAT fault_detail: valve commanded CLOSED, actual OPEN after 1010 ms
+[   24.074] bench --> ctl: reset
+[   24.135] ctl   > reset
+[   24.135] ctl   ERR reset refused: valve still open
+[   24.135] bench --> plant: fault clear
+[   24.174] plant > fault clear
+[   24.174] plant EVT t=111515 SIM: all injected faults cleared
+[   24.668] plant STAT t=112005 src=585.2 dst=314.8 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 cmd_age=60 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1120 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   24.965] ctl   STAT t=121007 state=FAULT phase=- fault=VALVE_NOT_CLOSED target=300 | src=585 dst=315 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=20 rx_ok=1123 crc_err=0 len_err=0 range_err=0 junk=126 seq_gaps=0
+[   25.017] ctl   STAT fault_detail: valve commanded CLOSED, actual OPEN after 1010 ms
+[   25.017] bench --> ctl: reset
+[   25.073] ctl   > reset
+[   25.073] ctl   EVT t=121068 FAULT -> IDLE : reset accepted
+[   25.074] bench ===== valve_stuck_open: PASS {'fault_line': 'valve commanded CLOSED, actual OPEN after 1010 ms', 'first_reset': 'ERR reset refused: valve still open'}
+[   25.074] bench ===== scenario link_telem_lost =====
+[   25.074] bench --> plant: fault clear
+[   25.107] plant > fault clear
+[   25.107] plant EVT t=112455 SIM: all injected faults cleared
+[   25.108] bench --> plant: set src 800
+[   25.158] plant > set src 800
+[   25.158] plant EVT t=112495 SIM: source level set to 800 mL
+[   25.158] bench --> plant: set dst 100
+[   25.212] plant > set dst 100
+[   25.213] plant EVT t=112545 SIM: destination level set to 100 mL
+[   25.654] plant STAT t=113005 src=800.0 dst=100.0 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 cmd_age=60 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1130 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   25.819] bench --> ctl: status
+[   25.846] ctl   > status
+[   25.846] ctl   STAT t=121867 state=IDLE phase=- fault=NONE target=300 | src=800 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=80 rx_ok=1131 crc_err=0 len_err=0 range_err=0 junk=126 seq_gaps=0
+[   25.846] bench --> ctl: status
+[   25.897] ctl   > status
+[   25.897] ctl   STAT t=121897 state=IDLE phase=- fault=NONE target=300 | src=800 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=10 rx_ok=1132 crc_err=0 len_err=0 range_err=0 junk=126 seq_gaps=0
+[   25.897] bench --> ctl: start 600
+[   25.952] ctl   > start 600
+[   25.952] ctl   EVT t=121948 IDLE -> CHECK : start requested
+[   25.952] ctl   EVT t=121948 CHECK -> TRANSFER phase=OPEN_VALVE : CHECK ok: src 800 dst 100 target 600 mL
+[   26.005] ctl   STAT t=122007 state=TRANSFER phase=OPEN_VALVE fault=NONE target=600 | src=800 dst=100 flow=0 valve cmd=1 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=20 rx_ok=1133 crc_err=0 len_err=0 range_err=0 junk=126 seq_gaps=0
+[   26.276] ctl   EVT t=122287 TRANSFER phase=PUMPING : valve open confirmed after 340 ms
+[   26.655] plant STAT t=114005 src=792.7 dst=107.3 flow=32.8 | pump cmd=1 act=1 valve cmd=1 act=1 | failsafe=0 cmd_age=60 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1140 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   27.004] ctl   STAT t=123007 state=TRANSFER phase=PUMPING fault=NONE target=600 | src=776 dst=124 flow=46 valve cmd=1 act=1 pump cmd=1 act=1 plant_failsafe=0 | link=OK age=20 rx_ok=1143 crc_err=0 len_err=0 range_err=0 junk=126 seq_gaps=0
+[   27.279] bench --> plant: mute 2500
+[   27.321] plant > mute 2500
+[   27.322] plant EVT t=114665 TEST: link muted for 2500 ms (no TELEM sent, CMD ignored)
+[   27.568] ctl   EVT t=123597 TRANSFER -> FAULT cause=LINK_LOST : no valid telemetry for 310 ms
+[   27.638] plant STAT t=115005 src=746.6 dst=153.4 flow=49.5 | pump cmd=1 act=1 valve cmd=1 act=1 | failsafe=0 cmd_age=360 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1150 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0 LINK_MUTED
+[   27.692] plant EVT t=115015 FAILSAFE: no valid CMD for 370 ms -> pump OFF, valve commanded CLOSED (plant-side protection)
+[   27.965] ctl   STAT t=124007 state=FAULT phase=- fault=LINK_LOST target=600 | src=761 dst=139 flow=49 valve cmd=0 act=1 pump cmd=0 act=1 plant_failsafe=0 | link=DOWN age=720 rx_ok=1146 crc_err=0 len_err=0 range_err=0 junk=126 seq_gaps=0
+[   28.017] ctl   STAT fault_detail: no valid telemetry for 310 ms
+[   28.644] plant STAT t=116005 src=740.7 dst=159.3 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=1 cmd_age=-1 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1160 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0 LINK_MUTED
+[   28.965] ctl   STAT t=125007 state=FAULT phase=- fault=LINK_LOST target=600 | src=761 dst=139 flow=49 valve cmd=0 act=1 pump cmd=0 act=1 plant_failsafe=0 | link=DOWN age=1720 rx_ok=1146 crc_err=0 len_err=0 range_err=0 junk=126 seq_gaps=0
+[   29.022] ctl   STAT fault_detail: no valid telemetry for 310 ms
+[   29.665] plant STAT t=117005 src=740.7 dst=159.3 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=1 cmd_age=-1 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1170 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0 LINK_MUTED
+[   29.841] plant EVT t=117165 TEST: link unmuted
+[   29.904] plant EVT t=117245 link restored: valid CMD received, leaving failsafe
+[   29.965] ctl   STAT t=126007 state=FAULT phase=- fault=LINK_LOST target=600 | src=741 dst=159 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=20 rx_ok=1148 crc_err=0 len_err=0 range_err=0 junk=126 seq_gaps=0
+[   30.017] ctl   STAT fault_detail: no valid telemetry for 310 ms
+[   30.677] plant STAT t=118005 src=740.7 dst=159.3 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 cmd_age=60 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1180 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=1
+[   30.966] ctl   STAT t=127007 state=FAULT phase=- fault=LINK_LOST target=600 | src=741 dst=159 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=20 rx_ok=1158 crc_err=0 len_err=0 range_err=0 junk=126 seq_gaps=0
+[   31.017] ctl   STAT fault_detail: no valid telemetry for 310 ms
+[   31.671] plant STAT t=119005 src=740.7 dst=159.3 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 cmd_age=60 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1190 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=1
+[   31.889] bench --> ctl: status
+[   31.895] ctl   > status
+[   31.895] ctl   STAT t=127937 state=FAULT phase=- fault=LINK_LOST target=600 | src=741 dst=159 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=50 rx_ok=1167 crc_err=0 len_err=0 range_err=0 junk=126 seq_gaps=0
+[   31.896] bench --> ctl: reset
+[   31.950] ctl   STAT fault_detail: no valid telemetry for 310 ms
+[   31.950] ctl   > reset
+[   31.950] ctl   EVT t=127948 FAULT -> IDLE : reset accepted
+[   31.951] bench ===== link_telem_lost: PASS {'ctl_detect_after_mute_ms': 246, 'plant_failsafe_after_mute_ms': 370, 'ctl_detail': 'no valid telemetry for 310 ms', 'plant_detail': 'no valid CMD for 370 ms -> pump OFF, valve commanded CLOSED (plant-side protection)', 'after_restore': 'FAULT latched, link OK, no auto-resume'}
+[   31.951] bench ===== scenario link_cmd_lost =====
+[   31.951] bench --> plant: fault clear
+[   31.999] plant > fault clear
+[   31.999] plant EVT t=119335 SIM: all injected faults cleared
+[   31.999] bench --> plant: set src 800
+[   32.011] ctl   STAT t=128007 state=IDLE phase=- fault=NONE target=600 | src=741 dst=159 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=20 rx_ok=1168 crc_err=0 len_err=0 range_err=0 junk=126 seq_gaps=0
+[   32.058] plant > set src 800
+[   32.058] plant EVT t=119385 SIM: source level set to 800 mL
+[   32.058] bench --> plant: set dst 100
+[   32.120] plant > set dst 100
+[   32.120] plant EVT t=119445 SIM: destination level set to 100 mL
+[   32.671] plant STAT t=120005 src=800.0 dst=100.0 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 cmd_age=60 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1200 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=1
+[   32.725] bench --> ctl: status
+[   32.796] ctl   > status
+[   32.796] ctl   STAT t=128777 state=IDLE phase=- fault=NONE target=600 | src=800 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=90 rx_ok=1175 crc_err=0 len_err=0 range_err=0 junk=126 seq_gaps=0
+[   32.796] bench --> ctl: status
+[   32.847] ctl   > status
+[   32.847] ctl   STAT t=128847 state=IDLE phase=- fault=NONE target=600 | src=800 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=60 rx_ok=1176 crc_err=0 len_err=0 range_err=0 junk=126 seq_gaps=0
+[   32.848] bench --> ctl: start 600
+[   32.902] ctl   > start 600
+[   32.902] ctl   EVT t=128898 IDLE -> CHECK : start requested
+[   32.902] ctl   EVT t=128898 CHECK -> TRANSFER phase=OPEN_VALVE : CHECK ok: src 800 dst 100 target 600 mL
+[   33.010] ctl   STAT t=129007 state=TRANSFER phase=OPEN_VALVE fault=NONE target=600 | src=800 dst=100 flow=0 valve cmd=1 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=20 rx_ok=1178 crc_err=0 len_err=0 range_err=0 junk=126 seq_gaps=0
+[   33.180] ctl   EVT t=129187 TRANSFER phase=PUMPING : valve open confirmed after 290 ms
+[   33.641] plant STAT t=121005 src=788.9 dst=111.1 flow=38.0 | pump cmd=1 act=1 valve cmd=1 act=1 | failsafe=0 cmd_age=60 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1210 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=1
+[   33.984] ctl   STAT t=130007 state=TRANSFER phase=PUMPING fault=NONE target=600 | src=771 dst=129 flow=47 valve cmd=1 act=1 pump cmd=1 act=1 plant_failsafe=0 | link=OK age=20 rx_ok=1188 crc_err=0 len_err=0 range_err=0 junk=126 seq_gaps=0
+[   34.214] bench --> ctl: mute 2000
+[   34.265] ctl   > mute 2000
+[   34.265] ctl   EVT t=130267 TEST: CMD transmission muted for 2000 ms
+[   34.543] ctl   EVT t=130587 TRANSFER -> FAULT cause=PLANT_NO_CMD : plant entered failsafe (commands not received)
+[   34.543] plant EVT t=121915 FAILSAFE: no valid CMD for 370 ms -> pump OFF, valve commanded CLOSED (plant-side protection)
+[   34.658] plant STAT t=122005 src=743.1 dst=156.9 flow=34.7 | pump cmd=0 act=0 valve cmd=0 act=1 | failsafe=1 cmd_age=-1 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1216 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=1
+[   34.965] ctl   STAT t=131007 state=FAULT phase=- fault=PLANT_NO_CMD target=600 | src=741 dst=159 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=1 | link=OK age=20 rx_ok=1198 crc_err=0 len_err=0 range_err=0 junk=126 seq_gaps=0 CMD_TX_MUTED
+[   35.020] ctl   STAT fault_detail: plant entered failsafe (commands not received)
+[   35.677] plant STAT t=123005 src=740.7 dst=159.3 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=1 cmd_age=-1 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1216 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=1
+[   35.965] ctl   STAT t=132007 state=FAULT phase=- fault=PLANT_NO_CMD target=600 | src=741 dst=159 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=1 | link=OK age=20 rx_ok=1208 crc_err=0 len_err=0 range_err=0 junk=126 seq_gaps=0 CMD_TX_MUTED
+[   36.016] ctl   STAT fault_detail: plant entered failsafe (commands not received)
+[   36.241] ctl   EVT t=132267 TEST: CMD transmission resumed
+[   36.308] plant EVT t=123645 link restored: valid CMD received, leaving failsafe
+[   36.598] bench ===== link_cmd_lost: FAIL timeout 2s waiting for ctl: /-> FAULT cause=PLANT_NO_CMD/
+[   36.653] plant STAT t=124005 src=740.7 dst=159.3 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 cmd_age=60 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1220 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=1
+[   36.966] ctl   STAT t=133007 state=FAULT phase=- fault=PLANT_NO_CMD target=600 | src=741 dst=159 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=20 rx_ok=1218 crc_err=0 len_err=0 range_err=0 junk=126 seq_gaps=0
+[   37.022] ctl   STAT fault_detail: plant entered failsafe (commands not received)
+[   37.641] bench ===== scenario ctl_reboot =====
+[   37.641] bench --> plant: fault clear
+[   37.647] plant STAT t=125005 src=740.7 dst=159.3 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 cmd_age=60 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1230 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=1
+[   37.647] plant > fault clear
+[   37.701] plant EVT t=125025 SIM: all injected faults cleared
+[   37.701] bench --> plant: set src 800
+[   37.756] plant > set src 800
+[   37.756] plant EVT t=125085 SIM: source level set to 800 mL
+[   37.756] bench --> plant: set dst 100
+[   37.810] plant > set dst 100
+[   37.810] plant EVT t=125145 SIM: destination level set to 100 mL
+[   37.965] ctl   STAT t=134007 state=FAULT phase=- fault=PLANT_NO_CMD target=600 | src=800 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=20 rx_ok=1228 crc_err=0 len_err=0 range_err=0 junk=126 seq_gaps=0
+[   38.026] ctl   STAT fault_detail: plant entered failsafe (commands not received)
+[   38.417] bench --> ctl: status
+[   38.426] ctl   > status
+[   38.426] ctl   STAT t=134467 state=FAULT phase=- fault=PLANT_NO_CMD target=600 | src=800 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=80 rx_ok=1232 crc_err=0 len_err=0 range_err=0 junk=126 seq_gaps=0
+[   38.426] bench --> ctl: reset
+[   38.477] ctl   STAT fault_detail: plant entered failsafe (commands not received)
+[   38.477] ctl   > reset
+[   38.477] ctl   EVT t=134478 FAULT -> IDLE : reset accepted
+[   38.478] bench --> ctl: status
+[   38.532] ctl   > status
+[   38.532] ctl   STAT t=134527 state=IDLE phase=- fault=NONE target=600 | src=800 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=40 rx_ok=1233 crc_err=0 len_err=0 range_err=0 junk=126 seq_gaps=0
+[   38.532] bench --> ctl: start 600
+[   38.586] ctl   > start 600
+[   38.586] ctl   EVT t=134588 IDLE -> CHECK : start requested
+[   38.586] ctl   EVT t=134588 CHECK -> TRANSFER phase=OPEN_VALVE : CHECK ok: src 800 dst 100 target 600 mL
+[   38.653] plant STAT t=126005 src=800.0 dst=100.0 flow=0.0 | pump cmd=0 act=0 valve cmd=1 act=0 | failsafe=0 cmd_age=60 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1240 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=1
+[   38.877] ctl   EVT t=134887 TRANSFER phase=PUMPING : valve open confirmed after 300 ms
+[   38.992] ctl   STAT t=135007 state=TRANSFER phase=PUMPING fault=NONE target=600 | src=799 dst=102 flow=15 valve cmd=1 act=1 pump cmd=1 act=1 plant_failsafe=0 | link=OK age=20 rx_ok=1238 crc_err=0 len_err=0 range_err=0 junk=126 seq_gaps=0
+[   39.677] plant STAT t=127005 src=775.7 dst=124.3 flow=45.9 | pump cmd=1 act=1 valve cmd=1 act=1 | failsafe=0 cmd_age=60 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1250 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=1
+[   39.914] bench --> ctl: reboot
+[   39.974] ctl   > reboot
+[   39.974] ctl   EVT t=135967 rebooting on operator request
+[   39.974] ctl   ESP-ROM:esp32s3-20210327
+[   39.974] ctl   Build:Mar 27 2021
+[   39.997] ctl   rst:0xc (RTC_SW_CPU_RST),boot:0x2b (SPI_FAST_FLASH_BOOT)
+[   39.997] ctl   Saved PC:0x4037c7fd
+[   39.997] ctl   SPIWP:0xee
+[   39.997] ctl   mode:DIO, clock div:1
+[   39.997] ctl   load:0x3fce2820,len:0x1544
+[   39.997] ctl   load:0x403c8700,len:0xd60
+[   39.997] ctl   load:0x403cb700,len:0x2f60
+[   39.997] ctl   entry 0x403c8904
+[   39.998] ctl   I (24) boot: ESP-IDF a208625e-dirty 2nd stage bootloader
+[   39.998] ctl   I (24) boot: compile time Nov  8 2026 18:31:35
+[   39.998] ctl   I (24) boot: Multicore bootloader
+[   39.998] ctl   I (25) boot: chip revision: v0.2
+[   39.998] ctl   I (25) boot: efuse block revision: v1.4
+[   39.998] ctl   I (25) boot.esp32s3: Boot SPI Speed : 80MHz
+[   39.999] ctl   I (25) boot.esp32s3: SPI Mode       : DIO
+[   39.999] ctl   I (25) boot.esp32s3: SPI Flash Size : 4MB
+[   39.999] ctl   I (26) boot: Enabling RNG early entropy source...
+[   39.999] ctl   I (26) boot: Partition Table:
+[   39.999] ctl   I (26) boot: ## Label            Usage          Type ST Offset   Length
+[   40.001] ctl   I (26) boot:  0 nvs              WiFi data        01 02 00009000 00006000
+[   40.001] ctl   I (27) boot:  1 phy_init         RF data          01 01 0000f000 00001000
+[   40.001] ctl   I (27) boot:  2 factory          factory app      00 00 00010000 00100000
+[   40.001] ctl   I (27) boot: End of partition table
+[   40.014] ctl   I (28) esp_image: segment 0: paddr=00010020 vaddr=3c020020 size=0c19ch ( 49564) map
+[   40.014] ctl   I (37) esp_image: segment 1: paddr=0001c1c4 vaddr=3fc92400 size=03274h ( 12916) load
+[   40.014] ctl   I (40) esp_image: segment 2: paddr=0001f440 vaddr=40374000 size=00bd8h (  3032) load
+[   40.051] ctl   I (41) esp_image: segment 3: paddr=00020020 vaddr=42000020 size=181b4h ( 98740) map
+[   40.051] ctl   I (59) esp_image: segment 4: paddr=000381dc vaddr=40374bd8 size=0d7c8h ( 55240) load
+[   40.051] ctl   I (72) esp_image: segment 5: paddr=000459ac vaddr=50000000 size=00024h (    36) load
+[   40.069] ctl   I (78) boot: Loaded app from partition at offset 0x10000
+[   40.069] ctl   I (79) boot: Disabling RNG early entropy source...
+[   40.069] ctl   EVT t=4 BOOT controller (ESP32-S3) reset_reason=3 state=IDLE. Nothing resumes after reboot: send 'start' to begin.
+[   40.119] ctl   config: min_src=100 dst_high=950 link_timeout=300 valve_timeout=1000 flow_grace=1500 flow_min=20
+[   40.640] plant STAT t=128005 src=740.7 dst=159.3 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 cmd_age=50 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1258 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=2
+[   41.083] ctl   STAT t=1006 state=IDLE phase=- fault=NONE target=0 | src=741 dst=159 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=20 rx_ok=10 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   41.586] bench --> ctl: status
+[   41.642] ctl   > status
+[   41.642] ctl   STAT t=1526 state=IDLE phase=- fault=NONE target=0 | src=741 dst=159 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=50 rx_ok=15 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   41.643] bench --> plant: status
+[   41.642] plant STAT t=129005 src=740.7 dst=159.3 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 cmd_age=50 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1268 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=2
+[   41.643] bench ===== ctl_reboot: PASS {'after_reboot': 'controller IDLE, plant pump off, transfer not resumed'}
+[   41.643] bench ===== scenario plant_reboot =====
+[   41.643] bench --> plant: fault clear
+[   41.649] plant > status
+[   41.649] plant STAT t=129025 src=740.7 dst=159.3 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 cmd_age=70 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1268 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=2
+[   41.649] plant > fault clear
+[   41.701] plant EVT t=129025 SIM: all injected faults cleared
+[   41.702] bench --> plant: set src 800
+[   41.759] plant > set src 800
+[   41.759] plant EVT t=129085 SIM: source level set to 800 mL
+[   41.759] bench --> plant: set dst 100
+[   41.811] plant > set dst 100
+[   41.811] plant EVT t=129145 SIM: destination level set to 100 mL
+[   42.095] ctl   STAT t=2006 state=IDLE phase=- fault=NONE target=0 | src=800 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=20 rx_ok=20 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   42.428] bench --> ctl: status
+[   42.489] ctl   > status
+[   42.489] ctl   STAT t=2376 state=IDLE phase=- fault=NONE target=0 | src=800 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=0 rx_ok=24 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   42.489] bench --> ctl: status
+[   42.544] ctl   > status
+[   42.544] ctl   STAT t=2436 state=IDLE phase=- fault=NONE target=0 | src=800 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=60 rx_ok=24 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   42.544] bench --> ctl: start 600
+[   42.598] ctl   > start 600
+[   42.598] ctl   EVT t=2487 IDLE -> CHECK : start requested
+[   42.598] ctl   EVT t=2487 CHECK -> TRANSFER phase=OPEN_VALVE : CHECK ok: src 800 dst 100 target 600 mL
+[   42.658] plant STAT t=130005 src=800.0 dst=100.0 flow=0.0 | pump cmd=0 act=0 valve cmd=1 act=0 | failsafe=0 cmd_age=50 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1278 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=2
+[   42.878] ctl   EVT t=2776 TRANSFER phase=PUMPING : valve open confirmed after 290 ms
+[   43.102] ctl   STAT t=3006 state=TRANSFER phase=PUMPING fault=NONE target=600 | src=796 dst=104 flow=26 valve cmd=1 act=1 pump cmd=1 act=1 plant_failsafe=0 | link=OK age=30 rx_ok=30 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   43.659] plant STAT t=131005 src=775.7 dst=124.3 flow=45.9 | pump cmd=1 act=1 valve cmd=1 act=1 | failsafe=0 cmd_age=50 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=1288 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=2
+[   43.889] bench --> plant: reboot
+[   43.945] plant > reboot
+[   43.945] plant EVT t=131275 rebooting on operator request
+[   43.964] plant ESP-ROM:esp32c3-api1-20210207
+[   43.964] plant Build:Feb  7 2021
+[   43.964] plant rst:0xc (RTC_SW_CPU_RST),boot:0xc (SPI_FAST_FLASH_BOOT)
+[   43.964] plant Saved PC:0x40385aa0
+[   43.964] plant SPIWP:0xee
+[   43.964] plant mode:DIO, clock div:1
+[   43.964] plant load:0x3fcd5830,len:0x1594
+[   43.964] plant load:0x403cbf10,len:0xc9c
+[   43.964] plant load:0x403ce710,len:0x3010
+[   43.971] plant entry 0x403cbf1a
+[   43.972] plant I (24) boot: ESP-IDF a208625e-dirty 2nd stage bootloader
+[   43.972] plant I (24) boot: compile time Nov  8 2026 18:33:35
+[   43.972] plant I (24) boot: chip revision: v0.4
+[   43.972] plant I (24) boot: efuse block revision: v1.3
+[   43.972] plant I (24) boot.esp32c3: SPI Speed      : 80MHz
+[   43.973] plant I (25) boot.esp32c3: SPI Mode       : DIO
+[   43.973] plant I (25) boot.esp32c3: SPI Flash Size : 4MB
+[   43.973] plant I (25) boot: Enabling RNG early entropy source...
+[   43.973] plant I (25) boot: Partition Table:
+[   43.973] plant I (25) boot: ## Label            Usage          Type ST Offset   Length
+[   43.974] plant I (25) boot:  0 nvs              WiFi data        01 02 00009000 00006000
+[   43.974] plant I (26) boot:  1 phy_init         RF data          01 01 0000f000 00001000
+[   43.974] plant I (26) boot:  2 factory          factory app      00 00 00010000 00100000
+[   43.974] plant I (26) boot: End of partition table
+[   43.986] plant I (27) esp_image: segment 0: paddr=00010020 vaddr=3c020020 size=0a244h ( 41540) map
+[   43.986] plant I (34) esp_image: segment 1: paddr=0001a26c vaddr=3fc8ac00 size=01948h (  6472) load
+[   43.986] plant I (35) esp_image: segment 2: paddr=0001bbbc vaddr=40380000 size=0445ch ( 17500) load
+[   44.011] plant I (39) esp_image: segment 3: paddr=00020020 vaddr=42000020 size=18784h (100228) map
+[   44.011] plant I (55) esp_image: segment 4: paddr=000387ac vaddr=4038445c size=06708h ( 26376) load
+[   44.011] plant I (60) esp_image: segment 5: paddr=0003eebc vaddr=50000000 size=00024h (    36) load
+[   44.065] plant I (64) boot: Loaded app from partition at offset 0x10000
+[   44.065] plant I (64) boot: Disabling RNG early entropy source...
+[   44.065] plant EVT t=4 BOOT plant simulator (ESP32-C3) reset_reason=3: src=800 dst=100 mL, pump OFF, valve CLOSED, failsafe until first valid CMD. OLED ok.
+[   44.113] ctl   STAT t=4006 state=TRANSFER phase=PUMPING fault=NONE target=600 | src=761 dst=139 flow=49 valve cmd=1 act=1 pump cmd=1 act=1 plant_failsafe=0 | link=OK age=230 rx_ok=38 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   44.168] ctl   EVT t=4076 TRANSFER -> FAULT cause=VALVE_NOT_OPEN : valve reported CLOSED while pumping
+[   45.040] plant STAT t=1005 src=800.0 dst=100.0 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 cmd_age=50 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=10 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   45.072] ctl   STAT t=5006 state=FAULT phase=- fault=VALVE_NOT_OPEN target=600 | src=800 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=30 rx_ok=48 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=1
+[   45.131] ctl   STAT fault_detail: valve reported CLOSED while pumping
+[   46.035] plant STAT t=2005 src=800.0 dst=100.0 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 cmd_age=50 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=20 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   46.072] ctl   STAT t=6006 state=FAULT phase=- fault=VALVE_NOT_OPEN target=600 | src=800 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=30 rx_ok=58 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=1
+[   46.131] ctl   STAT fault_detail: valve reported CLOSED while pumping
+[   47.072] ctl   STAT t=7006 state=FAULT phase=- fault=VALVE_NOT_OPEN target=600 | src=800 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=30 rx_ok=68 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=1
+[   47.077] plant STAT t=3005 src=800.0 dst=100.0 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 cmd_age=50 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=30 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   47.135] ctl   STAT fault_detail: valve reported CLOSED while pumping
+[   48.041] plant STAT t=4005 src=800.0 dst=100.0 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 cmd_age=50 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=40 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   48.072] ctl   STAT t=8006 state=FAULT phase=- fault=VALVE_NOT_OPEN target=600 | src=800 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=30 rx_ok=78 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=1
+[   48.135] ctl   STAT fault_detail: valve reported CLOSED while pumping
+[   48.929] bench ===== plant_reboot: FAIL timeout 5s waiting for ctl: /-> FAULT cause=(LINK_LOST|PLANT_NO_CMD)/
+[   49.059] plant STAT t=5005 src=800.0 dst=100.0 flow=0.0 | pump cmd=0 act=0 valve cmd=0 act=0 | failsafe=0 cmd_age=50 | faults: valve_stuck=0 pump_dead=0 leak=0 | rx_ok=50 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=0
+[   49.072] ctl   STAT t=9006 state=FAULT phase=- fault=VALVE_NOT_OPEN target=600 | src=800 dst=100 flow=0 valve cmd=0 act=0 pump cmd=0 act=0 plant_failsafe=0 | link=OK age=30 rx_ok=88 crc_err=0 len_err=0 range_err=0 junk=0 seq_gaps=1
+[   49.129] ctl   STAT fault_detail: valve reported CLOSED while pumping
